@@ -1,0 +1,86 @@
+
+  <div class="layui-form" lay-filter="business_customer_add_form" id="business_customer_add_form"style="padding: 20px 30px 0 0;">
+    <input type="hidden" name="customerId">
+    <div class="layui-form-item">
+      <label class="layui-form-label">客户名称</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input type="text" name="customerName" value="" lay-verify="required" placeholder="请输入客户名称" autocomplete="off" class="layui-input">
+        </script>
+      </div>
+    </div>
+    <input type="hidden" name="hideOrgCode" id="hideOrgCode">
+    
+    <div class="layui-form-item">
+      <label class="layui-form-label">选择组织</label>
+      <div class="layui-input-inline">
+       <script type="text/html" template lay-type='post' lay-url="{{layui.setter.backuprequesturl}}org/v1.0/api/getOrgList" 
+        lay-done="layui.$('#userAddOrgCode').val(layui.$('#hideOrgCode').val());layui.form.render('select', 'business_customer_add_form');">
+
+          <select name="orgCode" id="userAddOrgCode" lay-filter="selectOrg">
+            {{# layui.each(d.data, function(index, item){ }}
+                  <option value='{{item.orgCode}}'  >{{item.orgName}}</option>
+                
+            {{#  }); }}
+
+            
+         </select>
+        </script>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">联系人</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input type="text" name="customerContactPersonal" value="" lay-verify="required" placeholder="请输入联系人" autocomplete="off" class="layui-input">
+        </script>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">联系电话</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input type="text" name="customerContactPhone" value="" lay-verify="phone" placeholder="请输入联系电话" autocomplete="off" class="layui-input">
+        </script>
+      </div>
+    </div>
+
+    <div class="layui-form-item">
+      <label class="layui-form-label">联系地址</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input type="text" name="customerAddr" value="" lay-verify="required" placeholder="请输入地址" autocomplete="off" class="layui-input">
+        </script>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">成交价</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input type="text" name="customerPrice" value="" lay-verify="number" placeholder="请输入成交价" autocomplete="off" class="layui-input">
+        </script>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">邮箱</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input type="text" name="customerMail" value="" lay-verify="email" placeholder="请输入邮箱" autocomplete="off" class="layui-input">
+        </script>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">描述</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <textarea name="customerDesc" lay-verify="required" style="width: 400px; height: 150px;" autocomplete="off" class="layui-textarea"></textarea>
+        </script>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label"></label>
+      <div class="layui-input-inline">
+        <input type="button" lay-submit lay-filter="layuiadmin-app-form-submit" value="确认" class="layui-btn">
+      </div>
+    </div>
+  </div>

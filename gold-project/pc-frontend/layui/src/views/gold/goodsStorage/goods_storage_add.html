@@ -1,0 +1,40 @@
+
+  <div class="layui-form" lay-filter="goods_storage_add_form-list" id="goods_storage_add_form-list"style="padding: 20px 30px 0 0;">
+    <input type="hidden" name="goodsStorageId">
+    <div class="layui-form-item">
+      <label class="layui-form-label">商品名称</label>
+      <div class="layui-input-inline">
+          <input type="text" name="goodsName" value="" lay-verify="required" placeholder="请输入商品名称" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">剩余库存</label>
+      <div class="layui-input-inline">
+          <input type="text" name="goodsSurplusStorage" value="" lay-verify="required,number" placeholder="请输入剩余库存" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">计价单位</label>
+      <div class="layui-input-inline">
+          <input type="text" name="goodsUnit" value="" lay-verify="required" placeholder="请输入计价单位" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">商品单价</label>
+      <div class="layui-input-inline">
+          <input type="text" name="goodsPrice" value="" lay-verify="required,number" placeholder="请输入单价" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">备注</label>
+      <div class="layui-input-inline">
+          <textarea name="goodsRemark" lay-verify="required" style="width: 400px; height: 150px;" autocomplete="off" class="layui-textarea"></textarea>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label"></label>
+      <div class="layui-input-inline">
+        <input type="button" lay-submit lay-filter="goods_storage_add_form-submit" value="确认" class="layui-btn">
+      </div>
+    </div>
+  </div>

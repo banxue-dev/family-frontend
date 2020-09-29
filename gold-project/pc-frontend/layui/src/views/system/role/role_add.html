@@ -1,0 +1,28 @@
+
+  <div class="layui-form" lay-filter="layuiadmin-app-form-list" id="layuiadmin-app-form-list"style="padding: 20px 30px 0 0;">
+    <input type="hidden" name="roleId">
+    <div class="layui-form-item">
+      <label class="layui-form-label">角色名</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input type="text" name="roleName" value="" lay-verify="required" placeholder="请输入角色名" autocomplete="off" class="layui-input">
+        </script>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">描述</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <textarea name="roleDesc" lay-verify="required" style="width: 400px; height: 150px;" autocomplete="off" class="layui-textarea">
+            
+          </textarea>
+        </script>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label"></label>
+      <div class="layui-input-inline">
+        <input type="button" lay-submit lay-filter="layuiadmin-app-form-submit" value="确认" class="layui-btn">
+      </div>
+    </div>
+  </div>

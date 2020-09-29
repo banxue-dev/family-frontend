@@ -1,0 +1,62 @@
+
+  <div class="layui-form" lay-filter="layuiadmin-app-form-list" id="layuiadmin-app-form-list"style="padding: 20px 30px 0 0;">
+    <input type="hidden" name="parentId">
+    <input type="hidden" name="menuId">
+
+    <div class="layui-form-item">
+      <label class="layui-form-label">类型</label>
+       <div class="layui-input-block">
+        <input type="radio" name="menuType" value="0" checked="" title="菜单">
+        <input type="radio" name="menuType" value="1" title="按钮" >
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">菜单标题</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input type="text" name="menuTitle" value="" lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+        </script>
+      </div>
+    </div>
+
+    <div class="layui-form-item">
+      <label class="layui-form-label">菜单标识</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input type="text" name="menuName" value="" lay-verify="required" placeholder="请输入标识" autocomplete="off" class="layui-input">
+        </script>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">跳转地址</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input type="text" name="menuUrl" value="" lay-verify="" placeholder="请输入URL" autocomplete="off" class="layui-input">
+        </script>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">排序</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input type="text" name="menuSort" value="" lay-verify="number" placeholder="请输入排序" autocomplete="off" class="layui-input">
+        </script>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">描述</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <textarea name="menuDesc" lay-verify="required" style="width: 400px; height: 150px;" autocomplete="off" class="layui-textarea">
+            
+          </textarea>
+        </script>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label"></label>
+      <div class="layui-input-inline">
+        <input type="button" lay-submit lay-filter="layuiadmin-app-form-submit" value="确认" class="layui-btn">
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,178 @@
+
+
+  <title>客户留言列表</title>
+
+  <div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+      <a lay-href="">主页</a>
+      <a><cite>系统设置</cite></a>
+      <a><cite>客户留言设置</cite></a>
+      <a><cite>客户留言列表</cite></a>
+    </div>
+  </div>
+  
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header">客户留言列表</div>
+          <div class="layui-card-body">
+            <div class="test-table-reload-btn" style="margin-bottom: 10px;">
+              搜索姓名：
+              <div class="layui-inline">
+                <input class="layui-input" name="customerTrueName" id="customerTrueName" autocomplete="off">
+              </div>
+              <button class="layui-btn layuiadmin-btn-customerMessage" data-type="reload">搜索</button>
+            </div>
+             <div style="padding-bottom: 10px; ">
+                <button class="layui-btn layuiadmin-btn-customerMessage  layui-btn-danger" data-type="batchdel"><i
+                        class="layui-icon">&#xe640;</i>删除
+                </button>
+            </div>
+            <table class="layui-hide" id="customerMessage_table" lay-filter="customerMessage_table"></table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/html" id="customerMessage_oper_col">
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+  </script>
+  <script>
+  layui.use(['admin','tree', 'table'], function(){
+    var $ = layui.$
+    , table = layui.table
+    , tree = layui.tree
+    ,admin=layui.admin
+    ,view = layui.view
+    ,table = layui.table
+    ,form = layui.form
+    ,requrl=layui.setter.backuprequesturl+'customerMessage'+layui.setter.reqver;
+    table.render({
+      elem: '#customerMessage_table'
+      ,url: layui.setter.backuprequesturl+'customerMessage'+layui.setter.reqver+'getCustomerMessageListByPage'
+      ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+      ,headers: { //通过 request 头传递
+        token: layui.data('FamilyAdminSystem').token
+      }
+      ,page:layui.setter.page
+      ,where:{
+        orgCode: layui.data('FamilyAdminSystem').orgCode 
+      }
+      ,cols: [[
+        {type: 'checkbox', fixed: 'left', title: ''}
+        ,{field:'customerTrueName',  title: '客户姓名'}
+        ,{field:'customerPhone',  title: '客户电话'}
+        ,{field:'customerQq',  title: '客户QQ'}
+        ,{field:'customerMail',  title: '客户邮箱'}
+        ,{field:'customerRemark',  title: '客户备注'}
+        ,{field:'customerMessageId',  hide:true}
+        ,{field:'createTime', title: '创建时间',sort:true}
+        ,{templet: '#customerMessage_oper_col', fixed: 'right', title: '操作', align: 'center'}
+      ]]
+    });
+    
+    table.on('tool(customerMessage_table)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+                 delCustomerMessage(data.customerMessageId);
+            } else if (obj.event === 'edit') {
+                addNewCustomerMessage(data,'编辑客户留言','gold/customerMessage/customerMessage_add','mod');
+            } 
+        })
+    var active = {
+      batchdel: function(){
+        var checkStatus = table.checkStatus('customerMessage_table')
+        ,checkData = checkStatus.data; //得到选中的数据
+
+        if(checkData.length === 0){
+          return layer.msg('请选择数据');
+        }
+        var lineIds="";
+        checkData.forEach(function (value,i) {
+            //lineIds.push(value.customerMessageId);
+            lineIds+=value.customerMessageId;
+            if(i<checkData.length-1){
+              lineIds+=',';
+            }
+        })
+        delCustomerMessage(lineIds);
+      }
+      
+      //添加
+      ,add: function(othis){
+        addNewCustomerMessage({parentId:0},'添加客户留言','gold/customerMessage/customerMessage_add','add');
+      }
+      ,reload: function(){
+        
+        //执行重载
+        table.reload('customerMessage_table', {
+          page: {
+            curr: 1 //重新从第 1 页开始
+          }
+          ,where: {
+            customerTrueName:$('#customerTrueName').val()
+          }
+        });
+      }
+    }; 
+    function delCustomerMessage(params){
+      layer.confirm('确定删除吗？', function(index) {
+            layer.load(2);
+            admin.req({
+            url:requrl+'delCustomerMessage',
+            traditional:true,
+            data:{customerMessageIds:params},
+            success:function(res){
+              if(res.code=='000000'){
+
+                //执行 Ajax 后重载
+                table.reload('customerMessage_table');
+                layer.msg('已删除');
+              }else{
+                layer.msg(res.msg);
+              }
+               layer.closeAll('loading');
+            }
+          });
+        });
+    }
+    function addNewCustomerMessage(data,title,url,treq){
+      admin.popup({
+          title: title
+          ,area: ['550px', '550px']
+          ,id: 'LAY-popup-content-add'
+          ,success: function(layero, index){
+            view(this.id).render(url).done(function(){
+              if(treq=='mod'){
+                $('#customerMessagePwdPanl').remove();
+              }
+              form.render(null, 'layuiadmin-app-form-list');
+              form.val('layuiadmin-app-form-list', data);
+              //监听提交
+              form.on('submit(layuiadmin-app-form-submit)', function(data){
+                var field = data.field; //获取提交的字段
+                layer.load(2);
+                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                admin.req({
+                  url:requrl+treq+'CustomerMessage',
+                  data:field,
+                  success:function(res){
+                    layui.table.reload('customerMessage_table'); //重载表格
+                    layer.close(index); //执行关闭 
+                    layer.closeAll('loading');
+                  }
+                })
+              });
+            });
+          }
+        });
+    }
+
+    $('.layui-btn.layuiadmin-btn-customerMessage').on('click', function(){
+      var type = $(this).data('type');
+      active[type] ? active[type].call(this) : '';
+    });
+
+  });
+  </script>

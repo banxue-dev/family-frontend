@@ -1,0 +1,228 @@
+
+
+  <title>角色列表</title>
+
+  <div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+      <a lay-href="">主页</a>
+      <a><cite>系统设置</cite></a>
+      <a><cite>角色设置</cite></a>
+      <a><cite>角色列表</cite></a>
+    </div>
+  </div>
+  
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header">角色列表</div>
+          <div class="layui-card-body">
+             <div style="padding-bottom: 10px; ">
+                <button class="layui-btn layuiadmin-btn-role" data-type="add"><i class="layui-icon">&#xe608;</i> 添加
+                </button>
+                <button class="layui-btn layuiadmin-btn-role  layui-btn-danger" data-type="batchdel"><i
+                        class="layui-icon">&#xe640;</i>删除
+                </button>
+            </div>
+            <table class="layui-hide" id="role_table" lay-filter="role_table"></table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/html" id="role_oper_col">
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="editMenu">赋权</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+  </script>
+  <script>
+  layui.use(['admin','tree', 'table'], function(){
+    var $ = layui.$
+    , table = layui.table
+    , tree = layui.tree
+    ,admin=layui.admin
+    ,view = layui.view
+    ,table = layui.table
+    ,form = layui.form
+    ,requrl=layui.setter.backuprequesturl+'role'+layui.setter.reqver;
+    table.render({
+      elem: '#role_table'
+      ,url: layui.setter.backuprequesturl+'role'+layui.setter.reqver+'getRoleListByPage'
+      ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+      ,headers:layui.setter.headers
+      ,page:layui.setter.page
+      ,where:{
+        orgCode:layui.data('FamilyAdminSystem').orgCode
+      }
+      ,cols: [[
+        {type: 'checkbox', fixed: 'left', title: ''}
+        ,{field:'roleName',  title: '角色名'}
+        ,{field:'roleDesc',  title: '描述'}
+        ,{field:'roleId',  hide:true}
+        ,{field:'createTime', title: '创建时间',sort:true}
+        ,{field:'createUser', title: '创建人'}
+        ,{templet: '#role_oper_col', fixed: 'right', title: '操作', align: 'center'}
+      ]]
+    });
+    
+    table.on('tool(role_table)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+                 delRole(data.roleId);
+            } else if (obj.event === 'edit') {
+
+                addNewRole(data,'编辑角色','system/role/role_add','mod');
+            } else if (obj.event === 'addNext') {
+                addNewRole({parentId:data.roleId},'添加角色','system/role/role_add','add');
+            }else if(obj.event=='editMenu'){
+              editMenu({roleId:data.roleId});
+            }
+
+        })
+    var active = {
+      batchdel: function(){
+        var checkStatus = table.checkStatus('role_table')
+        ,checkData = checkStatus.data; //得到选中的数据
+
+        if(checkData.length === 0){
+          return layer.msg('请选择数据');
+        }
+        var lineIds="";
+        checkData.forEach(function (value,i) {
+            //lineIds.push(value.roleId);
+            lineIds+=value.roleId;
+            if(i<checkData.length-1){
+              lineIds+=',';
+            }
+        })
+        delRole(lineIds);
+      }
+      
+      //添加
+      ,add: function(othis){
+        addNewRole({parentId:0},'添加角色','system/role/role_add','add');
+      }
+    }; 
+    function delRole(params){
+      layer.confirm('确定删除吗？', function(index) {
+            admin.req({
+            url:requrl+'delRole',
+            traditional:true,
+            data:{roleIds:params},
+            done:function(res){
+              if(res.code=='000000'){
+
+                //执行 Ajax 后重载
+                table.reload('role_table');
+                layer.msg('已删除');
+              }else{
+                layer.msg(res.msg);
+              }
+            }
+          });
+        });
+    }
+    function editMenu(params){
+      admin.popup({
+          title: '角色赋权'
+          ,area: ['400px', '300px']
+          ,id: 'LAY-popup-role-menu'
+          ,success: function(layero, index){
+            view(this.id).render('system/role/role_menu').done(function(){
+              
+              //监听提交
+              var treerender=function(){
+                admin.req({
+                  url:layui.setter.backuprequesturl+'menu'+layui.setter.reqver+'getLeftMenuByRole',
+                  data:params,
+                  success:function(res){
+                      tree.render({
+                            elem: '#tree'
+                            , data: res.data
+                            , id: 'treeId'
+                            , showCheckbox: true
+                            ,oncheck: function(obj){
+
+                            }
+
+                        });
+                  }
+                });
+              }
+              treerender();
+              $('#rolemenusave').on('click',function(){
+                var checkedData = tree.getChecked('treeId'); //获取选中节点的数据
+                var ids=changeArray(checkedData,"");
+                ids=ids.substring(0,ids.lastIndexOf(','));
+                admin.req({
+                  url:layui.setter.backuprequesturl+'role'+layui.setter.reqver+'addRoleMenu',
+                  data:{menuIds:ids,roleId:params.roleId},
+                  done:function(res){
+                    treerender();
+
+                    admin.req({
+                      url:layui.setter.backuprequesturl+"menu/v1.0/api/refreshUserAuth",
+                      done:function(res){
+
+                        layui.data(layui.setter.tableName, {
+                          key: layui.setter.request.userAuthName
+                          ,value: res.data
+                        });
+                      }
+                    });
+                  }
+                });
+              })
+            });
+          }
+        });
+    }
+    function addNewRole(data,title,url,treq){
+      admin.popup({
+          title: title
+          ,area: ['550px', '550px']
+          ,id: 'LAY-popup-content-add'
+          ,success: function(layero, index){
+            view(this.id).render(url).done(function(){
+              if(treq=='mod'){
+                $('#rolePwdPanl').remove();
+              }
+              form.render(null, 'layuiadmin-app-form-list');
+              form.val('layuiadmin-app-form-list', data);
+              //监听提交
+              form.on('submit(layuiadmin-app-form-submit)', function(data){
+                var field = data.field; //获取提交的字段
+                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                admin.req({
+                  url:requrl+treq+'Role',
+                  data:field,
+                  success:function(res){
+                    layui.table.reload('role_table'); //重载表格
+                    layer.close(index); //执行关闭 
+                    layer.closeAll('loading');
+                  }
+                })
+              });
+            });
+          }
+        });
+    }
+
+    $('.layui-btn.layuiadmin-btn-role').on('click', function(){
+      var type = $(this).data('type');
+      active[type] ? active[type].call(this) : '';
+    });
+    function changeArray (data,res){
+        for(var i=0;i<data.length;i++){
+          var da=data[i];
+          res+=da.id+",";
+          var hasChildren = typeof da.children == 'object' && da.children.length > 0;
+          if(hasChildren){
+            res=changeArray(da.children,res);
+          }
+        }
+        return res;
+    }
+
+  });
+  </script>

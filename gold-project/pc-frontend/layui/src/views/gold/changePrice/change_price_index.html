@@ -1,0 +1,176 @@
+
+
+  <title>价格列表</title>
+
+  <div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+      <a lay-href="">主页</a>
+      <a><cite>黄金设置</cite></a>
+      <a><cite>价格设置</cite></a>
+      <a><cite>价格列表</cite></a>
+    </div>
+  </div>
+  
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header">价格列表</div>
+          <div class="layui-card-body">
+             <div style="padding-bottom: 10px; ">
+                <button class="layui-btn layuiadmin-btn-changePrice" data-type="add"><i class="layui-icon">&#xe608;</i> 添加
+                </button>
+                <button class="layui-btn layuiadmin-btn-changePrice  layui-btn-danger" data-type="batchdel"><i
+                        class="layui-icon">&#xe640;</i>删除
+                </button>
+            </div>
+            <table class="layui-hide" id="changePrice_table" lay-filter="changePrice_table"></table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/html" id="changePrice_oper_col">
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+  </script>
+  <script>
+  layui.use(['admin','tree', 'table'], function(){
+    var $ = layui.$
+    , table = layui.table
+    , tree = layui.tree
+    ,admin=layui.admin
+    ,view = layui.view
+    ,table = layui.table
+    ,form = layui.form
+    ,requrl=layui.setter.backuprequesturl+'changePrice/api'+layui.setter.reqver;
+    table.render({
+      elem: '#changePrice_table'
+      ,url: requrl+'getChangePriceListByPage'
+      ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+      ,headers:layui.setter.headers
+      ,page:layui.setter.page
+      ,where:layui.setter.authParams
+      ,cols: [[
+        {type: 'checkbox', fixed: 'left', title: ''}
+        ,{field:'orgCodeName',  title: '所属组织'}
+        ,{field:'orgCode',  title: '所属组织',hide:true}
+        ,{field:'openStatus',  title: '开盘状态',templet:function(d){
+          if(d.openStatus==0){
+            return "开盘中";
+          }else if(d.openStatus==1){
+            return "已停盘";
+          }else{
+            return "自动";
+          }
+        }}
+        ,{field:'changePriceId',  hide:true}
+        ,{templet: '#changePrice_oper_col', fixed: 'right', title: '操作', align: 'center'}
+      ]]
+    });
+    
+    table.on('tool(changePrice_table)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+                 delChangePrice(data.changePriceId);
+            } else if (obj.event === 'edit') {
+                addNewChangePrice(data,'编辑价格','gold/changePrice/change_price_edit','mod');
+            } 
+        })
+    var active = {
+      batchdel: function(){
+        var checkStatus = table.checkStatus('changePrice_table')
+        ,checkData = checkStatus.data; //得到选中的数据
+
+        if(checkData.length === 0){
+          return layer.msg('请选择数据');
+        }
+        var lineIds="";
+        checkData.forEach(function (value,i) {
+            //lineIds.push(value.changePriceId);
+            lineIds+=value.changePriceId;
+            if(i<checkData.length-1){
+              lineIds+=',';
+            }
+        })
+        delChangePrice(lineIds);
+      }
+      
+      //添加
+      ,add: function(othis){
+        addNewChangePrice({parentId:0},'添加价格','gold/changePrice/change_price_edit','add');
+      }
+    }; 
+    function delChangePrice(params){
+      layer.confirm('确定删除吗？', function(index) {
+            
+            admin.req({
+            url:requrl+'delChangePrice',
+            traditional:true,
+            data:{changePriceIds:params},
+            success:function(res){
+              if(res.code=='000000'){
+
+                //执行 Ajax 后重载
+                table.reload('changePrice_table');
+                layer.msg('已删除');
+              }else{
+                layer.msg(res.msg);
+              }
+               layer.closeAll('loading');
+            }
+          });
+        });
+    }
+    function addNewChangePrice(params,title,url,treq){
+      admin.popup({
+          title: title
+          ,area: ['550px', '550px']
+          ,id: 'LAY-popup-content-add'
+          ,success: function(layero, index){
+            view(this.id).render(url).done(function(){
+              if(treq=='mod'){
+                
+                admin.req({
+                  url:requrl+'getChangePriceSingle',
+                  data:{orgCode:params.orgCode},
+                  done:function(res){
+                    if(res.data){
+                      res.data.openStatus=res.data.openStatus+"";
+                      res.data.hideOrgCode=params.orgCode;
+                      form.val('change_price_edit_form',res.data);
+                      $("#userAddOrgCode").attr("disabled","disabled");
+                      form.render(null,'change_price_edit_form');
+                    }
+                  }
+                })
+              }else{
+
+                form.render(null,'change_price_edit_form');
+              }
+              form.on('submit(change_price_edit_form-submit)', function(data){
+                var field = data.field; //获取提交的字段
+                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                admin.req({
+                  url:requrl+treq+'ChangePriceByOrgCode',
+                  data:$.extend(field,{orgCode:params.orgCode}),
+                  done:function(res){
+                    layer.msg('已成功提交');
+                    table.reload('changePrice_table')
+                    layer.close(index); //执行关闭 
+                  }
+                })
+              });
+
+            });
+          }
+        });
+    }
+
+    $('.layui-btn.layuiadmin-btn-changePrice').on('click', function(){
+      var type = $(this).data('type');
+      active[type] ? active[type].call(this) : '';
+    });
+
+  });
+  </script>

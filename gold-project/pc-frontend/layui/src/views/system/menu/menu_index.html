@@ -1,0 +1,168 @@
+
+
+  <title>菜单列表</title>
+
+  <div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+      <a lay-href="">主页</a>
+      <a><cite>系统设置</cite></a>
+      <a><cite>菜单设置</cite></a>
+      <a><cite>菜单列表</cite></a>
+    </div>
+  </div>
+  
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header">菜单列表</div>
+          <div class="layui-card-body">
+             <div style="padding-bottom: 10px; ">
+                <button class="layui-btn layuiadmin-btn-menu" data-type="add"><i class="layui-icon">&#xe608;</i> 添加
+                </button>
+                <button class="layui-btn layuiadmin-btn-menu  layui-btn-danger" data-type="batchdel"><i
+                        class="layui-icon">&#xe640;</i>删除
+                </button>
+            </div>
+            <table class="layui-hide" id="menu_table" lay-filter="menu_table"></table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/html" id="oper-col">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="addNext">添加下级</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+  </script>
+  <script>
+  layui.use(['admin', 'table','treetable'], function(){
+    var $ = layui.$
+    , table = layui.table
+    ,admin=layui.admin
+    ,view = layui.view
+    ,table = layui.table
+    ,form = layui.form
+    ,treetable=layui.treetable
+    ,requrl=layui.setter.backuprequesturl+'menu/v1.0/';
+    var renderTable=function(){
+      treetable.render({
+          treeColIndex: 1,
+          treeSpid: 0,
+          treeIdName: 'menuId',
+          treePidName: 'parentId',
+          treeDefaultClose: true,
+          treeLinkage: false,
+          elem: '#menu_table',
+          method: 'post'
+          ,headers:layui.setter.headers
+          ,where:layui.setter.authParams
+          ,url: requrl+'getMenuTreeListByPage'
+          , page: layui.setter.page
+          ,cols: [[
+            {type: 'checkbox', fixed: 'left', title: ''}
+            ,{field:'menuTitle', title: '标题', sort: true}
+            ,{field:'menuId',  hide:true}
+            ,{field:'menuName',  title: '菜单标识'}//
+            ,{field:'menuDesc', title: '描述'}
+            ,{templet: '#oper-col', fixed: 'right', title: '操作', align: 'center'}
+          ]]
+          ,done: function () {
+              layer.closeAll('loading');
+          }
+      });
+    }
+    renderTable();
+    table.on('tool(menu_table)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+                 delMenu(data.menuId);
+            } else if (obj.event === 'edit') {
+
+                addNewMenu(data,'编辑菜单','system/menu/menu_add','mod');
+            } else if (obj.event === 'addNext') {
+                addNewMenu({parentId:data.menuId},'添加菜单','system/menu/menu_add','add');
+            }
+        })
+    var active = {
+      batchdel: function(){
+        var checkStatus = table.checkStatus('menu_table')
+        ,checkData = checkStatus.data; //得到选中的数据
+
+        if(checkData.length === 0){
+          return layer.msg('请选择数据');
+        }
+        var lineIds="";
+        checkData.forEach(function (value,i) {
+            //lineIds.push(value.menuId);
+            lineIds+=value.menuId;
+            if(i<checkData.length-1){
+              lineIds+=',';
+            }
+        })
+        delMenu(lineIds);
+      }
+      
+      //添加
+      ,add: function(othis){
+        addNewMenu({parentId:0},'添加菜单','system/menu/menu_add','add');
+      }
+    }; 
+    function delMenu(params){
+      layer.confirm('确定删除吗？', function(index) {
+          
+           admin.req({
+            url:requrl+'delMenu',
+            traditional:true,
+            data:{menuIds:params},
+            success:function(res){
+              if(res.code=='000000'){
+                //执行 Ajax 后重载
+                table.reload('menu_table');
+                renderTable();
+                layer.msg('已删除');
+              }else{
+                layer.msg(res.msg);
+              }
+               layer.closeAll('loading');
+            }
+          });
+        });
+    }
+    function addNewMenu(data,title,url,treq){
+      admin.popup({
+          title: title
+          ,area: ['550px', '550px']
+          ,id: 'LAY-popup-content-add'
+          ,success: function(layero, index){
+            view(this.id).render(url).done(function(){
+              form.render(null, 'layuiadmin-app-form-list');
+              form.val('layuiadmin-app-form-list', data);
+              //监听提交
+              form.on('submit(layuiadmin-app-form-submit)', function(data){
+                var field = data.field; //获取提交的字段
+                
+                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                admin.req({
+                  url:requrl+treq+'Menu',
+                  data:field,
+                  success:function(res){
+                    layui.table.reload('menu_table'); //重载表格
+                    renderTable();
+                    layer.close(index); //执行关闭 
+                    layer.closeAll('loading');
+                  }
+                })
+              });
+            });
+          }
+        });
+    }
+
+    $('.layui-btn.layuiadmin-btn-menu').on('click', function(){
+      var type = $(this).data('type');
+      active[type] ? active[type].call(this) : '';
+    });
+
+  });
+  </script>

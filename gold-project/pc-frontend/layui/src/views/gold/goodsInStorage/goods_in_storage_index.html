@@ -1,0 +1,179 @@
+
+
+  <title>商品入库列表</title>
+
+  <div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+      <a lay-href="">主页</a>
+      <a><cite>系统设置</cite></a>
+      <a><cite>商品入库设置</cite></a>
+      <a><cite>商品入库列表</cite></a>
+    </div>
+  </div>
+  
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header">商品入库列表</div>
+          <div class="layui-card-body">
+            <div class="test-table-reload-btn" style="margin-bottom: 10px;">
+              搜索商品：
+              <div class="layui-inline">
+                <input class="layui-input" name="goodsName" id="goodsName" autocomplete="off">
+              </div>
+              <button class="layui-btn layuiadmin-btn-goodsInStorage" data-type="reload">搜索</button>
+            </div>
+             <div style="padding-bottom: 10px; ">
+                <button class="layui-btn layuiadmin-btn-goodsInStorage  layui-btn-danger" data-type="batchdel"><i
+                        class="layui-icon">&#xe640;</i>删除
+                </button>
+            </div>
+            <table class="layui-hide" id="goodsInStorage_table" lay-filter="goodsInStorage_table"></table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/html" id="goodsInStorage_oper_col">
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+  </script>
+  <script>
+  layui.use(['admin','tree', 'table'], function(){
+    var $ = layui.$
+    , table = layui.table
+    , tree = layui.tree
+    ,admin=layui.admin
+    ,view = layui.view
+    ,table = layui.table
+    ,form = layui.form
+    ,requrl=layui.setter.backuprequesturl+'goodsInStorageRecord'+layui.setter.reqver;
+    table.render({
+      elem: '#goodsInStorage_table'
+      ,url: requrl+'getGoodsInStorageRecordListByPage'
+      ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+      ,headers: { //通过 request 头传递
+        token: layui.data('FamilyAdminSystem').token
+      }
+      ,page:layui.setter.page
+      ,where:{
+        orgCode: layui.data('FamilyAdminSystem').orgCode 
+      }
+      ,cols: [[
+        {type: 'checkbox', fixed: 'left', title: ''}
+        ,{field:'goodsName',  title: '商品名称',templet:function(d){
+          return d.goods.goodsName;
+        }}
+        ,{field:'buyCount',  title: '销售数量'}
+        ,{field:'buyPrice',  title: '销售单价'}
+        ,{field:'buyRemark',  title: '备注'}
+        ,{field:'goodsInStorageId',  hide:true}
+        ,{field:'createTime', title: '创建时间',sort:true}
+        ,{templet: '#goodsInStorage_oper_col', fixed: 'right', title: '操作', align: 'center'}
+      ]]
+    });
+    
+    table.on('tool(goodsInStorage_table)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+                 delGoodsInStorage(data.goodsInStorageId);
+            } else if (obj.event === 'edit') {
+                addNewGoodsInStorage(data,'编辑商品入库','gold/goodsInStorage/goodsInStorage_add','mod');
+            } 
+        })
+    var active = {
+      batchdel: function(){
+        var checkStatus = table.checkStatus('goodsInStorage_table')
+        ,checkData = checkStatus.data; //得到选中的数据
+
+        if(checkData.length === 0){
+          return layer.msg('请选择数据');
+        }
+        var lineIds="";
+        checkData.forEach(function (value,i) {
+            //lineIds.push(value.goodsInStorageId);
+            lineIds+=value.goodsInStorageId;
+            if(i<checkData.length-1){
+              lineIds+=',';
+            }
+        })
+        delGoodsInStorage(lineIds);
+      }
+      
+      //添加
+      ,add: function(othis){
+        addNewGoodsInStorage({parentId:0},'添加商品入库','gold/goodsInStorage/goodsInStorage_add','add');
+      }
+      ,reload: function(){
+        
+        //执行重载
+        table.reload('goodsInStorage_table', {
+          page: {
+            curr: 1 //重新从第 1 页开始
+          }
+          ,where: {
+            goodsName:$('#goodsName').val()
+          }
+        });
+      }
+    }; 
+    function delGoodsInStorage(params){
+      layer.confirm('确定删除吗？', function(index) {
+            layer.load(2);
+            admin.req({
+            url:requrl+'delGoodsInStorage',
+            traditional:true,
+            data:{goodsInStorageIds:params},
+            success:function(res){
+              if(res.code=='000000'){
+
+                //执行 Ajax 后重载
+                table.reload('goodsInStorage_table');
+                layer.msg('已删除');
+              }else{
+                layer.msg(res.msg);
+              }
+               layer.closeAll('loading');
+            }
+          });
+        });
+    }
+    function addNewGoodsInStorage(data,title,url,treq){
+      admin.popup({
+          title: title
+          ,area: ['550px', '550px']
+          ,id: 'LAY-popup-content-add'
+          ,success: function(layero, index){
+            view(this.id).render(url).done(function(){
+              if(treq=='mod'){
+                $('#goodsInStoragePwdPanl').remove();
+              }
+              form.render(null, 'goods_storage_add_form-list');
+              form.val('goods_storage_add_form-list', data);
+              //监听提交
+              form.on('submit(goods_storage_add_form-submit)', function(data){
+                var field = data.field; //获取提交的字段
+                layer.load(2);
+                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                admin.req({
+                  url:requrl+treq+'GoodsInStorageRecord',
+                  data:field,
+                  success:function(res){
+                    layui.table.reload('goodsInStorage_table'); //重载表格
+                    layer.close(index); //执行关闭 
+                    layer.closeAll('loading');
+                  }
+                })
+              });
+            });
+          }
+        });
+    }
+
+    $('.layui-btn.layuiadmin-btn-goodsInStorage').on('click', function(){
+      var type = $(this).data('type');
+      active[type] ? active[type].call(this) : '';
+    });
+
+  });
+  </script>

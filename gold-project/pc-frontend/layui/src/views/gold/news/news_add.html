@@ -1,0 +1,29 @@
+
+  <div class="layui-form" lay-filter="gold_news_add_form" id="gold_news_add_form"style="padding: 20px 30px 0 0;">
+    <input type="hidden" name="parentId">
+    <input type="hidden" name="menuId">
+    <div class="layui-form-item">
+      <label class="layui-form-label">新闻标题</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input type="text" name="newsTitle" value="" lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+        </script>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">描述</label>
+      <div class="layui-input-inline" style="width:80%">
+        <script type="text/html" template>
+          <textarea name="newsContent" id="newsContent" style="height: 150px;" autocomplete="off" class="layui-textarea">
+            
+          </textarea>
+        </script>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label"></label>
+      <div class="layui-input-inline">
+        <input type="button" lay-submit lay-filter="gold_news_add_form-submit" value="确认" class="layui-btn">
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,173 @@
+
+
+  <title>新闻列表</title>
+
+  <div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+      <a lay-href="">主页</a>
+      <a><cite>系统设置</cite></a>
+      <a><cite>新闻设置</cite></a>
+      <a><cite>新闻列表</cite></a>
+    </div>
+  </div>
+  
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header">新闻列表</div>
+          <div class="layui-card-body">
+             <div style="padding-bottom: 10px; ">
+                <button class="layui-btn layuiadmin-btn-news" data-type="add"><i class="layui-icon">&#xe608;</i> 添加
+                </button>
+                <button class="layui-btn layuiadmin-btn-news  layui-btn-danger" data-type="batchdel"><i
+                        class="layui-icon">&#xe640;</i>删除
+                </button>
+            </div>
+            <table class="layui-hide" id="news_table" lay-filter="news_table"></table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/html" id="news_oper_col">
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+  </script>
+  <script>
+  layui.use(['admin', 'table','layedit'], function(){
+    var $ = layui.$
+    , table = layui.table
+    , transfer = layui.transfer
+    ,admin=layui.admin
+    ,view = layui.view
+    ,table = layui.table
+    ,form = layui.form
+    ,setter = layui.setter
+    ,requrl=layui.setter.backuprequesturl+'news/v1.0/';
+
+    function showHead(othis){
+      layer.photos({
+      photos: {
+          "title": "查看头像" //相册标题
+          ,"data": [{
+            "src": layui.setter.backuprequesturl+$(othis).attr('src') //原图地址
+          }]
+        }
+        ,shade: 0.01
+        ,closeBtn: 1
+        ,anim: 5
+      });
+    }
+    table.render({
+      elem: '#news_table'
+      ,url: layui.setter.backuprequesturl+'news/v1.0/api/getNewsListByPage'
+      ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+      ,page:layui.setter.page
+      ,headers:layui.setter.headers
+      ,where:layui.setter.authParams
+      ,cols: [[
+        {type: 'checkbox', fixed: 'left', title: ''}
+        ,{field:'newsTitle',  title: '新闻标题'}
+        ,{field:'newsId',  hide:true}
+        ,{field:'createTime', title: '创建时间'}
+        ,{templet: '#news_oper_col', fixed: 'right', title: '操作', align: 'center',width:230}
+      ]]
+    });
+    table.on('tool(news_table)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+                 delNews(data.newsId);
+            } else if (obj.event === 'edit') {
+
+                addNewNews(data,'编辑新闻','gold/news/news_add','mod');
+            }
+
+        })
+    var active = {
+      batchdel: function(){
+        var checkStatus = table.checkStatus('news_table')
+        ,checkData = checkStatus.data; //得到选中的数据
+
+        if(checkData.length === 0){
+          return layer.msg('请选择数据');
+        }
+        var lineIds="";
+        checkData.forEach(function (value,i) {
+            //lineIds.push(value.newsId);
+            lineIds+=value.newsId;
+            if(i<checkData.length-1){
+              lineIds+=',';
+            }
+        })
+        delNews(lineIds);
+      }
+      
+      //添加
+      ,add: function(othis){
+        addNewNews({parentId:0},'添加新闻','gold/news/news_add','add');
+      }
+    }; 
+    function delNews(params){
+      layer.confirm('确定删除吗？', function(index) {
+            admin.req({
+            url:requrl+'delNews',
+            traditional:true,
+            data:{newsIds:params},
+            success:function(res){
+              if(res.code=='000000'){
+
+                //执行 Ajax 后重载
+                table.reload('news_table');
+                layer.msg('已删除');
+              }else{
+                layer.msg(res.msg);
+              }
+            }
+          });
+        });
+    }
+    function addNewNews(params,title,url,treq){
+      admin.popup({
+          title: title
+          ,area: ['70%', '70%']
+          ,id: 'LAY-popup-content-add'
+          ,success: function(layero, index){
+            view(this.id,params).render(url).done(function(){
+              
+              var layedit = layui.layedit;
+              var editIndex=layedit.build('newsContent',{
+                uploadImage:{
+                  url:layui.setter.backuprequesturl+'/personal/v1.0/uploadHead',
+                  type:'post',
+                  headers:layui.setter.headers,
+                  data:layui.setter.authParams
+                }
+              }); //建立编辑器
+              form.val('gold_news_add_form', params);
+              //监听提交
+              form.on('submit(gold_news_add_form-submit)', function(data){
+                var field = data.field; //获取提交的字段
+                field.newsContent=layedit.getContent(editIndex);
+                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                admin.req({
+                  url:requrl+treq+'News',
+                  data:$.extend(field,{newsId:params.newsId}),
+                  done:function(res){
+                    layui.table.reload('news_table'); //重载表格
+                    layer.close(index); //执行关闭 
+                  }
+                })
+              });
+            });
+          }
+        });
+    }
+
+    $('.layui-btn.layuiadmin-btn-news').on('click', function(){
+      var type = $(this).data('type');
+      active[type] ? active[type].call(this) : '';
+    });
+
+  });
+  </script>

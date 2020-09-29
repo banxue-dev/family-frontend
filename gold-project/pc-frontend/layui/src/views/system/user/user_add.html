@@ -1,0 +1,62 @@
+
+  <div class="layui-form" lay-filter="system_user_add_form" id="system_user_add_form"style="padding: 20px 30px 0 0;">
+    <input type="hidden" name="userId">
+    <div class="layui-form-item">
+      <label class="layui-form-label">登录名称</label>
+      <div class="layui-input-inline">
+          <input type="text" name="userName" value="" lay-verify="required" placeholder="请输入登录名" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item" id="userPwdPanl" >
+      <label class="layui-form-label">密码</label>
+      <div class="layui-input-inline">
+          <input type="password" name="userPwd" value="" lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">昵称</label>
+      <div class="layui-input-inline">
+          <input type="text" name="userNickName" value="" lay-verify="required" placeholder="请输入昵称" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">选择组织</label>
+      <div class="layui-input-inline">
+       <script type="text/html" template lay-type='post' lay-url="{{layui.setter.backuprequesturl}}org/v1.0/api/getOrgList" 
+        lay-done="layui.form.render('select', 'system_user_add_form');">
+
+          <select name="orgCode" id="userAddOrgCode" lay-filter="selectOrg">
+            {{# layui.each(d.data, function(index, item){ 
+                if(item.orgCode==layui.setter.viewParams.orgCode){
+            }}
+                  <option value='{{item.orgCode}}' selected >{{item.orgName}}</option>
+                
+            {{#  } else{ }}
+                  <option value='{{item.orgCode}}' >{{item.orgName}}</option>
+            {{# } }}
+            {{#  }); }}
+
+            
+         </select>
+        </script>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">电话</label>
+      <div class="layui-input-inline">
+          <input type="text" name="userPhone" value="" lay-verify="phone" placeholder="请输入电话" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">邮箱</label>
+      <div class="layui-input-inline">
+          <input type="text" name="userMail" value="" lay-verify="email" placeholder="请输入邮箱" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label"></label>
+      <div class="layui-input-inline">
+        <input type="button" lay-submit lay-filter="system_user_add_form_submit" value="确认" class="layui-btn">
+      </div>
+    </div>
+  </div>

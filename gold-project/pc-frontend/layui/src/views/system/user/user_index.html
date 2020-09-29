@@ -1,0 +1,283 @@
+
+
+  <title>用户列表</title>
+
+  <div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+      <a lay-href="">主页</a>
+      <a><cite>系统设置</cite></a>
+      <a><cite>用户设置</cite></a>
+      <a><cite>用户列表</cite></a>
+    </div>
+  </div>
+  
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header">用户列表</div>
+          <div class="layui-card-body">
+             <div style="padding-bottom: 10px; ">
+                <button class="layui-btn layuiadmin-btn-user" data-type="add"><i class="layui-icon">&#xe608;</i> 添加
+                </button>
+                <button class="layui-btn layuiadmin-btn-user  layui-btn-danger" data-type="batchdel"><i
+                        class="layui-icon">&#xe640;</i>删除
+                </button>
+            </div>
+            <table class="layui-hide" id="user_table" lay-filter="user_table"></table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/html" id="user_oper_col">
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="editRole">赋权</a>
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="resetpwd">重置</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+  </script>
+  <script>
+  layui.use(['admin', 'table','transfer'], function(){
+    var $ = layui.$
+    , table = layui.table
+    , transfer = layui.transfer
+    ,admin=layui.admin
+    ,view = layui.view
+    ,table = layui.table
+    ,form = layui.form
+    ,setter = layui.setter
+    ,requrl=layui.setter.backuprequesturl+'user/v1.0/';
+
+    function showHead(othis){
+      layer.photos({
+      photos: {
+          "title": "查看头像" //相册标题
+          ,"data": [{
+            "src": layui.setter.backuprequesturl+$(othis).attr('src') //原图地址
+          }]
+        }
+        ,shade: 0.01
+        ,closeBtn: 1
+        ,anim: 5
+      });
+    }
+    table.render({
+      elem: '#user_table'
+      ,url: layui.setter.backuprequesturl+'user/v1.0/getUserListByPage'
+      ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+      ,page:layui.setter.page
+      ,headers:layui.setter.headers
+      ,where:{
+        orgCode:layui.data('FamilyAdminSystem').orgCode
+      }
+      ,cols: [[
+        {type: 'checkbox', fixed: 'left', title: ''}
+        ,{field:'userName',  title: '登录名'}
+        ,{field:'userId',  hide:true}
+        ,{field:'orgCode',  hide:true}
+        ,{field:'userNickName', title: '昵称'}
+        ,{field:'userHeadUrl', title: '头像',templet:function(d){
+          if(d.userHeadUrl && d.userHeadUrl.indexOf('http://')>-1){
+
+            return '<img src="'+d.userHeadUrl+'" layadmin-event="imgPre" style="border-radius: 50%;width: 35px;height: 35px">';
+          }else{
+
+            return '<img src="'+(setter.backuprequesturl+d.userHeadUrl)+'"layadmin-event="imgPre" style="border-radius: 50%;width: 35px;height: 35px">';
+          }
+        }}
+        ,{field:'userMail', title: '邮箱'}
+        ,{field:'userPhone', title: '联系电话'}
+        ,{field:'createTime', title: '创建时间',sort:true}
+        ,{field:'createUser', title: '创建人'}
+        ,{templet: '#user_oper_col', fixed: 'right', title: '操作', align: 'center',width:230}
+      ]]
+    });
+    table.on('tool(user_table)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+                 delUser(data.userId);
+            } else if (obj.event === 'edit') {
+
+                addNewUser(data,'编辑用户','system/user/user_add','mod');
+            } else if (obj.event === 'addNext') {
+                addNewUser({parentId:data.userId},'添加用户','system/user/user_add','add');
+            }else if(obj.event=='resetpwd'){
+              resetPwd(data.userId);
+            }else if(obj.event=='editRole'){
+              editRole({doUserId:data.userId});
+            }
+
+        })
+    var active = {
+      batchdel: function(){
+        var checkStatus = table.checkStatus('user_table')
+        ,checkData = checkStatus.data; //得到选中的数据
+
+        if(checkData.length === 0){
+          return layer.msg('请选择数据');
+        }
+        var lineIds="";
+        checkData.forEach(function (value,i) {
+            //lineIds.push(value.userId);
+            lineIds+=value.userId;
+            if(i<checkData.length-1){
+              lineIds+=',';
+            }
+        })
+        delUser(lineIds);
+      }
+      
+      //添加
+      ,add: function(othis){
+        addNewUser({parentId:0},'添加用户','system/user/user_add','add');
+      }
+    }; 
+    function editRole(params){
+      admin.popup({
+          title: '角色赋权'
+          ,area: ['600px', '520px']
+          ,id: 'LAY-popup-role-menu'
+          ,success: function(layero, index){
+            view(this.id).render('system/user/user_role').done(function(){
+              var roleList=[];
+              admin.req({
+                url:layui.setter.backuprequesturl+'userRole/v1.0/getUserTransferRole',
+                data:{doUserId:params.doUserId},
+                done:function(res){
+                  var value = []
+                if (res.data.haveValue) {
+                    value = res.data.haveValue;
+                }
+                roleList=res.data.roleList;
+                transfer.render({
+                    elem: '#transfer'
+                    , title: ['未获得角色', '获得角色']
+                    , data: roleList
+                    , showSearch: true
+                    , id: 'demo1'
+                    , parseData: function (res) {
+                        return {
+                            "value": res.roleId //数据值
+                            , "title": res.roleName //数据标题
+                            , "disabled": false //是否禁用
+                            , "checked": false //是否选中
+                        }
+                    }
+                    , onchange: function (obj, index) {
+                        if(index==1){
+                          //移除
+                          for (var i = 0; i < obj.length; i++) {
+                            var targeri=value.indexOf(obj[i].value);
+                            if(targeri>-1){
+                              value.splice(targeri, 1); 
+                            }
+                          }
+                        }else{
+                          //增加
+                          for (var i = 0; i < obj.length; i++) {
+                            value.push(obj[i].value);
+                          }
+                        }
+                        console.log(value+'');
+
+                    }
+                    , value: value
+                });
+                $('#userrolesave').on('click',function(){
+
+                      if (value.length == 0) {
+                          layer.msg('至少选择一个！', {icon: 2, time: 2000});
+                          return;
+                      }else{
+
+                        admin.req({
+                          url:layui.setter.backuprequesturl+'user'+layui.setter.reqver+"saveUserTransferRole",
+                          data:{catchRoleIds:value+"",doUserId:params.doUserId},
+                          done:function(res){
+                            layer.msg('已更新用户权限');
+                            transfer.reload('demo1',{data: roleList, value: value});
+                          }
+                        })
+                      }
+                })
+                }
+              })
+            });
+          }
+        });
+    }
+    function delUser(params){
+      layer.confirm('确定删除吗？', function(index) {
+            admin.req({
+            url:requrl+'delUser',
+            traditional:true,
+            data:{userIds:params},
+            done:function(res){
+              if(res.code=='000000'){
+
+                //执行 Ajax 后重载
+                table.reload('user_table');
+                layer.msg('已删除');
+              }else{
+                layer.msg(res.msg);
+              }
+            }
+          });
+        });
+    }
+    function resetPwd(params){
+      layer.confirm('确定重置吗？', function(index) {
+            admin.req({
+            url:requrl+'resetPwd',
+            traditional:true,
+            data:{userIds:params},
+            done:function(res){
+              if(res.code=='000000'){
+
+                //执行 Ajax 后重载
+                table.reload('user_table');
+                layer.msg('已重置');
+              }else{
+                layer.msg(res.msg);
+              }
+            }
+          });
+        });
+    }
+    function addNewUser(data,title,url,treq){
+      admin.popup({
+          title: title
+          ,area: ['550px', '550px']
+          ,id: 'LAY-popup-content-add'
+          ,success: function(layero, index){
+            setter.viewParams=data;
+            view(this.id,data).render(url).done(function(){
+              if(treq=='mod'){
+                $('#userPwdPanl').remove();
+              }
+              form.val('system_user_add_form', data);
+              //监听提交
+              form.on('submit(system_user_add_form_submit)', function(data){
+                var field = data.field; //获取提交的字段
+                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                admin.req({
+                  url:requrl+treq+'User',
+                  data:field,
+                  done:function(res){
+                    layui.table.reload('user_table'); //重载表格
+                    layer.close(index); //执行关闭 
+                  }
+                })
+              });
+            });
+          }
+        });
+    }
+
+    $('.layui-btn.layuiadmin-btn-user').on('click', function(){
+      var type = $(this).data('type');
+      active[type] ? active[type].call(this) : '';
+    });
+
+  });
+  </script>
