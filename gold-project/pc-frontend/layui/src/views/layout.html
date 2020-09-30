@@ -109,7 +109,7 @@
             }
             ,url = (item.jump && typeof item.jump === 'string') ? item.jump : item.name;
         }}
-          <li data-name="{{ item.name || '' }}"  data-jump="{{ item.jump || '' }}" class="layui-nav-item {{ classSelected() }}">
+          <li data-name="{{ item.name || '' }}" style="{{ item.checked?'':'display:none;' }}"  data-jump="{{ item.jump || '' }}" class="layui-nav-item {{ classSelected() }}">
             <a href="javascript:;" {{ hasChildren ? '' : 'lay-href="'+ url +'"' }} lay-tips="{{ item.title }}" lay-direction="2">
               <i class="layui-icon {{ item.icon }}"></i>
               <cite>{{ item.title }}</cite>
@@ -130,7 +130,7 @@
                   ? item2.jump 
                 : [item.name, item2.name, ''].join('/');
               }}
-                <dd  data-name="{{ item2.name || '' }}"  data-jump="{{ item2.jump || '' }}" 
+                <dd  data-name="{{ item2.name || '' }}" style="{{ item2.checked?'':'display:none;' }}"  data-jump="{{ item2.jump || '' }}" 
                 {{ classSelected2() ? ('class="'+ classSelected2() +'"') : '' }}>
                   <a href="javascript:;" {{ hasChildren2 ? '' : 'lay-href="'+ url2 +'"' }}>{{ item2.title }}</a>
                   {{# if(hasChildren2){ }}
@@ -142,7 +142,7 @@
                           ? item3.jump 
                         : [item.name, item2.name, item3.name].join('/')
                       }}
-                        <dd data-name="{{ item3.name || '' }}"  data-jump="{{ item3.jump || '' }}" 
+                        <dd data-name="{{ item3.name || '' }}"  style="{{ item3.checked?'':'display:none;' }}" data-jump="{{ item3.jump || '' }}" 
                         {{ match ? 'class="layui-this"' : '' }}>
                           <a href="javascript:;" lay-href="{{ url3 }}" {{ item3.iframe ? 'lay-iframe="true"' : '' }}>{{ item3.title }}</a>
                         </dd>

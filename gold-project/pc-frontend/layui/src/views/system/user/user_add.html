@@ -19,6 +19,19 @@
           <input type="text" name="userNickName" value="" lay-verify="required" placeholder="请输入昵称" autocomplete="off" class="layui-input">
       </div>
     </div>
+
+    <div class="layui-form-item">
+      <label class="layui-form-label">地址地图</label>
+      <div class="layui-input-inline" style="width:80px;">
+        <input name="userHeadUrl" lay-verify="required" readonly="readonly" id="userHeadUrl" placeholder="图片地址" value="" class="layui-input">
+      </div>
+      <div class="layui-input-inline layui-btn-container" style="width: auto;">
+        <button type="button" class="layui-btn layui-btn-primary " id="personalInfo_addr_img_upload" bind-input='userHeadUrl' >
+          <i class="layui-icon">&#xe67c;</i>上传
+        </button>
+        <button class="layui-btn layui-btn-primary" layadmin-event="avartatPreview" bind-input='userHeadUrl'>查看</button >
+      </div>
+   </div>
     <div class="layui-form-item">
       <label class="layui-form-label">选择组织</label>
       <div class="layui-input-inline">
@@ -60,3 +73,45 @@
       </div>
     </div>
   </div>
+<script type="text/javascript">
+  layui.define([ 'upload'], function(exports){
+    var $ = layui.$
+  ,layer = layui.layer
+  ,admin=layui.admin
+  ,upload = layui.upload;
+  //上传头像
+  var th=upload.render({
+    url: layui.setter.backuprequesturl+'/personal/v1.0/uploadHead'
+    ,elem: '#personalInfo_addr_img_upload'
+    ,headers:layui.setter.headers
+    ,data:layui.setter.authParams
+    ,done: function(res){
+      if(res.code == layui.setter.response.statusCode.ok){
+        $('#'+th.config.elem.attr('bind-input')).val(res.data);
+      } else {
+        layer.msg(res.msg, {icon: 5});
+      }
+    }
+  });
+  
+  //查看头像
+  admin.events.avartatPreview = function(othis){
+    var src = $('#'+$(othis).attr('bind-input')).val();
+    if(!src){
+      layui.layer.msg('请先上传图片');
+      return ;
+    }
+    layer.photos({
+      photos: {
+        "title": "查看头像" //相册标题
+        ,"data": [{
+          "src": layui.setter.backuprequesturl+src //原图地址
+        }]
+      }
+      ,shade: 0.01
+      ,closeBtn: 1
+      ,anim: 5
+    });
+  };
+  })
+</script>
