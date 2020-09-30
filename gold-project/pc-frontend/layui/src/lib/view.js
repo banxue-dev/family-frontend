@@ -262,6 +262,7 @@ layui.define(['laytpl', 'layer'], function(exports){
     ,elem = isScriptTpl ? html : $(html)
     ,elemTemp = isScriptTpl ? html : elem.find('*[template]')
     ,fn = function(options){
+      if(options)
       var tpl = laytpl(options.dataElem.html())
       ,res = $.extend({
         params: router.params
@@ -275,6 +276,22 @@ layui.define(['laytpl', 'layer'], function(exports){
       } catch(e){
         console.error(options.dataElem[0], '\n存在错误回调脚本\n\n', e)
       }
+    },auth=function(authName,options,layDone){
+       this.allAuth=layui.data(layui.setter.tableName)[layui.setter.request.userAuthName];
+       this.i=0;
+       //console.log(allAuth);
+       if(!allAuth || allAuth.length<1){
+          console.log('用户没有任何权限,请勿非法操作');
+          return false;
+       }
+       for(this.i;this.i<allAuth.length;this.i++){
+          var tem=allAuth[this.i];
+          if(tem==authName){
+            return true;
+          }
+       }
+       console.log('用户没有'+authName+'权限,请勿非法操作');
+       return false;
     }
     ,router = layui.router();
     
@@ -290,8 +307,14 @@ layui.define(['laytpl', 'layer'], function(exports){
         ,layDone = dataElem.attr('lay-done') || dataElem.attr('lay-then') //获取回调
         ,url = laytpl(dataElem.attr('lay-url')|| '').render(router) //接口 url
         ,data = laytpl(dataElem.attr('lay-data')|| '').render(router) //接口参数
-        ,headers = laytpl(dataElem.attr('lay-headers')|| '').render(router); //接口请求的头信息
-        
+        ,headers = laytpl(dataElem.attr('lay-headers')|| '').render(router) //接口请求的头信息
+        ,buttonAuth=dataElem.attr('buttonAuth')|| '';//是否需要验证权限
+        if(buttonAuth){
+          if(!auth(buttonAuth,dataElem,layDone)){
+            // 如果没有权限就直接不处理了
+            return;
+          }
+        }
         try {
           data = new Function('return '+ data + ';')();
         } catch(e) {

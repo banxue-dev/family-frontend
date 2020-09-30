@@ -19,21 +19,13 @@
           <div class="layui-card-body">
              <div style="padding-bottom: 10px; ">
 
-              <script type="text/html" template >
-
-              {{# layui.each(layui.data(layui.setter.tableName)[layui.setter.request.userAuthName], function(index, item){ 
-                  if(item=='addpersonalInfo'){
-                }}
+              <script type="text/html" template  buttonAuth="addPersonalInfo">
                         <button class="layui-btn layuiadmin-btn-personalInfo" data-type="add"><i class="layui-icon">&#xe608;</i> 添加
                       </button>
 
                       <button class="layui-btn layuiadmin-btn-personalInfo  layui-btn-danger" data-type="batchdel"><i
                               class="layui-icon">&#xe640;</i>删除
                       </button>
-                        
-                  {{# } }}
-                {{#  }); }}
-
                     
                 </script>
             </div>
@@ -43,15 +35,11 @@
       </div>
     </div>
   </div>
-  <script type="text/html" id="personalInfo_oper_col">
-    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>
-    {{# layui.each(layui.data(layui.setter.tableName)[layui.setter.request.userAuthName], function(index, item){ 
-        if(item=='addPersonalInfo'){
-      }}
-              
-          <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>           
-      {{# } }}
-    {{#  }); }}
+  <script type="text/html" id="personalInfo_oper_col" >
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>     
+  </script>
+  <script type="text/html" id="personalInfo_oper_col_del" >
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>           
   </script>
   <script>
   layui.use(['admin','tree', 'table'], function(){
