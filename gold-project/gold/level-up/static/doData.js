@@ -2,7 +2,7 @@
 
     //goldconfig.urlprex:'http://www.banxue.fun';
     goldconfig.urlprex='http://localhost';
-    goldconfig.backendHost=goldconfig.urlprex+':8087/family',
+    goldconfig.backendHost=goldconfig.urlprex+':8091/family',
     goldconfig.priceData={"openStatus":0,"xaubuy":0,"xausale":0,"xagbuy":0,"xagsale":0,"ptbuy":0,"ptsale":0,"pdbuy":0,"pdsale":0,"au18buy":0,"au18sale":0,"ag925buy":0,"ag925sale":0,"pt990buy":0,"pt990sale":0,"pt950buy":0,"pt950sale":0,"pd990buy":0,"pd990sale":0,"pd950buy":0,"pd950sale":0,"au1000buy":0,"au1000sale":0};
     goldconfig.orgCode='2323342709341817434647533915155357525257553546415329401619374945';//每个账号不一样
     goldconfig.shopPhone='13524954089';
@@ -111,7 +111,7 @@
       //window.setTimeout("that.DateTime.tick()", 1000);
     }
 
-    this.DataExce.readFile=function() {
+    this.DataExce.readFile=function(callback) {
       $.ajax({
         url:goldconfig.backendHost+'/changePrice/api/v1.0/getChangePriceSingle',
         type:'post',
@@ -122,6 +122,7 @@
             if(goldconfig.priceData){
 
               goldconfig.priceData=res.data;
+              callback && callback();
             }else{
               console.log("获取数据不正确");
             }
@@ -382,7 +383,7 @@ $(document).ready(
   function() {
 
     $.ajax({
-      url:goldconfig.backendHost+'/customer/v1.0/api/getCustomerSingleByOrgCode',
+      url:goldconfig.backendHost+'/personalInfo/v1.0/api/getPersonalInfoSingleByOrgCode',
       data:{orgCode:goldconfig.orgCode},
       type:'post',
       success:function(res){

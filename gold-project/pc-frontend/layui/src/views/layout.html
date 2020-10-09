@@ -130,9 +130,9 @@
                   ? item2.jump 
                 : [item.name, item2.name, ''].join('/');
               }}
-                <dd  data-name="{{ item2.name || '' }}" data-jump="{{ item2.jump || '' }}" 
+                <dd style="padding-left: 4%;" data-name="{{ item2.name || '' }}" data-jump="{{ item2.jump || '' }}" 
                 {{ classSelected2() ? ('class="'+ classSelected2() +'"') : '' }}>
-                  <a href="javascript:;" {{ hasChildren2 ? '' : 'lay-href="'+ url2 +'"' }}>{{ item2.title }}</a>
+                  <a href="javascript:;" {{ hasChildren2 ? '' : 'lay-href="'+ url2 +'"' }}><i class="layui-icon {{ item2.icon }}"></i>{{ item2.title }}</a>
                   {{# if(hasChildren2){ }}
                     <dl class="layui-nav-child">
                       {{# layui.each(item2.children, function(index3, item3){ 
@@ -142,7 +142,7 @@
                           ? item3.jump 
                         : [item.name, item2.name, item3.name].join('/')
                       }}
-                        <dd data-name="{{ item3.name || '' }}"   data-jump="{{ item3.jump || '' }}" 
+                        <dd style="padding-left: 4%;" data-name="{{ item3.name || '' }}"   data-jump="{{ item3.jump || '' }}" 
                         {{ match ? 'class="layui-this"' : '' }}>
                           <a href="javascript:;" lay-href="{{ url3 }}" {{ item3.iframe ? 'lay-iframe="true"' : '' }}>{{ item3.title }}</a>
                         </dd>

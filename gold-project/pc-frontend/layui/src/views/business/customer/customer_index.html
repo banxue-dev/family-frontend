@@ -160,7 +160,6 @@
     }
 
     $('.layui-btn.layuiadmin-btn-customer').on('click', function(){
-      console.log(9);
       var type = $(this).data('type');
       active[type] ? active[type].call(this) : '';
     });

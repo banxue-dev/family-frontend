@@ -81,7 +81,7 @@
             if (obj.event === 'del') {
                  delpersonalInfo(data.personalInfoId);
             } else if (obj.event === 'edit') {
-                addNewpersonalInfo(data,'编辑行情客户','gold/personalInfo/personalInfo_add','mod');
+                addNewpersonalInfo(data,'编辑行情客户','gold/personalInfo/personal_info_add','mod');
             } 
         })
     var active = {
@@ -105,7 +105,7 @@
       
       //添加
       ,add: function(othis){
-        addNewpersonalInfo({parentId:0},'添加行情客户','gold/personalInfo/personalInfo_add','add');
+        addNewpersonalInfo({parentId:0},'添加行情客户','gold/personalInfo/personal_info_add','add');
       }
     }; 
     function delpersonalInfo(params){
@@ -161,6 +161,7 @@
     $('.layui-btn.layuiadmin-btn-personalInfo').on('click', function(){
       var type = $(this).data('type');
       active[type] ? active[type].call(this) : '';
+      console.log(111);
     });
 
   });
