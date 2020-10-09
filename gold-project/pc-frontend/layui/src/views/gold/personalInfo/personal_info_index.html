@@ -157,12 +157,13 @@
           }
         });
     }
+    window.setTimeout(function(){
 
-    $('.layui-btn.layuiadmin-btn-personalInfoButton').on('click', function(){
-      var type = $(this).data('type');
-      active[type] ? active[type].call(this) : '';
-      console.log(111);
-    });
+      $('.layuiadmin-btn-personalInfoButton').on('click', function(){
+        var type = $(this).data('type');
+        active[type] ? active[type].call(this) : '';
+      });
+    },1000);
 
   });
   </script>
