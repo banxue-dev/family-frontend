@@ -20,10 +20,10 @@
              <div style="padding-bottom: 10px; ">
 
               <script type="text/html" template  buttonAuth="addPersonalInfo">
-                        <button class="layui-btn layuiadmin-btn-personalInfo" data-type="add"><i class="layui-icon">&#xe608;</i> 添加
+                        <button class="layui-btn layuiadmin-btn-personalInfoButton" data-type="add"><i class="layui-icon">&#xe608;</i> 添加
                       </button>
 
-                      <button class="layui-btn layuiadmin-btn-personalInfo  layui-btn-danger" data-type="batchdel"><i
+                      <button class="layui-btn layuiadmin-btn-personalInfoButton  layui-btn-danger" data-type="batchdel"><i
                               class="layui-icon">&#xe640;</i>删除
                       </button>
                     
@@ -158,7 +158,7 @@
         });
     }
 
-    $('.layui-btn.layuiadmin-btn-personalInfo').on('click', function(){
+    $('.layui-btn.layuiadmin-btn-personalInfoButton').on('click', function(){
       var type = $(this).data('type');
       active[type] ? active[type].call(this) : '';
       console.log(111);
