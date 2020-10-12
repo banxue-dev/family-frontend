@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>地理定位</title>
+</head>
+<body>
+
+<script>
+    //获取当前地理信息
+    window.navigator.geolocation.getCurrentPosition(success,error);
+   //获取地理信息成功时的回调函数
+    function success(position) {
+        alert("成功获取您的地理信息");
+
+        //获取经度维度信息
+        //coords属性
+        var latitude = position.coords.latitude;
+        var longitude = position.coords.longitude;
+        //打印纬度,经度信息
+        console.log(latitude);
+        console.log(longitude);
+    }
+
+    //获取地理信息失败时的回调函数
+    function error(msg) {
+        alert("获取您的地理信息失败");
+    }
+
+</script>
+</body>
+</html>
