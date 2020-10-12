@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>地理定位</title>
 </head>
+<div id="weiya">正在获取....</div>
 <body>
 
 <script>
@@ -20,11 +21,13 @@
         //打印纬度,经度信息
         console.log(latitude);
         console.log(longitude);
+        document.getElementById('weiya').innerHTML="获取结果：经度"+latitude+"--伟度"+longitude;
     }
 
     //获取地理信息失败时的回调函数
     function error(msg) {
         alert("获取您的地理信息失败");
+        document.getElementById('weiya').innerHTML="获取结果：获取您的地理信息失败";
     }
 
 </script>
