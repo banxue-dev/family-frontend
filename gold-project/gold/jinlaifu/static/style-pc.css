@@ -1583,13 +1583,13 @@ a:active{text-decoration:none;}
 }
 /*首页数据模块*/
 .sl-zx-tb1 {
-    width:90%;
-    height:4rem;
-    line-height:4rem;
     text-align:right;
-    font-size:1.2rem;
     float:right;
     box-sizing: border-box;
+    width: 100%;
+    height: 2rem; 
+    font-size: 0.4rem;
+    line-height: 2rem;
 }
 .sl-zx-tb2 {
     width:25%;
@@ -1621,11 +1621,11 @@ a:active{text-decoration:none;}
 .sl-zx-tb4 {
     width:99%;
     padding-right:1%;
-    height:2rem;
-    line-height:2rem;
-   
+    color: green;
     box-sizing: border-box;
-    font-size:1.1rem;
+    font-size: 0.4rem; 
+    line-height: 1.5rem;
+    height: 0.4rem;
 }
 .sl-zx-tb4:last-child {
     border-bottom:none;
