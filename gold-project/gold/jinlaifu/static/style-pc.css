@@ -1595,28 +1595,20 @@ a:active{text-decoration:none;}
     width:25%;
     height:2rem;
     float:left;
-    color:#333;
     text-align:center;
     box-sizing: border-box;
-    /*
-	background-color: black; 
-    border-bottom:1px solid #262825;
-    */
 	color: #DAB950;
 }
 .sl-zx-tb3 {
     width:25%;
     height:2rem;
 	text-align:center;
+    font-size:0.6rem;
     float:left;
     border-right: 0px;
 	padding-right:0.3rem;
     font-family:Arial;
     box-sizing: border-box;
-    /*
-     border-bottom:1px solid #262825;
-	background-color: black;
-    */
 }
 .sl-zx-tb4 {
     width:99%;
