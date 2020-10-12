@@ -1,10 +1,10 @@
 ﻿   var goldconfig={};
 
-    //goldconfig.urlprex:'http://www.banxue.fun';
-    goldconfig.urlprex='http://localhost';
+    goldconfig.urlprex:'http://www.banxue.fun';
+    //goldconfig.urlprex='http://localhost';
     goldconfig.backendHost=goldconfig.urlprex+':8091/family',
     goldconfig.priceData={"openStatus":0,"xaubuy":0,"xausale":0,"xagbuy":0,"xagsale":0,"ptbuy":0,"ptsale":0,"pdbuy":0,"pdsale":0,"au18buy":0,"au18sale":0,"ag925buy":0,"ag925sale":0,"pt990buy":0,"pt990sale":0,"pt950buy":0,"pt950sale":0,"pd990buy":0,"pd990sale":0,"pd950buy":0,"pd950sale":0,"au1000buy":0,"au1000sale":0};
-    goldconfig.orgCode='2323342709341817434647533915155357525257553546415329401619374945';//每个账号不一样
+    goldconfig.orgCode='2323030239191034321128336033411521596038584721531539511652393417';//每个账号不一样
     goldconfig.shopPhone='13524954089';
     goldconfig.shopAddress='四川成都市';
     goldconfig.normalPhone='020-1100234';

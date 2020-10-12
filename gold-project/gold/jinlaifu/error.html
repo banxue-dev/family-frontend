@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html style="font-size: 60px;"><head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>页面错误</title>
+        <meta name="keywords" content="页面错误">
+        <meta name="description" content="页面错误">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+        
+<body>
+   	
+
+<div style="width:100%;font-weight: bold;"> 页面访问错误，请在微信客户端内打开</div>
+	
+<script type="text/javascript">
+	
+	function People(name)
+{
+  this.name=name;
+  //对象方法
+  this.Introduce=function(){
+    console.log("My name is "+this.name);
+  }
+  console.log(1);
+}
+//类方法
+People.Run=function(){
+  console.log("I can run");
+}
+//原型方法
+People.prototype.IntroduceChinese=function(){
+  console.log("我的名字是"+this.name);
+}
+ People.apply();
+//测试
+var p1=new People("Windking");
+p1.Introduce();
+console.log(p1.name);
+People.Run();
+p1.IntroduceChinese();
+</script>
+</body></html>

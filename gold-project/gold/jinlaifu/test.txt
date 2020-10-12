@@ -1,0 +1,1 @@
+isOpen:0,xaubuy:0,xaumai:0,xagbuy:0,xagmai:0,ptbuy:0,ptmai:0,xpdbuy:0,xpdmai:0,au18buy:0,au1000buy:0,ag925buy:0,pt990buy:0,pt950buy:0,pd990buy:0,pd950buy:0,au18mai:0,au1000mai:0,ag925mai:0,pt990mai:0,pt950mai:0,pd990mai:0,pd950mai:0
