@@ -112,7 +112,7 @@
       layer.confirm('确定删除吗？', function(index) {
             
             admin.req({
-            url:requrl+'delpersonalInfo',
+            url:requrl+'delPersonalInfo',
             traditional:true,
             data:{personalInfoIds:params},
             success:function(res){
