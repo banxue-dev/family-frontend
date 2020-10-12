@@ -391,6 +391,7 @@ $(document).ready(
         if(res.code=='000000'){
             $('[name=shopPhone]').html(res.data.customerContactPersonal+"   "+res.data.customerContactPhone);
             $('#shopAddress').html(res.data.customerAddr);
+            $('#customerName').html(res.data.customerName);
             $('#mailCode').html(res.data.customerMailCode);
             $('#orgAddrImg').attr('src',goldconfig.backendHost+'/'+res.data.customerAddrImg);
             $('#showLogo').attr('src',goldconfig.backendHost+'/'+res.data.customerLogo);
