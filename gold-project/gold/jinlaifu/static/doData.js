@@ -1,6 +1,6 @@
 ﻿   var goldconfig={};
 
-    goldconfig.urlprex:'http://www.banxue.fun';
+    goldconfig.urlprex='http://www.banxue.fun';
     //goldconfig.urlprex='http://localhost';
     goldconfig.backendHost=goldconfig.urlprex+':8091/family',
     goldconfig.priceData={"openStatus":0,"xaubuy":0,"xausale":0,"xagbuy":0,"xagsale":0,"ptbuy":0,"ptsale":0,"pdbuy":0,"pdsale":0,"au18buy":0,"au18sale":0,"ag925buy":0,"ag925sale":0,"pt990buy":0,"pt990sale":0,"pt950buy":0,"pt950sale":0,"pd990buy":0,"pd990sale":0,"pd950buy":0,"pd950sale":0,"au1000buy":0,"au1000sale":0};
@@ -389,13 +389,12 @@ $(document).ready(
       type:'post',
       success:function(res){
         if(res.code=='000000'){
-            $('#shopPhone').html(res.data.customerContactPhone);
-            $('#normalPhone').html(res.data.customerContactPhone);
+            $('[name=shopPhone]').html(res.data.customerContactPersonal+"   "+res.data.customerContactPhone);
             $('#shopAddress').html(res.data.customerAddr);
             $('#mailCode').html(res.data.customerMailCode);
-            $('#customerAddrImg').attr('src',goldconfig.backendHost+'/'+res.data.customerAddrImg);
+            $('#orgAddrImg').attr('src',goldconfig.backendHost+'/'+res.data.customerAddrImg);
             $('#showLogo').attr('src',goldconfig.backendHost+'/'+res.data.customerLogo);
-            $('#shopPhone').attr('href','tel://'+res.data.customerContactPhone);
+            $('[name=shopPhone]').attr('href','tel://'+res.data.customerContactPhone);
         }
       }
     })
