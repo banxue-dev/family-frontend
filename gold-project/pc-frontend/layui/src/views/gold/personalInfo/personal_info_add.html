@@ -1,11 +1,11 @@
 
-  <div class="layui-form" lay-filter="business_personalInfo_add_form" id="business_personalInfo_add_form"style="padding: 20px 30px 0 0;">
-    <input type="hidden" name="personalInfoId">
+  <div class="layui-form" lay-filter="gold_personalInfo_add_form" id="gold_personalInfo_add_form"style="padding: 20px 30px 0 0;">
+    <input type="hidden" name="customerId">
     <div class="layui-form-item">
       <label class="layui-form-label">客户名称</label>
       <div class="layui-input-inline">
         <script type="text/html" template>
-          <input type="text" name="personalInfoName" value="" lay-verify="required" placeholder="请输入客户名称" autocomplete="off" class="layui-input">
+          <input type="text" name="customerName" value="" lay-verify="required" placeholder="请输入客户名称" autocomplete="off" class="layui-input">
         </script>
       </div>
     </div>
@@ -15,7 +15,7 @@
       <label class="layui-form-label">选择组织</label>
       <div class="layui-input-inline">
        <script type="text/html" template lay-type='post' lay-url="{{layui.setter.backuprequesturl}}org/v1.0/api/getOrgList" 
-        lay-done="layui.$('#userAddOrgCode').val(layui.$('#hideOrgCode').val());layui.form.render('select', 'business_personalInfo_add_form');">
+        lay-done="layui.$('#userAddOrgCode').val(layui.$('#hideOrgCode').val());layui.form.render('select', 'gold_personalInfo_add_form');">
 
           <select name="orgCode" id="userAddOrgCode" lay-filter="selectOrg">
             {{# layui.each(d.data, function(index, item){ }}
@@ -32,7 +32,7 @@
       <label class="layui-form-label">联系人</label>
       <div class="layui-input-inline">
         <script type="text/html" template>
-          <input type="text" name="personalInfoContactPersonal" value="" lay-verify="required" placeholder="请输入联系人" autocomplete="off" class="layui-input">
+          <input type="text" name="customerContactPersonal" value="" lay-verify="required" placeholder="请输入联系人" autocomplete="off" class="layui-input">
         </script>
       </div>
     </div>
@@ -40,7 +40,7 @@
       <label class="layui-form-label">联系电话</label>
       <div class="layui-input-inline">
         <script type="text/html" template>
-          <input type="text" name="personalInfoContactPhone" value="" lay-verify="phone" placeholder="请输入联系电话" autocomplete="off" class="layui-input">
+          <input type="text" name="customerContactPhone" value="" lay-verify="phone" placeholder="请输入联系电话" autocomplete="off" class="layui-input">
         </script>
       </div>
     </div>
@@ -49,39 +49,39 @@
       <label class="layui-form-label">联系地址</label>
       <div class="layui-input-inline">
         <script type="text/html" template>
-          <input type="text" name="personalInfoAddr" value="" lay-verify="required" placeholder="请输入地址" autocomplete="off" class="layui-input">
+          <input type="text" name="customerAddr" value="" lay-verify="required" placeholder="请输入地址" autocomplete="off" class="layui-input">
         </script>
       </div>
     </div>
     <div class="layui-form-item">
       <label class="layui-form-label">地址地图</label>
       <div class="layui-input-inline" style="width:80px;">
-        <input name="personalInfoAddrImg"  readonly="readonly" id="personalInfoAddrImg" placeholder="图片地址" value="" class="layui-input">
+        <input name="customerAddrImg"  readonly="readonly" id="customerAddrImg" placeholder="图片地址" value="" class="layui-input">
       </div>
       <div class="layui-input-inline layui-btn-container" style="width: auto;">
-        <button type="button" class="layui-btn layui-btn-primary " id="personalInfo_addr_img_upload" bind-input='personalInfoAddrImg' >
+        <button type="button" class="layui-btn layui-btn-primary " id="customer_addr_img_upload" bind-input='customerAddrImg' >
           <i class="layui-icon">&#xe67c;</i>上传
         </button>
-        <button class="layui-btn layui-btn-primary" layadmin-event="avartatPreview" bind-input='personalInfoAddrImg'>查看</button >
+        <button class="layui-btn layui-btn-primary" layadmin-event="avartatPreview" bind-input='customerAddrImg'>查看</button >
       </div>
    </div>
    <div class="layui-form-item">
       <label class="layui-form-label">logo</label>
       <div class="layui-input-inline" style="width:80px;">
-        <input name="personalInfoLogo"  id="personalInfoLogo" readonly="readonly" placeholder="logo地址" value="" class="layui-input">
+        <input name="customerLogo"  id="customerLogo" readonly="readonly" placeholder="logo地址" value="" class="layui-input">
       </div>
       <div class="layui-input-inline layui-btn-container" style="width: auto;">
-        <button type="button" class="layui-btn layui-btn-primary" id="personalInfo_logo_upload" bind-input='personalInfoLogo'>
+        <button type="button" class="layui-btn layui-btn-primary" id="customer_logo_upload" bind-input='customerLogo'>
           <i class="layui-icon">&#xe67c;</i>上传
         </button>
-        <button class="layui-btn layui-btn-primary" layadmin-event="avartatPreview" bind-input='personalInfoLogo'>查看</button >
+        <button class="layui-btn layui-btn-primary" layadmin-event="avartatPreview" bind-input='customerLogo'>查看</button >
       </div>
    </div>
     <div class="layui-form-item">
       <label class="layui-form-label">邮编</label>
       <div class="layui-input-inline">
         <script type="text/html" template>
-          <input type="text" name="personalInfoMailCode" value="" lay-verify="required" placeholder="请输入邮编" autocomplete="off" class="layui-input">
+          <input type="text" name="customerMailCode" value="" lay-verify="required" placeholder="请输入邮编" autocomplete="off" class="layui-input">
         </script>
       </div>
     </div>
@@ -89,7 +89,7 @@
       <label class="layui-form-label">描述</label>
       <div class="layui-input-inline">
         <script type="text/html" template>
-          <textarea name="personalInfoDesc" lay-verify="required" style="width: 400px; height: 150px;" autocomplete="off" class="layui-textarea">
+          <textarea name="customerDesc" lay-verify="required" style="width: 400px; height: 150px;" autocomplete="off" class="layui-textarea">
             
           </textarea>
         </script>
@@ -111,7 +111,7 @@
   //上传头像
   var th=upload.render({
     url: layui.setter.backuprequesturl+'/personal/v1.0/uploadHead'
-    ,elem: '#personalInfo_addr_img_upload'
+    ,elem: '#customer_addr_img_upload'
     ,headers:layui.setter.headers
     ,data:layui.setter.authParams
     ,done: function(res){
@@ -124,7 +124,7 @@
   });
    var tb=upload.render({
     url: layui.setter.backuprequesturl+'/personal/v1.0/uploadHead'
-    ,elem: '#personalInfo_logo_upload'
+    ,elem: '#customer_logo_upload'
     ,headers:layui.setter.headers
     ,data:layui.setter.authParams
     ,done: function(res){
