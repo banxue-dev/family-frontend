@@ -60,7 +60,7 @@
         <script type="text/html" template lay-type='POST' lay-url="{{layui.setter.backuprequesturl}}personal/v1.0/getUserById" 
         lay-done="layui.element.render('nav', 'layadmin-layout-right');">
           <a href="javascript:;">
-            <cite>{{ !d.data.userName?"":d.data.userName }}</cite>
+            <cite>{{ !d.data.userNickName?"":d.data.userNickName }}</cite>
           </a>
           <dl class="layui-nav-child">
             <dd><a lay-href="set/user/info">基本资料</a></dd>
