@@ -1599,7 +1599,7 @@ a:active{text-decoration:none;}
     box-sizing: border-box;
 	color: #DAB950;
 
-    border-bottom: 1px solid aquamarine;
+    /*border-bottom: 1px solid aquamarine;*/
 }
 .sl-zx-tb3 {
     width:25%;
@@ -1611,7 +1611,7 @@ a:active{text-decoration:none;}
 	padding-right:0.3rem;
     font-family:Arial;
     box-sizing: border-box;
-    
+
     /*border-bottom: 1px solid aquamarine;
     border-right: 1px solid aquamarine;
     border-left: 1px solid aquamarine;*/
