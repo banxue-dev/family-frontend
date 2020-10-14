@@ -320,7 +320,7 @@
         });
       } else {
         $(elem).css({
-          "color" : "green"
+          "color" : "black"
         });
         $(elem).css({
           "background-color" : ""

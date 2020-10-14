@@ -1597,9 +1597,13 @@ a:active{text-decoration:none;}
     float:left;
     text-align:center;
     box-sizing: border-box;
-	color: #DAB950;
+    color:crimson;
 
-    /*border-bottom: 1px solid aquamarine;*/
+    /*
+    
+    color: #DAB950;
+    border-bottom: 1px solid aquamarine;
+    */
 }
 .sl-zx-tb3 {
     width:25%;
