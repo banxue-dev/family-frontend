@@ -425,8 +425,12 @@ layui.define('view', function(exports){
     ,theme: function(){
       admin.popupRight({
         id: 'LAY_adminPopupTheme'
-        ,success: function(){
-          view(this.id).render('system/theme')
+        ,success: function(layerd,index){
+          view(this.id).render('system/theme').done(function(){
+            $('#layuiadmin-theme-form-submit').on('click',function(){
+              layer.close(index);
+            })
+          })
         }
       });
     }
