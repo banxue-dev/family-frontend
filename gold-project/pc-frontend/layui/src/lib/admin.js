@@ -491,8 +491,13 @@ layui.define('view', function(exports){
     ,more: function(){
       admin.popupRight({
         id: 'LAY_adminPopupMore'
-        ,success: function(){
-          view(this.id).render('system/more')
+        ,success: function(layero,index){
+          view(this.id).render('system/more').done(function(){
+            //监听提交
+            $('#layuiadmin-more-form-submit').on('click',function(){
+                layer.close(index); //执行关闭 
+            })
+          });
         }
       });
     }
