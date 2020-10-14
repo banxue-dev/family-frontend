@@ -1592,7 +1592,7 @@ a:active{text-decoration:none;}
     line-height: 2rem;
 }
 .sl-zx-tb2 {
-    width:25%;
+    width:15%;
     height:2rem;
     float:left;
     text-align:center;
@@ -1600,16 +1600,24 @@ a:active{text-decoration:none;}
     color:crimson;
 
     /*
-    
+
     color: #DAB950;
     border-bottom: 1px solid aquamarine;
     */
 }
+.sl_pc_header {
+    width:28.3%;
+    height:2rem;
+    float:left;
+    text-align:center;
+    box-sizing: border-box;
+    color:crimson;
+}
 .sl-zx-tb3 {
-    width:25%;
+    width:28.3%;
     height:2rem;
 	text-align:center;
-    font-size:0.6rem;
+    font-size:0.7rem;
     float:left;
     border-right: 0px;
 	padding-right:0.3rem;
