@@ -1598,6 +1598,8 @@ a:active{text-decoration:none;}
     text-align:center;
     box-sizing: border-box;
 	color: #DAB950;
+
+    border-bottom: 1px solid aquamarine;
 }
 .sl-zx-tb3 {
     width:25%;
@@ -1609,6 +1611,9 @@ a:active{text-decoration:none;}
 	padding-right:0.3rem;
     font-family:Arial;
     box-sizing: border-box;
+    border-bottom: 1px solid aquamarine;
+    border-right: 1px solid aquamarine;
+    border-left: 1px solid aquamarine;
 }
 .sl-zx-tb4 {
     width:99%;
