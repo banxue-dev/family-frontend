@@ -148,8 +148,8 @@
       }
       $.ajax({
             type : "POST",
-            //url : "http://www.banxue.fun:8084/NewHtjApi",
-            url : "http://localhost:8091/family/changePrice/api/v1.0/NewHtjApi",
+            url : "http://www.banxue.fun:8084/NewHtjApi",
+            //url : "http://localhost:8091/family/changePrice/api/v1.0/NewHtjApi",
             //data:{orgCode:'11'},
             data:{orgCode:goldconfig.orgCode},
             dataType : "json",
