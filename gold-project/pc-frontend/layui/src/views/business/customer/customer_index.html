@@ -26,6 +26,9 @@
                       <button class="layui-btn layuiadmin-btn-customer  layui-btn-danger" data-type="batchdel"><i
                               class="layui-icon">&#xe640;</i>删除
                       </button>
+                      <button class="layui-btn layuiadmin-btn-customer  layui-btn-customer" data-type="resetInterface"><i
+                              class="layui-icon">&#xe9aa;</i>更新接口
+                      </button>
                         
 
                     
@@ -107,6 +110,14 @@
       ,add: function(othis){
         addNewCustomer({parentId:0},'添加客户','business/customer/customer_add','add');
       }
+      ,resetInterface: function(othis){
+        admin.req({
+          url:layui.setter.backuprequesturl+"changePrice/api/v1.0/resetCustomerList",
+          done:function(data){
+            layer.msg('更新成功');
+          }
+        })
+      }
     }; 
     function delCustomer(params){
       layer.confirm('确定删除吗？', function(index) {
@@ -116,7 +127,7 @@
 
             traditional:true,
             data:{customerIds:params},
-            success:function(res){
+            done:function(res){
               if(res.code=='000000'){
 
                 //执行 Ajax 后重载
