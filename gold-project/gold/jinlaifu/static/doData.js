@@ -147,10 +147,12 @@
        // return;
       }
       $.ajax({
-            type : "GET",
-            url : "http://www.banxue.fun:8084/NewHtjApi",
+            type : "POST",
+            //url : "http://www.banxue.fun:8084/NewHtjApi",
+            url : "http://localhost:8091/family/changePrice/api/v1.0/NewHtjApi",
+            //data:{orgCode:'11'},
+            data:{orgCode:goldconfig.orgCode},
             dataType : "json",
-            contentType : 'application/json',
             success : function(data) {
 
               var sdata = data[0];//获取到第一组的
@@ -272,9 +274,12 @@
               }
               $('#timeshi').show();
               $('#loading').hide();
+              setTimeout(that.DataExce.getTimeData,3000);
+
             },
             error : function(d) {
               console.log("eee" + JSON.stringify(d));
+              setTimeout(that.DataExce.getTimeData,3000);
               
             }
           })

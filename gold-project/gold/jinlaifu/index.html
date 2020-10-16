@@ -274,7 +274,7 @@
         doData.readFile(function(){
         doData.getTimeData();
         window.setInterval('doDate.tick()',1000);
-        var tg2 = self.setInterval("doData.getTimeData()", 3000);//N毫秒刷新一次，1000毫秒＝1秒
+        //var tg2 = self.setInterval("doData.getTimeData()", 3000);//N毫秒刷新一次，1000毫秒＝1秒
         var tg3 = self.setInterval("doData.readFile()", 15000);//N毫秒刷新一次，1000毫秒＝1秒
       });
 

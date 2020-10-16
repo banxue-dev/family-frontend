@@ -42,12 +42,13 @@
           <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>           
   </script>
   <script>
-  layui.use(['admin','tree', 'table'], function(){
+  layui.use(['admin','tree', 'table','laydate'], function(){
     var $ = layui.$
     ,table = layui.table
     ,tree = layui.tree
     ,admin=layui.admin
     ,view = layui.view
+    ,laydate=layui.laydate
     ,table = layui.table
     ,form = layui.form
     ,requrl=layui.setter.backuprequesturl+'customer'+layui.setter.reqver;
@@ -67,10 +68,10 @@
         ,{field:'customerContactPhone',  title: '联系电话'}
         ,{field:'customerMail',  title: '邮箱'}
         ,{field:'customerPrice',  title: '成交价'}
+        ,{field:'customerValidate',  title: '有效期止'}
         ,{field:'customerId',  hide:true}
         ,{field:'orgCode',  hide:true}
         ,{field:'customerDesc',  title: '备注'}
-        ,{field:'createTime', title: '创建时间',sort:true}
         ,{templet: '#customer_oper_col', fixed: 'right', title: '操作', align: 'center'}
       ]]
     });
@@ -112,6 +113,7 @@
             
             admin.req({
             url:requrl+'delCustomer',
+
             traditional:true,
             data:{customerIds:params},
             success:function(res){
@@ -137,6 +139,11 @@
             view(this.id).render(url).done(function(){
               params.hideOrgCode=params.orgCode;
               form.val('business_customer_add_form', params);
+               //日期时间选择器
+                laydate.render({
+                  elem: '#customerValidate'
+                  ,type: 'datetime'
+                });
               //监听提交
               form.on('submit(layuiadmin-app-form-submit)', function(data){
                 var field = data.field; //获取提交的字段
