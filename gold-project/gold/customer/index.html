@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html style="font-size: 60px;">
+ <head> 
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+  <title>实时行情</title> 
+  <meta name="keywords" content="实时行情" /> 
+  <meta name="description" content="实时行情" /> 
+  <meta HTTP-EQUIV="pragma" CONTENT="no-cache">
+<meta HTTP-EQUIV="Cache-Control" CONTENT="no-store, must-revalidate">
+<meta HTTP-EQUIV="expires" CONTENT="Wed, 26 Feb 1997 08:21:57 GMT">
+<meta HTTP-EQUIV="expires" CONTENT="0">
+  <meta charset="utf-8" /> 
+  <link rel="stylesheet" type="text/css" href="static/style.css" /> 
+  <script src="static/jquery-1.js"></script> 
+  <script type="text/javascript" src="static/fontsize.js"></script> 
+  <meta name="viewport" content="width=device-width,minmum-scale=1.0,maxmum-scale=1.0,user-scalable=no" /> 
+ </head> 
+ <body style="background-color: #f5f5f5;"> 
+    <div class="top_head_bg" style="">
+      
+      <section class="sj-header theme-bg1" style="height: 245px;z-index: 1;position: absolute;" >
+      </section>
+    </div>
+    <div id="main" style="padding:0 12px;position: relative;z-index: 3;margin-bottom: 4rem;">
+
+      <div  class="theme-bg">
+        <div  flex="cross:center main:justify" class="head-panl">
+          <img  id="showLogo" src="./static/none.jpg" alt="" class="head-img">
+          <div flex="" class="userCompanyName">
+            <div flex=""><span  flex-box="1" id="customerName" class="theme-name"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="content-white-bg" style="border-radius: 8px;">
+        <div class="sj-zx">
+          <div class="sj-zx-box">
+            <div class="sj-zx-title">
+              <span id="localtime"><font color="red">2019-11-06
+                  18:28:59 星期三</font></span>&nbsp;&nbsp;<lable id="openText">开盘</lable>
+            </div>
+            <div class="sj-zx-list-title"><!-- 标题背景,字体颜色 -->
+              <div class="sj-zx-list-l1">行情</div>
+              <div class="sj-zx-list-l2 sj-zx-list-l2-head">品类</div>
+              <div class="sj-zx-list-l2 sj-zx-list-l2-head">回购</div>
+              <div class="sj-zx-list-l2 sj-zx-list-l2-head">销售</div>
+              <div class="sj-zx-list-l2 sj-zx-list-l2-head">高/低</div>
+            </div>
+          </div>
+        </div>
+        <div class="sl-zx-list" id="timeshi">
+          <div style="display: none;background-color: black;text-align: center;z-index: 99;position: absolute;opacity: 0.5;color:white;border-radius: 5px;" id="dataLoading">正在获取数据...</div>
+          <ul id="mobile_htj" >
+            <li style="width:100%;text-align: center;height:200px;line-height: 200px;color:#f5f5f5;">正在加载页面...</li>
+          </ul>
+        </div>
+
+      <div class="sj-sm">
+            声明：<span class="sj-sm-txt">以上行情仅供参考！</span><br>
+            咨询热线：<a href="javascript:void(0);" name="shopPhone" class="sj-sm-link"></a>
+      </div>
+    </div>
+  </div>
+  <div class="sj-footer">
+        <a href="javascript:void(0)" onclick="tobg1()" class="sj-footer-link on">行情中心</a>
+        <a href="javascript:void(0)" onclick="tobg3()"class="sj-footer-link ">最新动态</a>
+        <a href="javascript:void(0)" onclick="tobg2()" class="sj-footer-link ">联系我们</a>
+  </div>
+
+ 
+  <script src="static/doData.js"></script> 
+  <script type="text/javascript">
+    var tg=new gold();
+    var doDate= tg.DateTime;
+    var doData=tg.DataExce;
+    /**
+    开始
+    */
+    $(document).ready(
+      function() {
+        if (/Android|webOS|iPhone|iPod|BlackBerry/i
+            .test(navigator.userAgent)) {
+
+        } else {
+          //window.location.href="error.html";
+          //window.location.href="index-pc.html";
+        }
+        doDate.tick();
+        $.ajax({
+          url:goldconfig.backendHost+'/personalInfo/v1.0/api/getPersonalInfoSingleByOrgCode',
+          data:{orgCode:goldconfig.orgCode()},
+          type:'post',
+          success:function(res){
+            if(res.code=='000000'){
+                var per=res.data.personalInfo || res.data;
+                $('[name=shopPhone]').html(per.customerContactPersonal+"   "+per.customerContactPhone).attr('href','tel://'+per.customerContactPhone);
+                $('#customerName').html(per.customerName);
+                $('#showLogo').attr('src',goldconfig.backendHost+'/'+per.customerLogo);
+                goldconfig.groupConfig=res.data.groupConfig;
+                goldconfig.metalConfig=res.data.metalConfig;
+                goldconfig.personalInfo=per;
+                goldconfig.openStatus=per.openStatus;
+                //创建html
+                doData.createHtml(function(){
+                  //这些数据获取成功后，才能继续
+                  doData.getTimeData();
+                  window.setInterval('doDate.tick()',1000);
+                  //var tg3 = self.setInterval("doData.readFile()", 30000);//N毫秒刷新一次，1000毫秒＝1秒
+                });
+            }else{
+              window.location.href="error.html";
+            }
+          },error:function(){
+
+          }
+        })
+
+    
+      //start();
+    });
+  </script>
+ </body>
+</html>

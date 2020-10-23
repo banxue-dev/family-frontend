@@ -68,10 +68,10 @@
         ,{field:'customerAddrImg',  title: '地址图片'}
         ,{field:'customerLogo',  title: 'logo图片'}
         ,{field:'customerMailCode',  title: '邮编'}
+        ,{field:'openStatus',  title: '大盘'}
         ,{field:'customerDesc',  title: '描述'}
         ,{field:'customerId',  hide:true}
         ,{field:'orgCode',  hide:true}
-        ,{field:'createTime', title: '创建时间',sort:true}
         ,{templet: '#personalInfo_oper_col', fixed: 'right', title: '操作', align: 'center'}
       ]]
     });
@@ -137,6 +137,7 @@
           ,success: function(layero, index){
             view(this.id).render(url).done(function(){
               params.hideOrgCode=params.orgCode;
+              params.openStatus=params.openStatus+'';
               form.val('gold_personalInfo_add_form', params);
               //监听提交
               form.on('submit(layuiadmin-app-form-submit)', function(data){
