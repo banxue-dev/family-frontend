@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html style="font-size: 60px;">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>实时行情</title>
+<meta name="keywords" content="实时行情" />
+<meta name="description" content="实时行情" />
+<meta charset="utf-8" />
+<link rel="stylesheet" type="text/css" href="static/style-pc.css" />
+<script src="static/jquery-1.js"></script>
+<script type="text/javascript" src="static/fontsize.js"></script>
+
+<meta name="viewport"
+  content="width=device-width,minmum-scale=1.0,maxmum-scale=1.0,user-scalable=no" />
+</head>
+<body>
+  <div id="timeshi">
+    <div class="sj-header">
+      <div class="sj-header-box">
+        <a href="javascript:void(0);"><img id="showLogo" src="" /></a>
+        <div class="sj-zx-title" style="float: right">
+          <span id="localtime"><font color="red">2019-11-06
+              18:28:59 星期三</font></span>&nbsp;&nbsp;
+          <lable id="openText">开盘</lable>
+        </div>
+      </div>
+    </div>
+    <div class="sl-zx-list">
+      <div style="width: 25%; float: left;">
+        <div class="sl-zx-list-t bg"
+          style="height: 1.5rem; width: 100%; font-size: 0.5rem;">
+          <span id="customerName">金属行情</span>
+        </div>
+        <div class="sl-zx-tb1  sl-zx-tb-ys1">
+          <div class="sl-zx-tb2">品类</div>
+          <div class="sl_pc_header">回购</div>
+          <div class="sl_pc_header" >销售</div>
+          <div class="sl_pc_header">高/低</div>
+        </div>
+        <div class="sl-zx-tb1  sl-zx-tb-ys1">
+          <div class="sl-zx-tb2">黄金</div>
+          <div class="sl-zx-tb3 bidxau">0.00</div>
+          <div class="sl-zx-tb3 askxau" >
+            0.00</div>
+          <div class="sl-zx-tb3">
+            <div class="sl-zx-tb4 maxxau" >0.00</div>
+            <div class="sl-zx-tb4 minxau" >0.00</div>
+          </div>
+        </div>
+        <div class="sl-zx-tb1 sl-zx-tb-bg  sl-zx-tb-ys2" >
+          <div class="sl-zx-tb2">白银</div>
+          <div class="sl-zx-tb3 bidxag">0.00</div>
+          <div class="sl-zx-tb3 askxag" >
+            0.00</div>
+          <div class="sl-zx-tb3">
+            <div class="sl-zx-tb4 maxxag">0.00</div>
+            <div class="sl-zx-tb4 minxag">0.00</div>
+          </div>
+        </div>
+        <div class="sl-zx-tb1  sl-zx-tb-ys2">
+          <div class="sl-zx-tb2">铂金</div>
+          <div class="sl-zx-tb3 bidxpt">0.00</div>
+          <div class="sl-zx-tb3 askxpt" >
+            0.00</div>
+          <div class="sl-zx-tb3">
+            <div class="sl-zx-tb4 maxxpt">0.00</div>
+            <div class="sl-zx-tb4 minxpt">0.00</div>
+          </div>
+        </div>
+        <div class="sl-zx-tb1 sl-zx-tb-bg  sl-zx-tb-ys1" >
+          <div class="sl-zx-tb2">钯金</div>
+          <div class="sl-zx-tb3 bidxpd">0.00</div>
+          <div class="sl-zx-tb3 askxpd" >
+            0.00</div>
+          <div class="sl-zx-tb3">
+            <div class="sl-zx-tb4 maxxpd">0.00</div>
+            <div class="sl-zx-tb4 minxpd">0.00</div>
+          </div>
+        </div>
+
+        <div class="sl-zx-tb1 sl-zx-tb-ys2">
+          <div class="sl-zx-tb2" >Pd990</div>
+          <div class="sl-zx-tb3 bidpd990" >0.00</div>
+          <div class="sl-zx-tb3 askpd990" >0.00</div>
+          <div class="sl-zx-tb3" >
+            <div class="sl-zx-tb4 maxpd990" >0.00</div>
+            <div class="sl-zx-tb4 minpd990" >0.00</div>
+          </div>
+        </div>
+      </div>
+      <div style="width: 25%; float: left;">
+        <div class="sl-zx-list-t bg"
+          style="height: 1.5rem; width: 100%; font-size: 0.5rem;">
+          <span>饰品回购行情</span>
+        </div>
+        <div class="sl-zx-tb1  sl-zx-tb-ys1" >
+          <div class="sl-zx-tb2">品类</div>
+          <div class="sl_pc_header">买价</div>
+          <div class="sl_pc_header">卖价</div>
+          <div class="sl_pc_header">高/低</div>
+        </div>
+        <div class="sl-zx-tb1 sl-zx-tb-ys2">
+          <div class="sl-zx-tb2">千足金</div>
+          <div class="sl-zx-tb3 bidau1000">0.00</div>
+          <div class="sl-zx-tb3 askau1000">0.00</div>
+          <div class="sl-zx-tb3">
+            <div class="sl-zx-tb4 maxau1000">0.00</div>
+            <div  class="sl-zx-tb4 minau1000">0.00</div>
+          </div>
+        </div>
+        <div class="sl-zx-tb1 sl-zx-tb-bg sl-zx-tb-ys2" >
+          <div class="sl-zx-tb2">18K金</div>
+          <div class="sl-zx-tb3 bidau18">0.00</div>
+          <div class="sl-zx-tb3 askau18">0.00</div>
+          <div class="sl-zx-tb3">
+            <div class="sl-zx-tb4 maxau18">0.00</div>
+            <div class="sl-zx-tb4 minau18">0.00</div>
+          </div>
+        </div>
+
+        <div class="sl-zx-tb1  sl-zx-tb-ys2">
+          <div class="sl-zx-tb2">Pt990</div>
+          <div class="sl-zx-tb3 bidpt990" >0.00</div>
+          <div class="sl-zx-tb3 askpt990">0.00</div>
+          <div class="sl-zx-tb3">
+            <div class="sl-zx-tb4 maxpt990" >0.00</div>
+            <div class="sl-zx-tb4 minpt990" >0.00</div>
+          </div>
+        </div>
+        <div class="sl-zx-tb1 sl-zx-tb-bg sl-zx-tb-ys2">
+          <div class="sl-zx-tb2">Pt950</div>
+          <div class="sl-zx-tb3 bidpt950">0.00</div>
+          <div class="sl-zx-tb3 askpt950">0.00</div>
+          <div class="sl-zx-tb3">
+            <div class="sl-zx-tb4 maxpt950" >0.00</div>
+            <div class="sl-zx-tb4 minpt950" >0.00</div>
+          </div>
+        </div>
+        <div class="sl-zx-tb1 sl-zx-tb-ys2">
+          <div class="sl-zx-tb2" >Pd950</div>
+          <div class="sl-zx-tb3 bidpd950"> 0.00</div>
+          <div class="sl-zx-tb3 askpd950" >0.00</div>
+          <div class="sl-zx-tb3" >
+            <div class="sl-zx-tb4 maxpd950" >0.00</div>
+            <div class="sl-zx-tb4 minpd950" >0.00</div>
+          </div>
+        </div>
+      </div>
+      <div style="width: 25%; float: left;">
+        <div class="sl-zx-list-t bg"
+          style="height: 1.5rem; width: 100%; font-size: 0.5rem;">
+          <span>上海黄金行情</span>
+        </div>
+        <div class="sl-zx-tb1  sl-zx-tb-ys1">
+          <div class="sl-zx-tb2">品类</div>
+          <div class="sl_pc_header">买价</div>
+          <div class="sl_pc_header">卖价</div>
+          <div class="sl_pc_header">高/低</div>
+        </div>
+        <div class="sl-zx-tb1 sl-zx-tb-ys1">
+          <div class="sl-zx-tb2" style="font-size:0.27rem;">黄金9999</div>
+          <div class="sl-zx-tb3 bidsgau9999">0.00</div>
+          <div class="sl-zx-tb3 asksgau9999">0.00</div>
+          <div class="sl-zx-tb3">
+            <div class="sl-zx-tb4 minsgau9999">0.00</div>
+            <div class="sl-zx-tb4 maxsgau9999">0.00</div>
+          </div>
+        </div>
+        <div class="sl-zx-tb1 sl-zx-tb-bg ">
+          <div class="sl-zx-tb2" style="font-size:0.27rem;">白银9999</div>
+          <div class="sl-zx-tb3  bidsgag9999"  style="font-size:0.4rem;">0.00</div>
+          <div class="sl-zx-tb3 asksgag9999"  style="font-size:0.4rem;">0.00</div>
+          <div class="sl-zx-tb3">
+            <div class="sl-zx-tb4 minsgag9999">0.00</div>
+            <div class="sl-zx-tb4 maxsgag9999">0.00</div>
+          </div>
+        </div>
+        <div class="sl-zx-tb1 sl-zx-tb-ys1"
+          style="font-size: 0.5rem; line-height: 2rem;">
+          <div class="sl-zx-tb2" style="font-size:0.27rem;">黄金T+D</div>
+          <div class="sl-zx-tb3 bidsgautd" >0.00</div>
+          <div class="sl-zx-tb3 asksgautd" >0.00</div>
+          <div class="sl-zx-tb3">
+            <div class="sl-zx-tb4 minsgautd">0.00</div>
+            <div  class="sl-zx-tb4 maxsgautd">0.00</div>
+          </div>
+        </div>
+        <div class="sl-zx-tb1 sl-zx-tb-bg sl-zx-tb-ys1" >
+          <div class="sl-zx-tb2" style="font-size:0.27rem;">白银T+D</div>
+          <div class="sl-zx-tb3 bidsgagtd" style="font-size:0.4rem;">0.00</div>
+          <div class="sl-zx-tb3 asksgagtd" style="font-size:0.4rem;">0.00</div>
+          <div class="sl-zx-tb3">
+            <div class="sl-zx-tb4 minsgagtd">0.00</div>
+            <div class="sl-zx-tb4 maxsgagtd">0.00</div>
+          </div>
+        </div>
+
+        <div class="sl-zx-tb1 sl-zx-tb-ys2">
+          <div class="sl-zx-tb2" style="font-size:0.27rem;">Ag925</div>
+          <div class="sl-zx-tb3 bidag925" >0.00</div>
+          <div class="sl-zx-tb3 askag925" >0.00</div>
+          <div class="sl-zx-tb3" >
+            <div class="sl-zx-tb4 maxag925">0.00</div>
+            <div class="sl-zx-tb4 minag925">0.00</div>
+          </div>
+        </div>
+      </div>
+      <div style="width: 25%; float: left;">
+        <div class="sl-zx-list-t bg"
+          style="height: 1.5rem; width: 100%; font-size: 0.5rem;">
+          <span>国际行情</span>
+        </div>
+        <div class="sl-zx-tb1  sl-zx-tb-ys1">
+          <div class="sl-zx-tb2">品类</div>
+          <div class="sl_pc_header">买价</div>
+          <div class="sl_pc_header">卖价</div>
+          <div class="sl_pc_header">高/低</div>
+        </div>
+        <div class="sl-zx-tb1 sl-zx-tb-ys1">
+          <div class="sl-zx-tb2">伦敦金</div>
+          <div class="sl-zx-tb3 bidxauusdsmartcmdtyusd" style="font-size:0.4rem;">0.00</div>
+          <div class="sl-zx-tb3 askxauusdsmartcmdtyusd" style="font-size:0.4rem;">0.00</div>
+          <div class="sl-zx-tb3">
+            <div class="sl-zx-tb4 minxauusdsmartcmdtyusd">0.00</div>
+            <div class="sl-zx-tb4 maxxauusdsmartcmdtyusd">0.00</div>
+          </div>
+        </div>
+        <div class="sl-zx-tb1 sl-zx-tb-bg sl-zx-tb-ys1">
+          <div class="sl-zx-tb2">伦敦银</div>
+          <div class="sl-zx-tb3 bidxagusdsmartcmdtyusd" >0.00</div>
+          <div class="sl-zx-tb3 askxagusdsmartcmdtyusd" >0.00</div>
+          <div class="sl-zx-tb3">
+            <div class="sl-zx-tb4 minxagusdsmartcmdtyusd">0.00</div>
+            <div class="sl-zx-tb4 maxxagusdsmartcmdtyusd">0.00</div>
+          </div>
+        </div>
+        <div class="sl-zx-tb1 sl-zx-tb-ys1">
+          <div class="sl-zx-tb2">港金</div>
+          <div class="sl-zx-tb3 bidpmgt"  style="font-size:0.4rem;">0.00</div>
+          <div class="sl-zx-tb3 askpmgt"  style="font-size:0.4rem;">0.00</div>
+          <div class="sl-zx-tb3">
+            <div class="sl-zx-tb4 minpmgt">0.00</div>
+            <div class="sl-zx-tb4 maxpmgt">0.00</div>
+          </div>
+        </div>
+        <div class="sl-zx-tb1 sl-zx-tb-bg sl-zx-tb-ys1">
+          <div class="sl-zx-tb2">人民币</div>
+          <div class="sl-zx-tb3 bidusdcnh" >0.00</div>
+          <div class="sl-zx-tb3 askusdcnh" >0.00</div>
+          <div class="sl-zx-tb3">
+            <div class="sl-zx-tb4 minusdcnh">0.00</div>
+            <div class="sl-zx-tb4 maxusdcnh">0.00</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sj-sm" style="float: left;">
+      声明： <span class="sj-sm-txt">以上行情仅供参考！</span> <br />
+    </div>
+  </div>
+ 
+
+  <div id="loading"
+    style="width: 100%; height: 100%; position: absolute; background-color: black; text-align: center; color: white; opacity: 0.85;">
+    <div style="font-size: 1rem; width: 100%; top: 30%;">正在加载....</div>
+  </div>
+  <div class="sj-footer" style="background-color: white; border: 0px;">
+  </div>
+  <div class="sj-footer"
+    style="position: fixed; bottom: 1px; display: none;">
+    <a href="javascript:void(0)" onclick="tobg1()"
+      class="sj-footer-link on">行情中心</a>
+    <a href="javascript:void(0)" onclick="tobg2()" class="sj-footer-link ">联系我们</a>
+  </div>
+
+<script src="static/doData.js"></script>
+<script type="text/javascript">
+    
+
+    var tg=new gold();
+    var doDate= tg.DateTime;
+    var doData=tg.DataExce;
+    /**
+    开始
+    */
+    $(document).ready(
+      function() {
+        $('#timeshi').hide();
+        doDate.tick();
+        doData.readFile(function(){
+        doData.getTimeData();
+        window.setInterval('doDate.tick()',1000);
+        //var tg2 = self.setInterval("doData.getTimeData()", 3000);//N毫秒刷新一次，1000毫秒＝1秒
+        var tg3 = self.setInterval("doData.readFile()", 15000);//N毫秒刷新一次，1000毫秒＝1秒
+      });
+
+    
+      //start();
+    });
+  </script>
+</body>
+</html>

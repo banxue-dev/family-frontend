@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html style="font-size: 12px;"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>最新动态-恒泰金</title>
+<meta name="keywords" content="恒泰金">
+<meta name="description" content="恒泰金">
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="static/style.css">
+    <script src="static/jquery-1.js"></script>
+    <script type="text/javascript" src="static/fontsize.js"></script>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+ <style type="text/css">
+ .page{
+     margin-top:20px;
+     text-align:center;
+    margin-bottom:30px;
+}
+.page a {
+    display: inline-block;
+    width:29px;
+    text-align:center;
+    margin: 0 3px;
+    line-height:29px;
+    color:#666;
+    border: 1px solid #bbb;
+}
+.page .prev,.page .next {
+    font-family: '宋体';
+    vertical-align:1px;
+    cursor:pointer;
+}
+.page a.on,.page a:hover {
+    color: #fff;
+    background-color: #ccac44;
+    border-color: #ccac44;
+}
+.page span{
+    line-height:2rem;
+    font-size:1.2rem;
+}
+ </style>
+
+<script src="static/doData.js"></script> 
+</head>
+<body>
+
+    <div class="sj-header">
+        <div class="sj-header-box">
+            <a href="http://tj.hengtaizb.com/Mobile/index.html"><img id="showLogo" src=""></a>
+        </div>
+    </div>
+    <!----ny-zx---->
+    <div class="sj-ny-zx" id="newslist">
+        <div class="sj-ny-zx-box">
+            <div class="sj-ny-zx-box-list">
+                <ul id="newsul">
+                 <li style="text-align: center;">
+                    <a href="javascript:void(0);" onclick="tobg4()">
+                        <div class="sj-zx-box-left-lt2">暂无新的公告</div>
+                    </a>
+                </li>           
+                </ul>
+            </div>
+
+   
+               <div class="page">
+                            
+                </div>
+            
+        </div>
+    </div>
+    <div class="sj-ny-zx" id="newsdetails" style="display: none;">
+        <div class="sj-ny-zx-box">
+            <div class="sj-ny-zx-txt">
+                <div class="sj-ny-zx-txt-top">
+                    <div class="sj-ny-zx-txt-lt2" id="showTitle" style="width:100%;text-align:center;"></div>
+                    <div class="sj-ny-zx-txt-lt" id="showTime" style="text-align:right;"></div>
+                </div>
+                <div class="sj-ny-zx-t" id="showContent"> </div>
+
+                <div class="sj-ny-zx-back">
+                    <a href="javascript:void(0)" onclick="tobg5();">返回 &gt;&gt;</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="sj-sm">
+        声明：<span class="sj-sm-txt">以上行情仅供参考！</span><br>
+        咨询热线：<a href="javascript:void(0);" id="shopPhone" class="sj-sm-link">022-27307444</a>
+    </div>
+    <div class="sj-footer">
+        <a href="javascript:void(0)" onclick="tobg1()" class="sj-footer-link ">行情中心</a>
+        <a href="javascript:void(0)" onclick="tobg3()"class="sj-footer-link on">最新动态</a>
+        <a href="javascript:void(0)" onclick="tobg2()" class="sj-footer-link ">联系我们</a>
+    </div>
+
+<script src="static/page.js"></script> 
+<script type="text/javascript">
+    console.log(goldconfig.backendHost);
+    var page=new Page({
+        url:goldconfig.backendHost+'/news/v1.0/api/getNewsListByPage',
+        data:{orgCode:goldconfig.orgCode},
+        pageSize:5,
+        done:function(data){
+            if(data!=null && data.length>0){
+                var html="";
+                for(var i=0;i<data.length;i++){
+                    html+='<li><a href="javascript:void(0);" onclick="tobg4('+data[i].newsId+')">';
+                    html+='<div class="sj-zx-box-left-lt" id="ntime'+data[i].newsId+'">'+data[i].createTime+'</div>';
+                    html+='<div class="sj-zx-box-left-lt" id="ncontent'+data[i].newsId+'" style="display:none;">'+data[i].newsContent+'</div>';
+                    html+='<div class="sj-zx-box-left-lt2" id="ntitle'+data[i].newsId+'">'+data[i].newsTitle+'</div></a></li>'
+
+                }
+                $('#newsul').html(html);
+
+            console.log('成功');
+            }
+        }
+    });
+    page.getData(page.params.pageNum);
+</script>
+</body></html>
