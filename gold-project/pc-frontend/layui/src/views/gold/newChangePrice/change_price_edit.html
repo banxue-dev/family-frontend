@@ -1,0 +1,199 @@
+ <title>黄金调价</title>
+
+  <div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+      <a lay-href="">主页</a>
+      <a><cite>系统设置</cite></a>
+      <a><cite>黄金调价</cite></a>
+    </div>
+  </div>
+  <div class="layui-form" lay-filter="change_price_edit_form" id="change_price_edit_form"style="padding: 20px 30px 0 0;">
+    <div class="layui-form-item">
+      <label class="layui-form-label">大盘状态</label>
+      <div class="layui-input-block">
+        <input type="radio" name="openStatus" value="0" title="开盘">
+        <input type="radio" name="openStatus" value="1" title="停盘" >
+        <input type="radio" name="openStatus" value="2" title="自动" checked="">
+      </div>
+      <div class="layui-form-mid layui-word-aux">若选自动,则周末停盘,周内开盘</div>
+    </div>
+    <input type="hidden" name="hideOrgCode" id="hideOrgCode">
+    <div class="layui-form-item">
+      <label class="layui-form-label">选择组织</label>
+      <div class="layui-input-inline">
+       <script type="text/html" template lay-type='post' lay-url="{{layui.setter.backuprequesturl}}org/v1.0/getOrgList" 
+        lay-done="layui.$('#userAddOrgCode').val(layui.$('#hideOrgCode').val());layui.form.render('select', 'change_price_edit_form');">
+
+          <select name="orgCode" id="userAddOrgCode" lay-filter="selectOrg">
+            {{# layui.each(d.data, function(index, item){ }}
+                  <option value='{{item.orgCode}}'  >{{item.orgName}}</option>
+                
+            {{#  }); }}
+
+            
+         </select>
+        </script>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <div class="layui-inline">
+        <label class="layui-form-label">黄金买价</label>
+        <div class="layui-input-inline">
+          <input type="tel" name="xaubuy" value="0" lay-verify="number" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-inline">
+        <label class="layui-form-label">黄金售价</label>
+        <div class="layui-input-inline">
+          <input type="text" name="xausale" value="0" lay-verify="number" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-inline">
+        <label class="layui-form-label">白银买价</label>
+        <div class="layui-input-inline">
+          <input type="text" name="xagbuy" value="0" lay-verify="number" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-inline">
+        <label class="layui-form-label">白银售价</label>
+        <div class="layui-input-inline">
+          <input type="text" name="xagsale" value="0" lay-verify="number" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <div class="layui-inline">
+        <label class="layui-form-label">钯金买价</label>
+        <div class="layui-input-inline">
+          <input type="tel" name="pdbuy" value="0" lay-verify="number" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-inline">
+        <label class="layui-form-label">钯金售价</label>
+        <div class="layui-input-inline">
+          <input type="text" name="pdsale" value="0" lay-verify="number" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-inline">
+        <label class="layui-form-label">铂金买价</label>
+        <div class="layui-input-inline">
+          <input type="text" name="ptbuy" value="0" lay-verify="number" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-inline">
+        <label class="layui-form-label">铂金售价</label>
+        <div class="layui-input-inline">
+          <input type="text" name="ptsale" value="0" lay-verify="number" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <div class="layui-inline">
+        <label class="layui-form-label">钯金990买价</label>
+        <div class="layui-input-inline">
+          <input type="tel" name="pd990buy" value="0" lay-verify="number" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+
+      <div class="layui-inline">
+        <label class="layui-form-label">钯金990售价</label>
+        <div class="layui-input-inline">
+          <input type="tel" name="pd990sale" value="0" lay-verify="number" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-inline">
+        <label class="layui-form-label">钯金950买价</label>
+        <div class="layui-input-inline">
+          <input type="text" name="pd950buy" value="0" lay-verify="number" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-inline">
+        <label class="layui-form-label">钯金950售价</label>
+        <div class="layui-input-inline">
+          <input type="text" name="pd950sale" value="0" lay-verify="number" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="layui-form-item">
+
+      <div class="layui-inline">
+        <label class="layui-form-label">铂金990买价</label>
+        <div class="layui-input-inline">
+          <input type="text" name="pt990buy" value="0" lay-verify="number" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+
+      <div class="layui-inline">
+        <label class="layui-form-label">铂金990售价</label>
+        <div class="layui-input-inline">
+          <input type="text" name="pt990sale" value="0" lay-verify="number" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-inline">
+        <label class="layui-form-label">铂金950买价</label>
+        <div class="layui-input-inline">
+          <input type="text" name="pt950buy" value="0" lay-verify="number" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+
+      <div class="layui-inline">
+        <label class="layui-form-label">铂金950售价</label>
+        <div class="layui-input-inline">
+          <input type="text" name="pt950sale" value="0" lay-verify="number" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+    </div>
+    <div class="layui-form-item">
+
+      <div class="layui-inline">
+        <label class="layui-form-label">千足金买价</label>
+        <div class="layui-input-inline">
+          <input type="tel" name="au1000buy" value="0" lay-verify="number" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-inline">
+        <label class="layui-form-label">千足金售价</label>
+        <div class="layui-input-inline">
+          <input type="tel" name="au1000sale" value="0" lay-verify="number" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-inline">
+        <label class="layui-form-label">18K金买价</label>
+        <div class="layui-input-inline">
+          <input type="text" name="au18buy" value="0" lay-verify="number" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+       <div class="layui-inline">
+        <label class="layui-form-label">18K金售价</label>
+        <div class="layui-input-inline">
+          <input type="text" name="au18sale" value="0" lay-verify="number" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      
+    </div>
+    <div class="layui-form-item">
+
+      <div class="layui-inline">
+        <label class="layui-form-label">银925买价</label>
+        <div class="layui-input-inline">
+          <input type="tel" name="ag925buy" value="0" lay-verify="number" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+
+      <div class="layui-inline">
+        <label class="layui-form-label">银925售价</label>
+        <div class="layui-input-inline">
+          <input type="tel" name="ag925sale" value="0" lay-verify="number" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label"></label>
+      <div class="layui-input-inline">
+        <input type="button" lay-submit lay-filter="change_price_edit_form-submit" value="确认" class="layui-btn">
+      </div>
+    </div>
+    <label style="padding-left: 20px;color:red;">注：计价单位为《元》,在上述输入框中入0.1，则表示调价为加1角钱，1为加1块钱。若要降价，则在数字前加上《-》号，即：-0.1表示降1角钱，-1表示降1块钱</label>
+  </div>
