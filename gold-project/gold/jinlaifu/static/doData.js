@@ -393,14 +393,15 @@ $(document).ready(
       data:{orgCode:goldconfig.orgCode},
       type:'post',
       success:function(res){
+        var per=res.data.personalInfo || res.data;
         if(res.code=='000000'){
-            $('[name=shopPhone]').html(res.data.customerContactPersonal+"   "+res.data.customerContactPhone);
-            $('#shopAddress').html(res.data.customerAddr);
-            $('#customerName').html(res.data.customerName);
-            $('#mailCode').html(res.data.customerMailCode);
-            $('#orgAddrImg').attr('src',goldconfig.backendHost+'/'+res.data.customerAddrImg);
-            $('#showLogo').attr('src',goldconfig.backendHost+'/'+res.data.customerLogo);
-            $('[name=shopPhone]').attr('href','tel://'+res.data.customerContactPhone);
+            $('[name=shopPhone]').html(per.customerContactPersonal+"   "+per.customerContactPhone);
+            $('#shopAddress').html(per.customerAddr);
+            $('#customerName').html(per.customerName);
+            $('#mailCode').html(per.customerMailCode);
+            $('#orgAddrImg').attr('src',goldconfig.backendHost+'/'+per.customerAddrImg);
+            $('#showLogo').attr('src',goldconfig.backendHost+'/'+per.customerLogo);
+            $('[name=shopPhone]').attr('href','tel://'+per.customerContactPhone);
         }
       }
     })
