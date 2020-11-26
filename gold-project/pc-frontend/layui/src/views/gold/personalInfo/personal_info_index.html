@@ -37,6 +37,7 @@
   </div>
   <script type="text/html" id="personalInfo_oper_col" >
     <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>     
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="changep">调价</a>     
   </script>
   <script type="text/html" id="personalInfo_oper_col_del" >
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>           
@@ -68,7 +69,16 @@
         ,{field:'customerAddrImg',  title: '地址图片'}
         ,{field:'customerLogo',  title: 'logo图片'}
         ,{field:'customerMailCode',  title: '邮编'}
-        ,{field:'openStatus',  title: '大盘'}
+        ,{field:'openStatus',  title: '大盘',templet:function(d){
+          if(d.openStatus==0){
+            return "开盘中";
+          }else if(d.openStatus==1){
+            return "已停盘";
+          }else{
+            return "自动";
+          }
+        }}
+
         ,{field:'customerDesc',  title: '描述'}
         ,{field:'customerId',  hide:true}
         ,{field:'orgCode',  hide:true}
@@ -82,6 +92,8 @@
                  delpersonalInfo(data.personalInfoId);
             } else if (obj.event === 'edit') {
                 addNewpersonalInfo(data,'编辑行情客户','gold/personalInfo/personal_info_add','mod');
+            } else if (obj.event === 'changep') {
+                window.open("/gold/customer/changes.html?orgCode="+data.orgCode,"_blank")
             } 
         })
     var active = {

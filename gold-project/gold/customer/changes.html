@@ -1,3 +1,4 @@
+<!--调价页面 -->
 <!DOCTYPE html>
 <html style="font-size: 60px;">
  <head> 
@@ -37,14 +38,14 @@
           <div class="sj-zx-box">
             <div class="sj-zx-title">
               <span id="localtime"><font color="red">2019-11-06
-                  18:28:59 星期三</font></span>&nbsp;&nbsp;<lable id="openText">开盘</lable>
+                  18:28:59 星期三</font></span>&nbsp;&nbsp;<lable id="openText">--</lable>
             </div>
             <div class="sj-zx-list-title"><!-- 标题背景,字体颜色 -->
               <div class="sj-zx-list-l1">行情</div>
               <div class="sj-zx-list-l2 sj-zx-list-l2-head">品类</div>
               <div class="sj-zx-list-l2 sj-zx-list-l2-head">回购</div>
               <div class="sj-zx-list-l2 sj-zx-list-l2-head">销售</div>
-              <div class="sj-zx-list-l2 sj-zx-list-l2-head">高/低</div>
+              <div class="sj-zx-list-l2 sj-zx-list-l2-head">调价</div>
             </div>
           </div>
         </div>
@@ -62,9 +63,7 @@
     </div>
   </div>
   <div class="sj-footer">
-        <a href="javascript:void(0)" onclick="tobg1()" class="sj-footer-link on">行情中心</a>
-        <a href="javascript:void(0)" onclick="tobg3()"class="sj-footer-link ">最新动态</a>
-        <a href="javascript:void(0)" onclick="tobg2()" class="sj-footer-link ">联系我们</a>
+        <a href="javascript:void(0)" style="width:100%" onclick="changeevent.saveChange();" class="sj-footer-link on">保存</a>
   </div>
 
  
@@ -103,10 +102,10 @@
                 //创建html
                 doData.createHtml(function(){
                   //这些数据获取成功后，才能继续
-                  doData.getTimeData();
-                  window.setInterval('doDate.tick()',1000);
+                  doData.getTimeData(false);
+                  window.setInterval('doDate.tick()',1000);//时间更新
                   //var tg3 = self.setInterval("doData.readFile()", 30000);//N毫秒刷新一次，1000毫秒＝1秒
-                },1);
+                },2);
             }else{
               window.location.href="error.html";
             }

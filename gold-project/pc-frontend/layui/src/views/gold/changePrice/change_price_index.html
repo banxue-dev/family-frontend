@@ -31,6 +31,7 @@
     </div>
   </div>
   <script type="text/html" id="changePrice_oper_col">
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="changep">调价</a>
     <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
   </script>
@@ -55,7 +56,7 @@
         {type: 'checkbox', fixed: 'left', title: ''}
         ,{field:'orgCodeName',  title: '所属组织'}
         ,{field:'orgCode',  title: '所属组织',hide:true}
-        ,{field:'openStatus',  title: '开盘状态',templet:function(d){
+        ,{field:'openStatus',  title: '开盘状态(停用)',templet:function(d){
           if(d.openStatus==0){
             return "开盘中";
           }else if(d.openStatus==1){
@@ -75,6 +76,8 @@
                  delChangePrice(data.changePriceId);
             } else if (obj.event === 'edit') {
                 addNewChangePrice(data,'编辑价格','gold/changePrice/change_price_edit','mod');
+            } else if (obj.event === 'changep') {
+                window.open("/gold/customer/changes.html?orgCode="+data.orgCode,"_blank")
             } 
         })
     var active = {

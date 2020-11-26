@@ -1,5 +1,5 @@
 ﻿   var goldconfig={};
-    // goldconfig.urlprex='http://www.banxue.fun';
+     // goldconfig.urlprex='http://www.banxue.fun';
     goldconfig.urlprex='http://localhost';
     goldconfig.backendHost=goldconfig.urlprex+':8091/family',
     goldconfig.priceData={},
@@ -40,6 +40,84 @@
     function tobg5(name) {
        $('#newsdetails').hide();
        $('#newslist').show();
+    }
+
+    var changeevent={
+      buyWaterAdd:function(id,ln){
+        var tv=$("#buyBackWater"+id).val()*1+0.01;
+        $("#buyBackWater"+id).val(tv.toFixed(2));
+        var bidv=$('.bid'+id).html()*1+0.01;
+        $('.bid'+id).html(bidv.toFixed(ln));
+      },
+      buyWaterSal:function(id,ln){
+        var va=$("#buyBackWater"+id).val();
+        
+       
+        va=va*1-0.01;
+        if(va==0){
+          va="0.00";
+        }
+        $("#buyBackWater"+id).val((va*1).toFixed(2));
+        var bidv=$('.bid'+id).html()*1-0.01;
+        $('.bid'+id).html(bidv.toFixed(ln));
+      },
+      saleWaterAdd:function(id,ln){
+        var tv=$("#saleWater"+id).val()*1+0.01;
+        $("#saleWater"+id).val(tv.toFixed(2));
+        var askv=$('.ask'+id).html()*1+0.01;
+        $('.ask'+id).html(askv.toFixed(ln));
+      },
+      saleWaterSal:function(id,ln){
+        var va=$("#saleWater"+id).val();
+        
+        va=va*1-0.01;
+        
+        if(va==0){
+          va="0.00";
+        }
+        $("#saleWater"+id).val((va*1).toFixed(2));
+        var askv=$('.ask'+id).html()*1-0.01;
+        $('.ask'+id).html(askv.toFixed(ln));
+      },
+      //type=bid?表示回购，=ask表示销售
+      valueChanged:function(ele,id,type,ln){
+        type=type==1?'bid':'ask';
+        var v=$(ele).val();
+        var ov=$("."+type+id).html();
+        var r= /^[-]?[1-9]?[0-9]*\.[0-9]*$/;  
+        if(r.test(v)){
+          $("."+type+id).html((ov*1+v*1).toFixed(ln));
+        }else{
+          $(ele).val('0.00');
+          alert('只能是数字');
+        }
+      },saveChange:function(){
+        var res=[];
+        for(var d=0;d<goldconfig.metalConfig.length;d++){
+          var tdb=goldconfig.metalConfig[d];
+          var tid=tdb.goldUserDiyMetalConfigId;
+          var buyv=$('#buyBackWater'+tid).val();
+          var salv=$('#saleWater'+tid).val();
+          if(buyv==tdb.buyBackWater && salv==tdb.saleWater){
+            //没有变动就不改
+            continue;
+          }
+          res.push({goldUserDiyMetalConfigId:tdb.goldUserDiyMetalConfigId,buyBackWater:buyv,saleWater:salv});
+        }
+        if(res.length>0){
+          $.ajax({
+            type : "POST",
+            url : goldconfig.backendHost+"/userDiyMetalConfig/v1.0/api/modUserDiyMetalConfigByJson",
+            data:{orgCode:goldconfig.orgCode(),resv:JSON.stringify(res)},
+            dataType : "json",
+            success : function(data) {
+              alert("保存成功");
+            },error:function(){
+
+            }
+          });
+        }
+      }
     }
     function dataLoadingStatus(show,height,width){
       $('#dataLoading').css('height',height+'px');
@@ -110,13 +188,12 @@
       colorfoot = "</font>"
       str = colorhead + yy + "-" + MM + "-" + dd + " " + hh + ":" + mm
           + ":" + ss + "  " + ww + colorfoot;
-      if(goldconfig.openStatus==2){
-        $('#openText').html(isOpenText);
-      }else if(goldconfig.openStatus==1){
-        $('#openText').html('停盘');
+      if(goldconfig.personalInfo.openStatus==1){
+        isOpenText='停盘';
       }else{
-        $('#openText').html('开盘');
+        isOpenText='开盘';
       }
+      $('#openText').html(isOpenText);
       
       return (str);
     }
@@ -155,27 +232,45 @@
         }
       })
     }
-    this.DataExce.createHtml=function(callback){
+    //type:1普通页面，2：调价
+    this.DataExce.createHtml=function(callback,type){
       var grouphtml='';
       $('#mobile_htj').html("");
       for(var t=0;t<goldconfig.groupConfig.length;t++){
           var tda=goldconfig.groupConfig[t];
           grouphtml='';
-          grouphtml='<li style="width:100%;background-color:'+(goldconfig.personalInfo.cellBackColor||'none')+';" id="group'+tda.goldUserDiyGroupConfigId+'"><div class="sl-zx-list-t " style="height: {{height}}rem;{{font}}">';
+          grouphtml='<li style="width:100%;background-color:'+(goldconfig.personalInfo.cellBackColor||'none')+';" id="group'+tda.groupCode+'"><div class="sl-zx-list-t " style="height: {{height}}rem;{{font}}">';
           grouphtml+='<span id="customerName">'+tda.groupName+'</span></div>';
           var metalhtml='';
           var childCnt=0;
           for(var d=0;d<goldconfig.metalConfig.length;d++){
-              if(goldconfig.metalConfig[d].groupId==tda.goldUserDiyGroupConfigId){
+              if(goldconfig.metalConfig[d].groupId==tda.groupCode){
                 var tdb=goldconfig.metalConfig[d];
+                //tdb.goldUserDiyMetalConfigId
                 metalhtml+='<div class="sl-zx-tb1  sl-zx-tb-ys2">';
                 metalhtml+='  <div class="sl-zx-tb2 sl-zx-cell">'+(tdb.newName || tdb.metalName)+'</div>';
                 metalhtml+='  <div class="sl-zx-tb3 sl-zx-cell bid'+tdb.goldUserDiyMetalConfigId+'">0.00</div>';
                 metalhtml+='  <div class="sl-zx-tb3 sl-zx-cell ask'+tdb.goldUserDiyMetalConfigId+'">0.00</div>';
-                metalhtml+='  <div class="sl-zx-tb3 sl-zx-cell">';
-                metalhtml+='    <div class="sl-zx-tb4 max'+tdb.goldUserDiyMetalConfigId+'">0.00</div>';
-                metalhtml+='    <div class="sl-zx-tb4 min'+tdb.goldUserDiyMetalConfigId+'">0.00</div>';
-                metalhtml+='  </div></div>';
+                if(type==1){
+                  metalhtml+='  <div class="sl-zx-tb3 sl-zx-cell">';
+                  metalhtml+='    <div class="sl-zx-tb4 max'+tdb.goldUserDiyMetalConfigId+'">0.00</div>';
+                  metalhtml+='    <div class="sl-zx-tb4 min'+tdb.goldUserDiyMetalConfigId+'">0.00</div>';
+                  metalhtml+='  </div>';
+                }else if(type==2){
+                  metalhtml+='<div class="sl-zx-tb3 sl-zx-cell">  '; 
+                    metalhtml+=' <div style="height:2rem;line-height:2rem;">';
+                      metalhtml+='<label onclick="changeevent.buyWaterAdd('+tdb.goldUserDiyMetalConfigId+","+tdb.constraintLen+')" style="margin-right: 0.4rem;cursor:pointer">+</label>';
+                      metalhtml+='<input onchange="changeevent.valueChanged(this,'+tdb.goldUserDiyMetalConfigId+',1,'+tdb.constraintLen+')"  type="text" id="buyBackWater'+tdb.goldUserDiyMetalConfigId+'" value="'+tdb.buyBackWater+'" style="background-color:'+(goldconfig.personalInfo.cellBackColor||"transparent")+';width: 2.5rem;border: 0px;">';
+                      metalhtml+='<label  onclick="changeevent.buyWaterSal('+tdb.goldUserDiyMetalConfigId+","+tdb.constraintLen+')" style="margin-left: 0.4rem;cursor:pointer">-</label>';
+                    metalhtml+='</div>';
+                    metalhtml+=' <div style="height:2rem;line-height:2rem;">';
+                       metalhtml+='<label  onclick="changeevent.saleWaterAdd('+tdb.goldUserDiyMetalConfigId+","+tdb.constraintLen+')" style="margin-right: 0.4rem;cursor:pointer">+</label>';
+                       metalhtml+='<input onchange="changeevent.valueChanged(this,'+tdb.goldUserDiyMetalConfigId+',2,'+tdb.constraintLen+')" type="text" id="saleWater'+tdb.goldUserDiyMetalConfigId+'" value="'+tdb.saleWater+'" style="background-color:'+(goldconfig.personalInfo.cellBackColor||"transparent")+';width: 2.5rem;border: 0px;">';
+                       metalhtml+='<label  onclick="changeevent.saleWaterSal('+tdb.goldUserDiyMetalConfigId+","+tdb.constraintLen+')" style="margin-left: 0.4rem;cursor:pointer">-</label>';
+                    metalhtml+='</div>';
+                   metalhtml+='</div>';
+                }
+                metalhtml+='</div>';
                 childCnt++;
               }
           }
@@ -209,18 +304,16 @@
       }
       return null;
     }
-    this.DataExce.getTimeData=function() {
+    this.DataExce.getTimeData=function(open) {
       $.ajax({
             type : "POST",
-            url : "http://www.banxue.fun:8084/NewHtjApi",
-            //url : "http://localhost:8091/family/changePrice/api/v1.0/NewHtjApi",
-            //data:{orgCode:'11'},
+            url : goldconfig.backendHost+"/changePrice/api/v1.0/NeedAuthPrice",
             data:{orgCode:goldconfig.orgCode()},
             dataType : "json",
             success : function(data) {
               var newdatas = data[0].concat(data[1]);
               if(goldconfig.groupConfig.length<1){
-                alert('加载用户数据失败');
+                alert('用户暂未注册');
                 return;
               }
               for(var t=0;t<goldconfig.metalConfig.length;t++){
@@ -243,12 +336,16 @@
                     oldBid, tdataask, oldAsk,
                     tdatamax, tdatamin);
               }
-              //setTimeout(that.DataExce.getTimeData,3000);
+              if(open){
+                setTimeout(that.DataExce.getTimeData,3000);
+              }
               dataLoadingStatus(false);
             },
             error : function(d) {
               console.log("eee" + JSON.stringify(d));
-              //setTimeout(that.DataExce.getTimeData,3000);
+              if(open){
+                setTimeout(that.DataExce.getTimeData,3000);
+              }
               
             }
           })
