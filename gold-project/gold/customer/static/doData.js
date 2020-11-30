@@ -1,6 +1,6 @@
 ﻿   var goldconfig={};
-     // goldconfig.urlprex='http://www.banxue.fun';
-    goldconfig.urlprex='http://localhost';
+    goldconfig.urlprex='http://www.banxue.fun';
+    //goldconfig.urlprex='http://localhost';
     goldconfig.backendHost=goldconfig.urlprex+':8091/family',
     goldconfig.priceData={},
     goldconfig.personalInfo={},
