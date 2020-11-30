@@ -1,13 +1,13 @@
 ﻿   var goldconfig={};
-      goldconfig.urlprex='http://www.banxue.fun';
-    // goldconfig.urlprex='http://localhost';
+     // goldconfig.urlprex='http://www.banxue.fun';
+    goldconfig.urlprex='http://localhost';
     goldconfig.backendHost=goldconfig.urlprex+':8091/family',
     goldconfig.priceData={},
     goldconfig.personalInfo={},
     goldconfig.tempOrgCode='',
     goldconfig.orgCode=function(){
       if(!goldconfig.tempOrgCode){
-        goldconfig.tempOrgCode=getQueryVariable('orgCode') || '2323030239191034321128336033411521596038584721531539511652393417';
+        goldconfig.tempOrgCode=getQueryVariable('orgCode') || '123';
       }
       return goldconfig.tempOrgCode;//每个账号不一样
     }
@@ -239,7 +239,7 @@
       for(var t=0;t<goldconfig.groupConfig.length;t++){
           var tda=goldconfig.groupConfig[t];
           grouphtml='';
-          grouphtml='<li style="width:100%;background-color:'+(goldconfig.personalInfo.cellBackColor||'none')+';" id="group'+tda.groupCode+'"><div class="sl-zx-list-t " style="height: {{height}}rem;{{font}}">';
+          grouphtml='<li style="width:100%;background-color:'+(goldconfig.personalInfo.cellBackColor||'transparent')+';" id="group'+tda.groupCode+'"><div class="sl-zx-list-t " style="height: {{height}}rem;{{font}}">';
           grouphtml+='<span id="customerName">'+tda.groupName+'</span></div>';
           var metalhtml='';
           var childCnt=0;

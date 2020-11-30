@@ -103,7 +103,7 @@
                 //创建html
                 doData.createHtml(function(){
                   //这些数据获取成功后，才能继续
-                  doData.getTimeData();
+                  doData.getTimeData(true);
                   window.setInterval('doDate.tick()',1000);
                   //var tg3 = self.setInterval("doData.readFile()", 30000);//N毫秒刷新一次，1000毫秒＝1秒
                 },1);
