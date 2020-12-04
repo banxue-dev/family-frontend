@@ -114,8 +114,8 @@
         tg.feedback();
       }
       $.ajax({
-          url:goldconfig.backendHost+'/personalInfo/v1.0/api/getPersonalInfoSingleByOrgCode',
-          data:{orgCode:goldconfig.orgCode},
+         url:goldconfig.backendHost+'/personalInfo/v1.0/api/getPersonalInfoSingleByOrgCode',
+          data:{orgCode:goldconfig.orgCode()},
           type:'post',
           success:function(res){
             if(res.code=='000000'){
