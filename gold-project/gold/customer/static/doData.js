@@ -23,13 +23,13 @@
        return(false);
     }
     function tobg1(name) {
-      window.location.href="index.html";
+      window.location.href="index.html?orgCodd="+goldconfig.orgCode();
     }
     function tobg3(name) {
-       window.location.href="news.html";
+       window.location.href="news.html?orgCodd="+goldconfig.orgCode();
     }
     function tobg2(name) {
-       window.location.href="c.html";
+       window.location.href="c.html?orgCodd="+goldconfig.orgCode();
     }
     function tobg4(id) {
       $('#showTitle').html($('#ntitle'+id).html());
@@ -291,6 +291,55 @@
       goldconfig.personalInfo.contentColorType && $('#content-white-bg').css('background-color',goldconfig.personalInfo.contentColorType);
       //开启加载框
       dataLoadingStatus(true,$('#mobile_htj').height(),$('#mobile_htj').width());
+      //回调
+      callback();
+    }
+    //type:1普通页面，2：调价
+    this.DataExce.createPCHtml=function(callback,type){
+      var grouphtml='';
+      $('#pc-content').html("");
+      for(var t=0;t<goldconfig.groupConfig.length;t++){
+          var tda=goldconfig.groupConfig[t];
+          grouphtml='';
+          grouphtml='<div  style="width: {{groupdwidth}}%; float: left;">';
+          grouphtml+=' <div class="sl-zx-list-t bg" style="height: 1.5rem; width: 100%; font-size: 0.5rem;">';
+          grouphtml+='  <span id="customerName">'+tda.groupName+'</span>';
+          grouphtml+=' </div>';
+          grouphtml+='<div class="sl-zx-tb1  sl-zx-tb-ys1">';
+          grouphtml+='  <div class="sl-zx-tb2">品类</div>';
+          grouphtml+='  <div class="sl_pc_header ">回购</div>';';';
+          grouphtml+='  <div class="sl_pc_header " >销售</div>';
+          grouphtml+='  <div class="sl_pc_header ">高/低</div>';
+          grouphtml+='</div>';
+          var metalhtml='';
+          var childCnt=0;
+          for(var d=0;d<goldconfig.metalConfig.length;d++){
+              if(goldconfig.metalConfig[d].groupId==tda.groupCode){
+                var tdb=goldconfig.metalConfig[d];
+                metalhtml+='<div class="sl-zx-tb1  sl-zx-tb-ys1">';
+                var tn=tdb.newName || tdb.metalName;
+                metalhtml+='  <div class="sl-zx-tb2"'+(tn.length>=5?'style="font-size:0.25rem;"':'')+'>'+(tn)+'</div>';
+                metalhtml+='  <div class="sl-zx-tb3 bid'+tdb.goldUserDiyMetalConfigId+'">0.00</div>';
+                metalhtml+='  <div class="sl-zx-tb3 ask'+tdb.goldUserDiyMetalConfigId+'">0.00</div>';
+                metalhtml+='  <div class="sl-zx-tb3">';
+                metalhtml+='    <div class="sl-zx-tb4 max'+tdb.goldUserDiyMetalConfigId+'" >0.00</div>';';';
+                metalhtml+='    <div class="sl-zx-tb4 min'+tdb.goldUserDiyMetalConfigId+'" >0.00</div>';
+                metalhtml+='  </div>';
+                metalhtml+='</div>';
+                childCnt++;
+              }
+          }
+          grouphtml=grouphtml.replaceAll('{{groupdwidth}}',(100/goldconfig.groupConfig.length));
+          grouphtml+=metalhtml;
+          grouphtml+='</div>';
+          $('#pc-content').append(grouphtml);
+      }
+      //根据分组的数量改变width
+      //改变设置的颜色
+      goldconfig.personalInfo.themBackColor && $('.sj-header').addClass('theme-bg'+goldconfig.personalInfo.themBackColor);
+      goldconfig.personalInfo.contentColorType && $('#content-white-bg').css('background-color',goldconfig.personalInfo.contentColorType);
+      //开启加载框
+      dataLoadingStatus(true,$('#pc-content').height(),$('#pc-content').width());
       //回调
       callback();
     }
