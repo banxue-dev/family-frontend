@@ -23,13 +23,13 @@
        return(false);
     }
     function tobg1(name) {
-      window.location.href="index.html?orgCodd="+goldconfig.orgCode();
+      window.location.href="index.html?orgCode="+goldconfig.orgCode();
     }
     function tobg3(name) {
-       window.location.href="news.html?orgCodd="+goldconfig.orgCode();
+       window.location.href="news.html?orgCode="+goldconfig.orgCode();
     }
     function tobg2(name) {
-       window.location.href="c.html?orgCodd="+goldconfig.orgCode();
+       window.location.href="c.html?orgCode="+goldconfig.orgCode();
     }
     function tobg4(id) {
       $('#showTitle').html($('#ntitle'+id).html());
