@@ -276,12 +276,12 @@
               }
           }
           if(childCnt<2){
-            grouphtml=grouphtml.replaceAll('{{font}}','font-size:2.5vw;');
+            grouphtml=grouphtml.replace('{{font}}','font-size:2.5vw;');
           }else{
 
-            grouphtml=grouphtml.replaceAll('{{font}}','');
+            grouphtml=grouphtml.replace('{{font}}','');
           }
-          grouphtml=grouphtml.replaceAll('{{height}}',(childCnt*4));
+          grouphtml=grouphtml.replace('{{height}}',(childCnt*4));
           grouphtml+=metalhtml;
           grouphtml+='</li>';
           $('#mobile_htj').append(grouphtml);
@@ -329,7 +329,7 @@
                 childCnt++;
               }
           }
-          grouphtml=grouphtml.replaceAll('{{groupdwidth}}',(100/goldconfig.groupConfig.length));
+          grouphtml=grouphtml.replace('{{groupdwidth}}',(100/goldconfig.groupConfig.length));
           grouphtml+=metalhtml;
           grouphtml+='</div>';
           $('#pc-content').append(grouphtml);
