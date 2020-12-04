@@ -5,6 +5,7 @@
     goldconfig.priceData={},
     goldconfig.personalInfo={},
     goldconfig.tempOrgCode='',
+    goldconfig.times='3000',
     goldconfig.orgCode=function(){
       if(!goldconfig.tempOrgCode){
         goldconfig.tempOrgCode=getQueryVariable('orgCode') || '123';
@@ -337,14 +338,18 @@
                     tdatamax, tdatamin);
               }
               if(open){
-                setTimeout(that.DataExce.getTimeData,3000);
+                setTimeout(function(){
+                  that.DataExce.getTimeData(true);
+                },goldconfig.times);
               }
               dataLoadingStatus(false);
             },
             error : function(d) {
               console.log("eee" + JSON.stringify(d));
               if(open){
-                setTimeout(that.DataExce.getTimeData,3000);
+                setTimeout(function(){
+                  that.DataExce.getTimeData(true);
+                },goldconfig.times);
               }
               
             }
