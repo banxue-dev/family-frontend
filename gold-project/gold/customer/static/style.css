@@ -1522,6 +1522,7 @@ a:active{text-decoration:none;}
     font-size:16px;
     line-height: 44px;
     color:white;
+    width:100%;
 }
 .theme-bg1 {
     background:linear-gradient(180deg,rgba(191, 145, 103, 0.8),rgba(166, 153, 104, 0.6) 44%,#f5f5f5);

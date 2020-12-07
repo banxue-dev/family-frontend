@@ -354,13 +354,37 @@
       }
       return null;
     }
+    this.DataExce.timeouts=function(open,times){
+        if(open){
+          setTimeout(function(){
+            that.DataExce.getTimeData(open,times);
+          },times||goldconfig.times);
+        }
+    }
     this.DataExce.getTimeData=function(open) {
       $.ajax({
             type : "POST",
             url : goldconfig.backendHost+"/changePrice/api/v1.0/NeedAuthPrice",
             data:{orgCode:goldconfig.orgCode()},
             dataType : "json",
-            success : function(data) {
+            success : function(res) {
+              if(res.code=='100004'){
+                console.log('授权已过期');
+                that.DataExce.timeouts(open,'10000');
+                return;
+              }
+              var ltimes=res.data.times;//过期时间
+              if(ltimes<=5*86400){
+                var lday=parseInt(ltimes/86400);
+                var lhour=parseInt(ltimes/(60*60)%24);
+                var lmin=parseInt(ltimes/60%60);
+                //var lsen=parseInt(ltimes%60);
+                $('#ltimes').html('授权剩余'+(lday)+'天'+(lhour)+'小时'+lmin+'分');
+              }else{
+                $('#ltimes').html();
+              }
+              //var data=res.data.parseJSON();
+              var data=JSON.parse(res.data.data);
               var newdatas = data[0].concat(data[1]);
               if(goldconfig.groupConfig.length<1){
                 alert('用户暂未注册');
@@ -386,20 +410,12 @@
                     oldBid, tdataask, oldAsk,
                     tdatamax, tdatamin);
               }
-              if(open){
-                setTimeout(function(){
-                  that.DataExce.getTimeData(true);
-                },goldconfig.times);
-              }
+              that.DataExce.timeouts(open,goldconfig.times);
               dataLoadingStatus(false);
             },
             error : function(d) {
-              console.log("eee" + JSON.stringify(d));
-              if(open){
-                setTimeout(function(){
-                  that.DataExce.getTimeData(true);
-                },goldconfig.times);
-              }
+              console.log("getTimeDataError:" + JSON.stringify(d));
+              that.DataExce.timeouts(open,goldconfig.times);
               
             }
           })
