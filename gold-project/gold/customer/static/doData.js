@@ -121,8 +121,12 @@
       }
     }
     function dataLoadingStatus(show,height,width){
-      $('#dataLoading').css('height',height+'px');
-      $('#dataLoading').css('width',width+'px');
+      if(height){
+        $('#dataLoading').css('height',height+'px');
+      }
+      if(width){
+        $('#dataLoading').css('width',width+'px');
+      }
       if(show){
         $('#dataLoading').show();
         $('#mobile_htj').addClass('blur');
@@ -370,7 +374,8 @@
             success : function(res) {
               if(res.code=='100004'){
                 console.log('授权已过期');
-                that.DataExce.timeouts(open,'10000');
+                that.DataExce.timeouts(open,'60000');
+                dataLoadingStatus(true,$('#pc-content').height(),$('#pc-content').width());
                 return;
               }
               var ltimes=res.data.times;//过期时间
