@@ -105,9 +105,11 @@
                 var html="";
                 for(var i=0;i<data.length;i++){
                     html+='<li><a href="javascript:void(0);" onclick="tobg4('+data[i].newsId+')">';
-                    html+='<div class="sj-zx-box-left-lt" id="ntime'+data[i].newsId+'">'+data[i].createTime+'</div>';
                     html+='<div class="sj-zx-box-left-lt" id="ncontent'+data[i].newsId+'" style="display:none;">'+data[i].newsContent+'</div>';
-                    html+='<div class="sj-zx-box-left-lt2" id="ntitle'+data[i].newsId+'">'+data[i].newsTitle+'</div></a></li>'
+                    html+='<div class="sj-zx-box-left-lt2" style="text-align:center;" id="ntitle'+data[i].newsId+'">'+data[i].newsTitle+'</div>';
+                    
+                    html+='<div class="sj-zx-box-left-lt" style="text-align:right;" id="ntime'+data[i].newsId+'">'+data[i].createTime+'</div>';
+                    html+='</a></li>';
 
                 }
                 $('#newsul').html(html);
