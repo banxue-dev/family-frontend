@@ -328,7 +328,6 @@ layui.define(['laytpl', 'layer'], function(exports){
           hint.error('lay-headers: ' + e.message);
           headers = headers || {}
         };
-        
         if(url){
           view.req({
             type: dataElem.attr('lay-type') || 'get'

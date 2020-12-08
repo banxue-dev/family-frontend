@@ -21,7 +21,7 @@
     <div class="layui-form-item">
       <label class="layui-form-label">选择组织</label>
       <div class="layui-input-inline">
-       <script type="text/html" template lay-type='post' lay-url="{{layui.setter.backuprequesturl}}org/v1.0/getOrgList" 
+       <script type="text/html" template lay-type='post' lay-url="{{layui.setter.backuprequesturl}}org/v1.0/api/getOrgList" 
         lay-done="layui.$('#userAddOrgCode').val(layui.$('#hideOrgCode').val());layui.form.render('select', 'change_price_edit_form');">
 
           <select name="orgCode" id="userAddOrgCode" lay-filter="selectOrg">
