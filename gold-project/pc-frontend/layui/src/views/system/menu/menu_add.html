@@ -18,6 +18,13 @@
         </script>
       </div>
     </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">菜单图标</label>
+      <div class="layui-input-inline">
+           <input type="text" class="iconPicker" name="menuIcon"  lay-filter="iconPicker" style="display:none;">
+        
+      </div>
+    </div>
 
     <div class="layui-form-item">
       <label class="layui-form-label">菜单标识</label>
@@ -60,3 +67,43 @@
       </div>
     </div>
   </div>
+<script type="text/javascript">
+  layui.define(['iconPicker'], function () {
+        var $ = layui.$;
+        var iconPicker = layui.iconPicker;
+            iconPicker.render({
+                // 选择器，推荐使用input
+                elem: '.iconPicker',
+                // 数据类型：fontClass/unicode，推荐使用fontClass
+                type: 'fontClass',
+                // 是否开启搜索：true/false，默认true
+                search: true,
+                // 是否开启分页：true/false，默认true
+                page: true,
+                // 每页显示数量，默认12
+                limit: 16,
+                // 每个图标格子的宽度：'43px'或'20%'
+                cellWidth: '33px',
+                // 点击回调
+                click: function (data) {
+                    //console.log(data);
+                     $('.iconPicker').val(data.icon);
+                },
+                // 渲染成功后的回调
+                success: function(d) {
+                    console.log('加载成功');
+                }
+            });
+
+            /**
+             * 选中图标 （常用于更新时默认选中图标）
+             * @param filter lay-filter
+             * @param iconName 图标名称，自动识别fontClass/unicode
+             */
+              iconPicker.checkIcon('iconPicker', '');
+             setTimeout(function(){
+              iconPicker.checkIcon('iconPicker', $('.iconPicker').val());
+             },1000);
+
+    });
+</script>

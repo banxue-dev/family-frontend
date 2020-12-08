@@ -65,6 +65,9 @@
             ,{field:'menuId',  hide:true}
             ,{field:'menuName',  title: '菜单标识'}//
             ,{field:'menuDesc', title: '描述'}
+            ,{field:'menuIcon', title: '图标',templet:function(d){
+              return '<i class="layui-icon '+d.menuIcon+'"></i>';
+            }}
             ,{templet: '#oper-col', fixed: 'right', title: '操作', align: 'center'}
           ]]
           ,done: function () {

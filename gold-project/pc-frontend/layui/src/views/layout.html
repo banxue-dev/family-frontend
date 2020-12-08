@@ -141,7 +141,7 @@
                       }}
                         <dd style="padding-left: 4%;" data-name="{{ item3.name || '' }}"   data-jump="{{ item3.jump || '' }}" 
                         {{ match ? 'class="layui-this"' : '' }}>
-                          <a href="javascript:;" lay-href="{{ url3 }}" {{ item3.iframe ? 'lay-iframe="true"' : '' }}>{{ item3.title }}</a>
+                          <a href="javascript:;" lay-href="{{ url3 }}" {{ item3.iframe ? 'lay-iframe="true"' : '' }}><i class="layui-icon {{ item3.icon }}"></i>{{ item3.title }}</a>
                         </dd>
                       {{# }); }}
                     </dl>
