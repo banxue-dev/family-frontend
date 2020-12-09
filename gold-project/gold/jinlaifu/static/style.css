@@ -28,7 +28,39 @@ a:active{text-decoration:none;}
 
 
 /*--header--*/
-
+.ghost {
+    animation: ghostFloat 3s ease-in-out infinite;
+    position: fixed;
+    right: 0px;
+    top:70%;
+    z-index: 999;
+    cursor:pointer;
+}
+.tip {
+    position: relative;
+    background-color: transparent;
+    height: 43px;
+    line-height: 43px;
+    color: black;
+    text-align: center;
+    border-radius: 10px;
+    font-family: sans-serif;
+}
+.tip:after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border: 8px solid;
+}
+.right:after {
+    /*border-left-color: deepskyblue;*/
+    border-left-color: rgba(126,126,126,0.4);
+    left: 100%;
+    top: 50%;
+    margin-top: -7px;
+    color:transparent;
+}
 .header {
     width:100%;
     min-width:1200px;
