@@ -14,23 +14,7 @@
     $('#shopAddress').html(goldconfig.shopAddress);
     $('#mailCode').html(goldconfig.mailCode);
     $('#shopPhone').attr('href','tel://'+goldconfig.shopPhone);*/
-    var ghost=function(){
-      var html='<div id="jump_ghost" class="ghost" >';
-          html+='    <div style="display: flex;flex-direction: row;align-items:flex-end;">';
-          html+='        <div id="adbox" style="display:none;background-color: rgba(126,126,126,0.4);border-radius: 10px;"><div style="" class="tip right">也想要这样的网站?请联系<a href="tel:13524954089">13524954089</a> 唐先生 </div></div>';
-          html+='        <div id="littleghost"><img  src="static/ghost.png" style="width:50px;height:50px;" /></div>';
-          html+='    </div>';
-          html+='</div>';
-          $('body').append(html);
-
-          $('#littleghost').on('click',function(){
-            $('#adbox').toggle();
-          });
-          setTimeout(function(){
-              $('#adbox').show();
-          },5000);
-
-    }();
+    
     function tobg1(name) {
       window.location.href="index.html";
     }
