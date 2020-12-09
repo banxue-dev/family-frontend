@@ -5,7 +5,8 @@
       var html_2='<div id="jump_ghost" class="ghost" >';
           html_2+='    <div style="display: flex;flex-direction: row-reverse;align-items:flex-end;">';
           html_2+='        <div id="littleghost"><img  src="static/ghost.png" style="width:50px;height:50px;" /></div>';
-          html_2+='        <div id="adbox" style="line-height:23px;height:50px;width:70%;display:none;background-color: rgba(126,126,126,0.7);border-radius: 10px;"><div style="" class="tip right">也想要这样的网站?请联系<a href="tel:13524954089">13524954089</a> 唐先生(微信同号) </div></div>';
+          //html_2+='        <div id="adbox" style="line-height:23px;height:50px;width:70%;display:none;background-color: rgba(126,126,126,0.7);border-radius: 10px;"><div style="" class="tip right">也想要这样的网站?请联系<a href="tel:13524954089">13524954089</a> 唐先生(微信同号) </div></div>';
+          html_2+='        <div id="adbox" style="line-height:23px;height:50px;width:70%;display:none;background-color: rgba(126,126,126,0.7);border-radius: 10px;"><div style="" class="tip right"><img scr="static/customer.jpg" style="width: 80px;height: 80px;"></div></div>';
           html_2+='    </div>';
           html_2+='</div>';
           $('body').append(html_2);
