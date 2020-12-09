@@ -28,6 +28,14 @@ a:active{text-decoration:none;}
 
 
 /*--header--*/
+@keyframes ghostFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-1rem);
+  }
+}
 .ghost {
     animation: ghostFloat 3s ease-in-out infinite;
     position: fixed;
