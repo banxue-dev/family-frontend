@@ -35,7 +35,7 @@ a:active{text-decoration:none;}
   }
 }
 .ghost {
-    animation: ghostFloat 2s ease-in-out infinite;
+    animation: ghostFloat 3s ease-in-out infinite;
     position: fixed;
     right: 0px;
     top:70%;
