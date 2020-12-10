@@ -22,8 +22,8 @@
             }
           });
           setTimeout(function(){
-              $('#adbox').show();
-              isc=true;
+              //$('#adbox').show();
+             // isc=true;
           },5000);
 
     }();
