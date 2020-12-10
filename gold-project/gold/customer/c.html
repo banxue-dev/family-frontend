@@ -45,7 +45,7 @@
             </ul>
         </div>
         <div class="sj-contact-car">
-        <img src="" id="orgAddrImg" style="width: 100%;" />
+        <a href="" id="orgMapHref"><img src="" id="orgAddrImg" style="width: 100%;" /></a>
       </div>
         <div class="sj-contact-car" style="display: none;">
             <div class="sj-contact-bus">
@@ -125,6 +125,7 @@
                 $('#customerName').html(per.customerName);
                 $('#mailCode').html(per.customerMailCode);
                 $('#orgAddrImg').attr('src',goldconfig.backendHost+'/'+per.customerAddrImg);
+                $('#orgMapHref').attr('href','http://api.map.baidu.com/geocoder?address='+per.customerAddr+'&output=html');
                 $('[name=shopPhone]').attr('href','tel://'+per.customerContactPhone);
 
             }
