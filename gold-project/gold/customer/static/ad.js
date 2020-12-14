@@ -1,5 +1,6 @@
 ﻿
     var ghost=function(){
+      return ;
       var css='@keyframes ghostFloat { 0%, 100% {transform: translateY(0);}50% {transform: translateY(-8px);}}.anmo {animation: ghostFloat 3s ease-in-out infinite;}.ghost {position: fixed;right: 0px;top:70%;z-index: 999;cursor:pointer;}.tip {position: relative;background-color: transparent;color: black;text-align: center;border-radius: 10px;font-family: sans-serif;}.tip:after {content: "";position: absolute;width: 0;height: 0;border: 8px solid;}.right:after {border-left-color: rgba(126,126,126,0.4);left: 100%;top: 50%;margin-top: -7px;color:transparent;}';
       $('head').append('<style rel="stylesheet">'+css+'</style>');
       var html_2='<div id="jump_ghost" class="ghost anmo" >';
