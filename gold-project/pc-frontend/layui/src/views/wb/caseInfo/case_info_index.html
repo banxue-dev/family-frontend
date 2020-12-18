@@ -1,0 +1,174 @@
+
+
+  <title>案例信息列表</title>
+
+  <div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+      <a lay-href="">主页</a>
+      <a><cite>业务设置</cite></a>
+      <a><cite>案例信息设置</cite></a>
+      <a><cite>案例信息列表</cite></a>
+    </div>
+  </div>
+  
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header">案例信息列表</div>
+          <div class="layui-card-body">
+             <div style="padding-bottom: 10px; ">
+
+              <script type="text/html" template  >
+                        <button class="layui-btn layuiadmin-btn-caseInfoButton" data-type="add"><i class="layui-icon">&#xe608;</i> 添加
+                      </button>
+
+                      <button class="layui-btn layuiadmin-btn-caseInfoButton  layui-btn-danger" data-type="batchdel"><i
+                              class="layui-icon">&#xe640;</i>删除
+                      </button>
+                    
+                </script>
+            </div>
+            <table class="layui-hide" id="caseInfo_table" lay-filter="caseInfo_table"></table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/html" id="caseInfo_oper_col" >
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>    
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>        
+  </script>        
+
+  <script>
+  layui.use(['admin','tree', 'table','layedit'], function(){
+    var $ = layui.$
+    ,table = layui.table
+    ,tree = layui.tree
+    ,admin=layui.admin
+    ,view = layui.view
+    ,table = layui.table
+    ,form = layui.form
+    ,layedit = layui.layedit
+    ,requrl=layui.setter.backuprequesturl+'caseInfo'+layui.setter.reqver;
+    //console.log(layui.data(layui.setter.tableName)[layui.setter.request.userAuthName]);
+    table.render({
+      elem: '#caseInfo_table'
+      ,url: requrl+'api/getCaseInfoListByPage'
+      ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+      ,headers:layui.setter.headers
+      ,page:layui.setter.page
+      ,where:layui.setter.authParams
+      ,cols: [[
+         {type: 'checkbox', fixed: 'left', title: ''}
+        ,{field:'caseName',  title: '名称'}
+        ,{field:'caseImg',  title: '图片'}
+        ,{field:'caseGroupName',  title: '分组'}
+        ,{field:'createTime',  title: '创建时间'}
+        ,{field:'caseId',  hide:true}
+        ,{field:'caseGroupId',  hide:true}
+        ,{templet: '#caseInfo_oper_col', fixed: 'right', title: '操作', align: 'center'}
+      ]]
+    });
+    
+    table.on('tool(caseInfo_table)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+                 delcaseInfo(data.caseId);
+            } else if (obj.event === 'edit') {
+                addNewcaseInfo(data,'编辑案例信息','wb/caseInfo/case_info_add','mod');
+            } 
+        })
+    var active = {
+      batchdel: function(){
+        var checkStatus = table.checkStatus('caseInfo_table')
+        ,checkData = checkStatus.data; //得到选中的数据
+
+        if(checkData.length === 0){
+          return layer.msg('请选择数据');
+        }
+        var lineIds="";
+        checkData.forEach(function (value,i) {
+            //lineIds.push(value.caseInfoId);
+            lineIds+=value.caseId;
+            if(i<checkData.length-1){
+              lineIds+=',';
+            }
+        })
+        delcaseInfo(lineIds);
+      }
+      
+      //添加
+      ,add: function(othis){
+        addNewcaseInfo({parentId:0},'添加案例信息','wb/caseInfo/case_info_add','add');
+      }
+    }; 
+    function delcaseInfo(params){
+      layer.confirm('确定删除吗？', function(index) {
+            
+            admin.req({
+            url:requrl+'delCaseInfo',
+            traditional:true,
+            data:{caseInfoIds:params},
+            success:function(res){
+              if(res.code=='000000'){
+
+                //执行 Ajax 后重载
+                table.reload('caseInfo_table');
+                layer.msg('已删除');
+              }else{
+                layer.msg(res.msg);
+              }
+               layer.closeAll('loading');
+            }
+          });
+        });
+    }
+    function addNewcaseInfo(params,title,url,treq){
+      admin.popup({
+          title: title
+          ,area: ['70%', '70%']
+          ,id: 'LAY-popup-content-add'
+          ,success: function(layero, index){
+            view(this.id).render(url).done(function(){
+              params.hideGroupConfig=params.caseGroupId;
+              params.openStatus=params.openStatus+'';
+              var editIndex=layedit.build('caseContent',{
+                uploadImage:{
+                  url:layui.setter.backuprequesturl+'/personal/v1.0/uploadHead',
+                  type:'post',
+                  headers:layui.setter.headers,
+                  data:layui.setter.authParams
+                }
+              }); //建立编辑器
+              form.val('gold_caseInfo_add_form', params);
+              //监听提交
+              form.on('submit(layuiadmin-app-form-submit)', function(data){
+                var field = data.field; //获取提交的字段
+                field.caseContent=layedit.getContent(editIndex);
+
+                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                admin.req({
+                  url:requrl+treq+'CaseInfo',
+                  data:field,
+                  done:function(res){
+                    layui.table.reload('caseInfo_table'); //重载表格
+                    layer.close(index); //执行关闭 
+                    layer.closeAll('loading');
+                  }
+                })
+              });
+            });
+          }
+        });
+    }
+    window.setTimeout(function(){
+
+      $('.layuiadmin-btn-caseInfoButton').on('click', function(){
+        var type = $(this).data('type');
+        active[type] ? active[type].call(this) : '';
+      });
+    },1000);
+
+  });
+  </script>

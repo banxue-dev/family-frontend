@@ -1,0 +1,137 @@
+
+  <div class="layui-form" lay-filter="gold_newsInfo_add_form" id="gold_newsInfo_add_form"style="padding: 20px 30px 0 0;">
+    <input type="hidden" name="newsId">
+    <div class="layui-form-item">
+      <label class="layui-form-label">作者</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input type="text" name="newsAuther" value="" lay-verify="required" placeholder="请输入作者" autocomplete="off" class="layui-input">
+        </script>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">标题</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input type="text" name="newsTitle" value="" lay-verify="required" placeholder="请输入新闻名称" autocomplete="off" class="layui-input">
+        </script>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">简介</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input type="text" name="newsBrief" value="" lay-verify="required" placeholder="请输入新闻名称" autocomplete="off" class="layui-input">
+        </script>
+      </div>
+    </div>
+    <input type="hidden" name="hideGroupConfig" id="hideGroupConfig">
+    
+    <div class="layui-form-item">
+      <label class="layui-form-label">所属分组</label>
+      <div class="layui-input-inline">
+       <script type="text/html" template lay-type='post' lay-url="{{layui.setter.backuprequesturl}}groupConfig/v1.0/api/getGroupConfigList?groupType=1" 
+        lay-done="layui.$('#userAddOrgCode').val(layui.$('#hideGroupConfig').val());layui.form.render('select', 'gold_newsInfo_add_form');">
+
+          <select name="newsGroupId" id="userAddOrgCode" lay-filter="selectGroup">
+            {{# layui.each(d.data, function(index, item){ }}
+                  <option value='{{item.groupId}}'  >{{item.groupName}}</option>
+                
+            {{#  }); }}
+
+            
+         </select>
+        </script>
+      </div>
+    </div>
+    
+
+    
+    <div class="layui-form-item">
+      <label class="layui-form-label">新闻头图</label>
+      <div class="layui-input-inline " >
+           <input type="text" class="imagePicker" name="newsImg" id="newsImg"  lay-filter="imagePicker" style="display:none;">
+          
+        <button  class="layui-btn layui-btn-primary" layadmin-event="avartatPreview" bind-input='newsImg'>查看</button >
+
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">详细内容</label>
+      <div class="layui-input-inline" style="width:80%">
+        <script type="text/html" template>
+          <textarea name="newsContent" id="newsContent" style="height: 150px;" autocomplete="off" class="layui-textarea">
+            
+          </textarea>
+        </script>
+      </div>
+    </div>
+
+    <div class="layui-form-item">
+      <label class="layui-form-label"></label>
+      <div class="layui-input-inline">
+        <input type="button" lay-submit lay-filter="layuiadmin-app-form-submit" value="确认" class="layui-btn">
+      </div>
+    </div>
+  </div>
+<script type="text/javascript">
+  layui.define([ 'imagePicker'], function(exports){
+    var $ = layui.$
+  ,layer = layui.layer
+  ,admin=layui.admin
+  ,imagePicker=layui.imagePicker
+  
+ imagePicker.render({
+      // 选择器，推荐使用input
+      elem: '#newsImg',
+      // 数据类型：fontClass/unicode，推荐使用fontClass
+      name: 'newsImg',
+      // 是否开启搜索：true/false，默认true
+      search: true,
+      // 是否开启分页：true/false，默认true
+      page: true,
+      // 每页显示数量，默认12
+      limit: 8,
+      // 每个图标格子的宽度：'43px'或'20%'
+      cellWidth: '120px',
+      cellHeight: '60px',
+      // 渲染成功后的回调
+      success: function(d) {
+          console.log('加载成功');
+      }
+  });
+
+  /**
+   * 选中图标 （常用于更新时默认选中图标）
+   * @param filter lay-filter
+   * @param iconName 图标名称，自动识别fontClass/unicode
+   */
+   setTimeout(function(){
+    if($('#newsImg').val()){
+      imagePicker.checkIcon('newsImg');
+    }
+   },1000);
+
+   //表单赋值
+  
+  //查看头像
+  admin.events.avartatPreview = function(othis){
+    var src = $('#'+$(othis).attr('bind-input')).val();
+    if(!src){
+      layui.layer.msg('请先选择图片');
+      return ;
+    }
+    layer.photos({
+      photos: {
+        "title": "查看头像" //相册标题
+        ,"data": [{
+          "src": src //原图地址
+        }]
+      }
+      ,shade: 0.01
+      ,closeBtn: 1
+      ,anim: 5
+    });
+  };
+  })
+</script>

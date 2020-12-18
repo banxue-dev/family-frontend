@@ -1,0 +1,74 @@
+
+  <div class="layui-form" lay-filter="normal_img_manager_add_form" id="normal_img_manager_add_form"style="padding: 20px 30px 0 0;">
+    <div class="layui-form-item">
+      <label class="layui-form-label">图片名称</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input type="text" name="fileName" value="" lay-verify="required" placeholder="请输入图片名称" autocomplete="off" class="layui-input">
+        </script>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">上传图片</label>
+      <div class="layui-input-inline" style="width:80px;">
+        <input name="link"  id="link" readonly="readonly" placeholder="上传图片" value="" class="layui-input">
+      </div>
+      <div class="layui-input-inline layui-btn-container" style="width: auto;">
+        <button type="button" class="layui-btn layui-btn-primary" id="link_upload" bind-input='link'>
+          <i class="layui-icon">&#xe67c;</i>选择
+        </button>
+        <button class="layui-btn layui-btn-primary" layadmin-event="avartatPreview" bind-input='link'>查看</button >
+      </div>
+   </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label"></label>
+      <div class="layui-input-inline">
+        <input type="button" lay-submit lay-filter="layuiadmin-app-form-submit" value="确认" class="layui-btn">
+      </div>
+    </div>
+  </div>
+<script type="text/javascript">
+    layui.define([ 'upload'], function(exports){
+    var $ = layui.$
+  ,layer = layui.layer
+  ,admin=layui.admin
+  ,upload = layui.upload;
+   //表单赋值
+  //上传头像
+
+  var th=upload.render({
+    url: layui.setter.backuprequesturl+'/personal/v1.0/uploadImg'
+    ,elem: '#link_upload'
+    ,headers:layui.setter.headers
+    ,data:layui.setter.authParams
+    ,done: function(res){
+      if(res.code == layui.setter.response.statusCode.ok){
+        $('#'+th.config.elem.attr('bind-input')).val(layui.setter.backuprequesturl+res.data);
+      } else {
+        layer.msg(res.msg, {icon: 5});
+      }
+    }
+  });
+  
+  //查看头像
+  admin.events.avartatPreview = function(othis){
+    var src = $('#'+$(othis).attr('bind-input')).val();
+    if(!src){
+      layui.layer.msg('请先上传图片');
+      return ;
+    }
+    layer.photos({
+      photos: {
+        "title": "查看头像" //相册标题
+        ,"data": [{
+          "src": src //原图地址
+        }]
+      }
+      ,shade: 0.01
+      ,closeBtn: 1
+      ,anim: 5
+    });
+  };
+  })
+</script>
+</script>

@@ -1,0 +1,210 @@
+
+  <div class="layui-form" lay-filter="gold_contactInfo_add_form" id="gold_contactInfo_add_form"style="padding: 20px 30px 0 0;">
+    <input type="hidden" name="contactId">
+    <div class="layui-form-item">
+      <label class="layui-form-label">公司名称</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input type="text" name="companyName" value="" lay-verify="required" placeholder="请输入公司名称" autocomplete="off" class="layui-input">
+        </script>
+      </div>
+    </div>
+    <input type="hidden" name="hideOrgCode" id="hideOrgCode">
+    
+    <div class="layui-form-item">
+      <label class="layui-form-label">选择组织</label>
+      <div class="layui-input-inline">
+       <script type="text/html" template lay-type='post' lay-url="{{layui.setter.backuprequesturl}}org/v1.0/api/getOrgList" 
+        lay-done="layui.$('#userAddOrgCode').val(layui.$('#hideOrgCode').val());layui.form.render('select', 'gold_contactInfo_add_form');">
+
+          <select name="orgCode" id="userAddOrgCode" lay-filter="selectOrg">
+            {{# layui.each(d.data, function(index, item){ }}
+                  <option value='{{item.orgCode}}'  >{{item.orgName}}</option>
+                
+            {{#  }); }}
+
+            
+         </select>
+        </script>
+      </div>
+    </div>
+    
+
+    <div class="layui-form-item">
+      <label class="layui-form-label">地址</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input type="text" name="companyAddr" value="" lay-verify="required" placeholder="请输入地址" autocomplete="off" class="layui-input">
+        </script>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">联系电话</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input type="text" name="contactPhone" value=""  placeholder="请输入电话" autocomplete="off" class="layui-input">
+        </script>
+      </div>
+    </div>
+
+    <div class="layui-form-item">
+      <label class="layui-form-label">邮箱</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input type="text" name="companyEmail" value="" lay-verify="required" placeholder="请输入邮箱" autocomplete="off" class="layui-input">
+        </script>
+      </div>
+    </div>
+
+    <div class="layui-form-item">
+      <label class="layui-form-label">QQ</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input type="text" name="contactQq" value="" lay-verify="required" placeholder="请输入QQ" autocomplete="off" class="layui-input">
+        </script>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">工作时间</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input type="text" name="companyWorkTime" value="" lay-verify="required" placeholder="请输入工作时间" autocomplete="off" class="layui-input">
+        </script>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">备案号</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input type="text" name="webRecordCode" value="" lay-verify="required" placeholder="请输入备案号" autocomplete="off" class="layui-input">
+        </script>
+      </div>
+    </div>
+
+    
+    <div class="layui-form-item">
+      <label class="layui-form-label">公众号</label>
+      <div class="layui-input-inline" >
+           <input type="text" class="imagePicker" name="contactWxPublicImg" id="contactWxPublicImg"  lay-filter="imagePicker" style="display:none;">
+          
+        <button  class="layui-btn layui-btn-primary" layadmin-event="avartatPreview" bind-input='contactWxPublicImg'>查看</button >
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">LOGO</label>
+      <div class="layui-input-inline " >
+           <input type="text" class="imagePicker" name="companyLogo" id="companyLogo"  lay-filter="imagePicker" style="display:none;">
+          
+        <button  class="layui-btn layui-btn-primary" layadmin-event="avartatPreview" bind-input='companyLogo'>查看</button >
+
+      </div>
+    </div>
+
+    <div class="layui-form-item">
+      <label class="layui-form-label">网站标题</label>
+      <div class="layui-input-inline">
+          <textarea name="webTitle" lay-verify="required" style="width: 400px; height: 150px;" autocomplete="off" class="layui-textarea"></textarea>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">公司理念</label>
+      <div class="layui-input-inline">
+          <textarea name="companyDreams" lay-verify="required" style="width: 400px; height: 150px;" autocomplete="off" class="layui-textarea"></textarea>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label"></label>
+      <div class="layui-input-inline">
+        <input type="button" lay-submit lay-filter="layuiadmin-app-form-submit" value="确认" class="layui-btn">
+      </div>
+    </div>
+  </div>
+<script type="text/javascript">
+  layui.define([ 'upload','colorpicker','imagePicker'], function(exports){
+    var $ = layui.$
+  ,layer = layui.layer
+  ,admin=layui.admin
+  ,colorpicker=layui.colorpicker
+  ,imagePicker=layui.imagePicker
+  ,upload = layui.upload;
+
+   imagePicker.render({
+        // 选择器，推荐使用input
+        elem: '#companyLogo',
+        // 数据类型：fontClass/unicode，推荐使用fontClass
+        name: 'companyLogo',
+        // 是否开启搜索：true/false，默认true
+        search: true,
+        // 是否开启分页：true/false，默认true
+        page: true,
+        // 每页显示数量，默认12
+        limit: 8,
+        // 每个图标格子的宽度：'43px'或'20%'
+        cellWidth: '120px',
+        cellHeight: '60px',
+        // 渲染成功后的回调
+        success: function(d) {
+            console.log('加载成功');
+        }
+  });
+   imagePicker.render({
+        // 选择器，推荐使用input
+        elem: '#contactWxPublicImg',
+        // 数据类型：fontClass/unicode，推荐使用fontClass
+        name: 'contactWxPublicImg',
+        // 是否开启搜索：true/false，默认true
+        search: true,
+        // 是否开启分页：true/false，默认true
+        page: true,
+        // 每页显示数量，默认12
+        limit: 8,
+        // 每个图标格子的宽度：'43px'或'20%'
+        cellWidth: '120px',
+        cellHeight: '60px',
+        // 渲染成功后的回调
+        success: function(d) {
+            console.log('加载成功');
+        }
+  });
+
+  /**
+   * 选中图标 （常用于更新时默认选中图标）
+   * @param filter lay-filter
+   * @param iconName 图标名称，自动识别fontClass/unicode
+   */
+
+             setTimeout(function(){
+              if($('#contactWxPublicImg').val()){
+                imagePicker.checkIcon('contactWxPublicImg');
+              }
+             },1000);
+
+             setTimeout(function(){
+              if($('#companyLogo').val()){
+                imagePicker.checkIcon('companyLogo');
+              }
+             },1000);
+
+   //表单赋值
+  
+  //查看头像
+  admin.events.avartatPreview = function(othis){
+    var src = $('#'+$(othis).attr('bind-input')).val();
+    if(!src){
+      layui.layer.msg('请先上传图片');
+      return ;
+    }
+    layer.photos({
+      photos: {
+        "title": "查看头像" //相册标题
+        ,"data": [{
+          "src": src //原图地址
+        }]
+      }
+      ,shade: 0.01
+      ,closeBtn: 1
+      ,anim: 5
+    });
+  };
+  })
+</script>

@@ -400,8 +400,14 @@ $(document).ready(
             $('#shopAddress').html(per.customerAddr);
             $('#customerName').html(per.customerName);
             $('#mailCode').html(per.customerMailCode);
-            $('#orgAddrImg').attr('src',goldconfig.backendHost+'/'+per.customerAddrImg);
-            $('#showLogo').attr('src',goldconfig.backendHost+'/'+per.customerLogo);
+            if(per.customerAddrImg.indexOf('http:')==-1){
+              per.customerAddrImg=goldconfig.backendHost+'/'+per.customerAddrImg;
+            }
+            if(per.customerLogo.indexOf('http:')==-1){
+              per.customerLogo=goldconfig.backendHost+'/'+per.customerLogo;
+            }
+            $('#orgAddrImg').attr('src',per.customerAddrImg);
+            $('#showLogo').attr('src',per.customerLogo);
             $('[name=shopPhone]').attr('href','tel://'+per.customerContactPhone);
         }
       }

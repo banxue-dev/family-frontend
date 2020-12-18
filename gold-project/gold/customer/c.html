@@ -124,7 +124,10 @@
                 $('#shopAddress').html(per.customerAddr);
                 $('#customerName').html(per.customerName);
                 $('#mailCode').html(per.customerMailCode);
-                $('#orgAddrImg').attr('src',goldconfig.backendHost+'/'+per.customerAddrImg);
+                if(per.customerAddrImg.indexOf('http:')==-1){
+                  per.customerAddrImg=goldconfig.backendHost+'/'+per.customerAddrImg;
+                }
+                $('#orgAddrImg').attr('src',per.customerAddrImg);
                 $('#orgMapHref').attr('href','http://api.map.baidu.com/geocoder?address='+per.customerAddr+'&output=html');
                 $('[name=shopPhone]').attr('href','tel://'+per.customerContactPhone);
 

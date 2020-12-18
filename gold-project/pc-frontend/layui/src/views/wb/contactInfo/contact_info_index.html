@@ -1,0 +1,171 @@
+
+
+  <title>官网信息列表</title>
+
+  <div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+      <a lay-href="">主页</a>
+      <a><cite>业务设置</cite></a>
+      <a><cite>官网信息设置</cite></a>
+      <a><cite>官网信息列表</cite></a>
+    </div>
+  </div>
+  
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header">官网信息列表</div>
+          <div class="layui-card-body">
+             <div style="padding-bottom: 10px; ">
+
+              <script type="text/html" template  >
+                        <button class="layui-btn layuiadmin-btn-contactInfoButton" data-type="add"><i class="layui-icon">&#xe608;</i> 添加
+                      </button>
+
+                      <button class="layui-btn layuiadmin-btn-contactInfoButton  layui-btn-danger" data-type="batchdel"><i
+                              class="layui-icon">&#xe640;</i>删除
+                      </button>
+                    
+                </script>
+            </div>
+            <table class="layui-hide" id="contactInfo_table" lay-filter="contactInfo_table"></table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/html" id="contactInfo_oper_col" >
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>    
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>        
+  </script>        
+
+  <script>
+  layui.use(['admin','tree', 'table'], function(){
+    var $ = layui.$
+    ,table = layui.table
+    ,tree = layui.tree
+    ,admin=layui.admin
+    ,view = layui.view
+    ,table = layui.table
+    ,form = layui.form
+    ,requrl=layui.setter.backuprequesturl+'contactInfo'+layui.setter.reqver;
+    //console.log(layui.data(layui.setter.tableName)[layui.setter.request.userAuthName]);
+    table.render({
+      elem: '#contactInfo_table'
+      ,url: requrl+'api/getContactInfoListByPage'
+      ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+      ,headers:layui.setter.headers
+      ,page:layui.setter.page
+      ,where:layui.setter.authParams
+      ,cols: [[
+         {type: 'checkbox', fixed: 'left', title: ''}
+        ,{field:'companyName',  title: '名称'}
+        ,{field:'companyAddr',  title: '地址'}
+        ,{field:'companyEmail',  title: '邮箱'}
+        ,{field:'contactPhone',  title: '电话'}
+        ,{field:'contactQq',  title: 'QQ'}
+        ,{field:'contactWxPublicImg',  title: '公众号'}
+        ,{field:'companyLogo',  title: 'LOGO'}
+        ,{field:'companyWorkTime',  title: '工作时间'}
+        ,{field:'webRecordCode',  title: '备案号'}
+        ,{field:'webTitle',  title: '网站标题'}
+        ,{field:'companyDreams',  title: '公司理念'}
+        ,{field:'contactId',  hide:true}
+        ,{field:'orgCode',  hide:true}
+        ,{templet: '#contactInfo_oper_col', fixed: 'right', title: '操作', align: 'center'}
+      ]]
+    });
+    
+    table.on('tool(contactInfo_table)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+                 delcontactInfo(data.contactInfoId);
+            } else if (obj.event === 'edit') {
+                addNewcontactInfo(data,'编辑官网信息','wb/contactInfo/contact_info_add','mod');
+            } 
+        })
+    var active = {
+      batchdel: function(){
+        var checkStatus = table.checkStatus('contactInfo_table')
+        ,checkData = checkStatus.data; //得到选中的数据
+
+        if(checkData.length === 0){
+          return layer.msg('请选择数据');
+        }
+        var lineIds="";
+        checkData.forEach(function (value,i) {
+            //lineIds.push(value.contactInfoId);
+            lineIds+=value.customerId;
+            if(i<checkData.length-1){
+              lineIds+=',';
+            }
+        })
+        delcontactInfo(lineIds);
+      }
+      
+      //添加
+      ,add: function(othis){
+        addNewcontactInfo({parentId:0},'添加官网信息','wb/contactInfo/contact_info_add','add');
+      }
+    }; 
+    function delcontactInfo(params){
+      layer.confirm('确定删除吗？', function(index) {
+            
+            admin.req({
+            url:requrl+'delContactInfo',
+            traditional:true,
+            data:{contactInfoIds:params},
+            success:function(res){
+              if(res.code=='000000'){
+
+                //执行 Ajax 后重载
+                table.reload('contactInfo_table');
+                layer.msg('已删除');
+              }else{
+                layer.msg(res.msg);
+              }
+               layer.closeAll('loading');
+            }
+          });
+        });
+    }
+    function addNewcontactInfo(params,title,url,treq){
+      admin.popup({
+          title: title
+          ,area: ['550px', '550px']
+          ,id: 'LAY-popup-content-add'
+          ,success: function(layero, index){
+            view(this.id).render(url).done(function(){
+              params.hideOrgCode=params.orgCode;
+              params.openStatus=params.openStatus+'';
+              form.val('gold_contactInfo_add_form', params);
+              //监听提交
+              form.on('submit(layuiadmin-app-form-submit)', function(data){
+                var field = data.field; //获取提交的字段
+                
+                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                admin.req({
+                  url:requrl+treq+'ContactInfo',
+                  data:field,
+                  done:function(res){
+                    layui.table.reload('contactInfo_table'); //重载表格
+                    layer.close(index); //执行关闭 
+                    layer.closeAll('loading');
+                  }
+                })
+              });
+            });
+          }
+        });
+    }
+    window.setTimeout(function(){
+
+      $('.layuiadmin-btn-contactInfoButton').on('click', function(){
+        var type = $(this).data('type');
+        active[type] ? active[type].call(this) : '';
+      });
+    },1000);
+
+  });
+  </script>

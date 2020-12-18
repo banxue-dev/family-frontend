@@ -95,7 +95,10 @@
                 var per=res.data.personalInfo || res.data;
                 $('[name=shopPhone]').html(per.customerContactPersonal+"   "+per.customerContactPhone).attr('href','tel://'+per.customerContactPhone);
                 $('#customerName').html(per.customerName);
-                $('#showLogo').attr('src',goldconfig.backendHost+'/'+per.customerLogo);
+                if(per.customerLogo.indexOf('http:')==-1){
+                  per.customerLogo=goldconfig.backendHost+'/'+per.customerLogo;
+                }
+                $('#showLogo').attr('src',per.customerLogo);
                 goldconfig.groupConfig=res.data.groupConfig;
                 goldconfig.metalConfig=res.data.metalConfig;
                 goldconfig.personalInfo=per;
