@@ -1,0 +1,173 @@
+
+
+  <title>新闻信息列表</title>
+
+  <div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+      <a lay-href="">主页</a>
+      <a><cite>业务设置</cite></a>
+      <a><cite>新闻信息设置</cite></a>
+      <a><cite>新闻信息列表</cite></a>
+    </div>
+  </div>
+  
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header">新闻信息列表</div>
+          <div class="layui-card-body">
+             <div style="padding-bottom: 10px; ">
+
+              <script type="text/html" template  >
+                        <button class="layui-btn layuiadmin-btn-aboutOurInfoButton" data-type="add"><i class="layui-icon">&#xe608;</i> 添加
+                      </button>
+
+                      <button class="layui-btn layuiadmin-btn-aboutOurInfoButton  layui-btn-danger" data-type="batchdel"><i
+                              class="layui-icon">&#xe640;</i>删除
+                      </button>
+                    
+                </script>
+            </div>
+            <table class="layui-hide" id="aboutOurInfo_table" lay-filter="aboutOurInfo_table"></table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/html" id="aboutOurInfo_oper_col" >
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>    
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>        
+  </script>        
+
+  <script>
+  layui.use(['admin','tree', 'table','layedit'], function(){
+    var $ = layui.$
+    ,table = layui.table
+    ,tree = layui.tree
+    ,admin=layui.admin
+    ,view = layui.view
+    ,table = layui.table
+    ,form = layui.form
+    ,layedit = layui.layedit
+    ,requrl=layui.setter.backuprequesturl+'aboutOurInfo'+layui.setter.reqver;
+    //console.log(layui.data(layui.setter.tableName)[layui.setter.request.userAuthName]);
+    table.render({
+      elem: '#aboutOurInfo_table'
+      ,url: requrl+'api/getAboutOurInfoListByPage'
+      ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+      ,headers:layui.setter.headers
+      ,page:layui.setter.page
+      ,where:layui.setter.authParams
+      ,cols: [[
+         {type: 'checkbox', fixed: 'left', title: ''}
+        ,{field:'customerLikeCount',  title: '点赞数'}
+        ,{field:'teamCount',  title: '团队数'}
+        ,{field:'caseCount',  title: '案例数'}
+        ,{field:'aboutOurId',  hide:true}
+        ,{field:'orgCode',  hide:true}
+        ,{templet: '#aboutOurInfo_oper_col', fixed: 'right', title: '操作', align: 'center'}
+      ]]
+    });
+    
+    table.on('tool(aboutOurInfo_table)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+                 delaboutOurInfo(data.ourId);
+            } else if (obj.event === 'edit') {
+                addNewaboutOurInfo(data,'编辑新闻信息','wb/aboutOurInfo/aboutour_info_add','mod');
+            } 
+        })
+    var active = {
+      batchdel: function(){
+        var checkStatus = table.checkStatus('aboutOurInfo_table')
+        ,checkData = checkStatus.data; //得到选中的数据
+
+        if(checkData.length === 0){
+          return layer.msg('请选择数据');
+        }
+        var lineIds="";
+        checkData.forEach(function (value,i) {
+            //lineIds.push(value.aboutOurInfoId);
+            lineIds+=value.ourId;
+            if(i<checkData.length-1){
+              lineIds+=',';
+            }
+        })
+        delaboutOurInfo(lineIds);
+      }
+      
+      //添加
+      ,add: function(othis){
+        addNewaboutOurInfo({parentId:0},'添加新闻信息','wb/aboutOurInfo/aboutour_info_add','add');
+      }
+    }; 
+    function delaboutOurInfo(params){
+      layer.confirm('确定删除吗？', function(index) {
+            
+            admin.req({
+            url:requrl+'delAboutOurInfo',
+            traditional:true,
+            data:{aboutOurInfoIds:params},
+            success:function(res){
+              if(res.code=='000000'){
+
+                //执行 Ajax 后重载
+                table.reload('aboutOurInfo_table');
+                layer.msg('已删除');
+              }else{
+                layer.msg(res.msg);
+              }
+               layer.closeAll('loading');
+            }
+          });
+        });
+    }
+    function addNewaboutOurInfo(params,title,url,treq){
+      admin.popup({
+          title: title
+          ,area: ['70%', '70%']
+          ,id: 'LAY-popup-content-add'
+          ,success: function(layero, index){
+            view(this.id).render(url).done(function(){
+              params.hideGroupConfig=params.ourGroupId;
+              params.openStatus=params.openStatus+'';
+              var editIndex=layedit.build('ourIntroduce',{
+                uploadImage:{
+                  url:layui.setter.backuprequesturl+'/personal/v1.0/uploadHead',
+                  type:'post',
+                  headers:layui.setter.headers,
+                  data:layui.setter.authParams
+                }
+              }); //建立编辑器
+              form.val('gold_aboutOurInfo_add_form', params);
+              //监听提交
+              form.on('submit(layuiadmin-app-form-submit)', function(data){
+                var field = data.field; //获取提交的字段
+                field.ourIntroduce=layedit.getContent(editIndex);
+
+                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                admin.req({
+                  url:requrl+treq+'AboutOurInfo',
+                  data:field,
+                  done:function(res){
+                    layui.table.reload('aboutOurInfo_table'); //重载表格
+                    layer.close(index); //执行关闭 
+                    layer.closeAll('loading');
+                  }
+                })
+              });
+            });
+          }
+        });
+    }
+    window.setTimeout(function(){
+
+      $('.layuiadmin-btn-aboutOurInfoButton').on('click', function(){
+        var type = $(this).data('type');
+        active[type] ? active[type].call(this) : '';
+      });
+    },1000);
+
+  });
+  </script>

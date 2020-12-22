@@ -1,0 +1,165 @@
+
+
+  <title>留言信息列表</title>
+
+  <div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+      <a lay-href="">主页</a>
+      <a><cite>业务设置</cite></a>
+      <a><cite>客户留言设置</cite></a>
+      <a><cite>客户留言列表</cite></a>
+    </div>
+  </div>
+  
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header">客户留言列表</div>
+          <div class="layui-card-body">
+             <div style="padding-bottom: 10px; ">
+
+              <script type="text/html" template  >
+                        <button class="layui-btn layuiadmin-btn-leavingMessageButton" data-type="add"><i class="layui-icon">&#xe608;</i> 添加
+                      </button>
+
+                      <button class="layui-btn layuiadmin-btn-leavingMessageButton  layui-btn-danger" data-type="batchdel"><i
+                              class="layui-icon">&#xe640;</i>删除
+                      </button>
+                    
+                </script>
+            </div>
+            <table class="layui-hide" id="leavingMessage_table" lay-filter="leavingMessage_table"></table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/html" id="leavingMessage_oper_col" >
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>    
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>        
+  </script>        
+
+  <script>
+  layui.use(['admin','tree', 'table','layedit'], function(){
+    var $ = layui.$
+    ,table = layui.table
+    ,tree = layui.tree
+    ,admin=layui.admin
+    ,view = layui.view
+    ,table = layui.table
+    ,form = layui.form
+    ,layedit = layui.layedit
+    ,requrl=layui.setter.backuprequesturl+'leavingMessageInfo'+layui.setter.reqver;
+    //console.log(layui.data(layui.setter.tableName)[layui.setter.request.userAuthName]);
+    table.render({
+      elem: '#leavingMessage_table'
+      ,url: requrl+'getLeavingMessageInfoListByPage'
+      ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+      ,headers:layui.setter.headers
+      ,page:layui.setter.page
+      ,where:layui.setter.authParams
+      ,cols: [[
+         {type: 'checkbox', fixed: 'left', title: ''}
+        ,{field:'customerName',  title: '名称'}
+        ,{field:'customerPhone',  title: '电话'}
+        ,{field:'customerEmail',  title: '内容'}
+        ,{field:'createTime',  title: '留言时间'}
+        ,{field:'leavingMessageId',  hide:true}
+        ,{field:'orgCode',  hide:true}
+        ,{templet: '#leavingMessage_oper_col', fixed: 'right', title: '操作', align: 'center'}
+      ]]
+    });
+    
+    table.on('tool(leavingMessage_table)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+                 delleavingMessage(data.leavingMessageId);
+            } else if (obj.event === 'edit') {
+                addNewleavingMessage(data,'编辑留言','wb/leavingMessageInfo/leaving_message_info_add','mod');
+            } 
+        })
+    var active = {
+      batchdel: function(){
+        var checkStatus = table.checkStatus('leavingMessage_table')
+        ,checkData = checkStatus.data; //得到选中的数据
+
+        if(checkData.length === 0){
+          return layer.msg('请选择数据');
+        }
+        var lineIds="";
+        checkData.forEach(function (value,i) {
+            //lineIds.push(value.leavingMessageId);
+            lineIds+=value.leavingMessageId;
+            if(i<checkData.length-1){
+              lineIds+=',';
+            }
+        })
+        delleavingMessage(lineIds);
+      }
+      
+      //添加
+      ,add: function(othis){
+        addNewleavingMessage({parentId:0},'添加客户留言','wb/leavingMessageInfo/leaving_message_info_add','add');
+      }
+    }; 
+    function delleavingMessage(params){
+      layer.confirm('确定删除吗？', function(index) {
+            
+            admin.req({
+            url:requrl+'delLeavingMessageInfo',
+            traditional:true,
+            data:{leavingMessageInfoIds:params},
+            success:function(res){
+              if(res.code=='000000'){
+
+                //执行 Ajax 后重载
+                table.reload('leavingMessage_table');
+                layer.msg('已删除');
+              }else{
+                layer.msg(res.msg);
+              }
+               layer.closeAll('loading');
+            }
+          });
+        });
+    }
+    function addNewleavingMessage(params,title,url,treq){
+      admin.popup({
+          title: title
+          ,area: ['70%', '70%']
+          ,id: 'LAY-popup-content-add'
+          ,success: function(layero, index){
+            view(this.id).render(url).done(function(){
+              params.hideOrg=params.orgCode;
+              params.openStatus=params.openStatus+'';
+              form.val('gold_leavingMessage_add_form', params);
+              //监听提交
+              form.on('submit(layuiadmin-app-form-submit)', function(data){
+                var field = data.field; //获取提交的字段
+
+                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                admin.req({
+                  url:requrl+'api/'+treq+'LeavingMessageInfo',
+                  data:field,
+                  done:function(res){
+                    layui.table.reload('leavingMessage_table'); //重载表格
+                    layer.close(index); //执行关闭 
+                    layer.closeAll('loading');
+                  }
+                })
+              });
+            });
+          }
+        });
+    }
+    window.setTimeout(function(){
+
+      $('.layuiadmin-btn-leavingMessageButton').on('click', function(){
+        var type = $(this).data('type');
+        active[type] ? active[type].call(this) : '';
+      });
+    },1000);
+
+  });
+  </script>

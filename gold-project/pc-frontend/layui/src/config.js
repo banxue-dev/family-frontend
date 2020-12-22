@@ -30,6 +30,11 @@ layui.define(['laytpl', 'layer', 'element', 'util'], function(exports){
     }
     ,viewParams:{
       orgCode:'111'
+    },
+    wbgroupType:{
+      case:0,
+      news:1,
+      service:3
     }
     ,userAuth:[]//暂时弃用,而是用layui.data来,因为这个数据在刷新页面时就会重置
     ,headers: { //通过 request 头传递

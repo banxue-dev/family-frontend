@@ -1,0 +1,59 @@
+
+  <div class="layui-form" lay-filter="gold_aboutOurInfo_add_form" id="gold_aboutOurInfo_add_form"style="padding: 20px 30px 0 0;">
+    <input type="hidden" name="aboutOurId">
+
+    <input type="hidden" name="hideOrgCode" id="hideOrgCode">
+    
+    <div class="layui-form-item">
+      <label class="layui-form-label">所属组织</label>
+      <div class="layui-input-inline">
+       <script type="text/html" template lay-type='post' lay-url="{{layui.setter.backuprequesturl}}org/v1.0/api/getOrgList?groupType=1" 
+        lay-done="layui.$('#userAddOrgCode').val(layui.$('#hideOrgCode').val());layui.form.render('select', 'gold_aboutOurInfo_add_form');">
+
+          <select name="ourGroupId" id="userAddOrgCode" lay-filter="selectGroup">
+            {{# layui.each(d.data, function(index, item){ }}
+                  <option value='{{item.orgCode}}'  >{{item.orgName}}</option>
+                
+            {{#  }); }}
+
+            
+         </select>
+        </script>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">案例数量</label>
+      <div class="layui-input-inline">
+          <input type="text" name="caseCount" value="" lay-verify="required" placeholder="请输入案例数" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">团队人数</label>
+      <div class="layui-input-inline">
+          <input type="text" name="teamCount" value="" lay-verify="required" placeholder="请输入团队数" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">点赞数量</label>
+      <div class="layui-input-inline">
+          <input type="text" name="customerLikeCount" value="" lay-verify="required" placeholder="请输入点赞数" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">介绍</label>
+      <div class="layui-input-inline" style="width:80%">
+        <script type="text/html" template>
+          <textarea name="ourIntroduce" id="ourIntroduce" style="height: 150px;" autocomplete="off" class="layui-textarea">
+            
+          </textarea>
+        </script>
+      </div>
+    </div>
+
+    <div class="layui-form-item">
+      <label class="layui-form-label"></label>
+      <div class="layui-input-inline">
+        <input type="button" lay-submit lay-filter="layuiadmin-app-form-submit" value="确认" class="layui-btn">
+      </div>
+    </div>
+  </div>
