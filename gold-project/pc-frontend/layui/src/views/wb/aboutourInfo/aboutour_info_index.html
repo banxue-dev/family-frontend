@@ -1,13 +1,13 @@
 
 
-  <title>新闻信息列表</title>
+  <title>关于我们列表</title>
 
   <div class="layui-card layadmin-header">
     <div class="layui-breadcrumb" lay-filter="breadcrumb">
       <a lay-href="">主页</a>
       <a><cite>业务设置</cite></a>
-      <a><cite>新闻信息设置</cite></a>
-      <a><cite>新闻信息列表</cite></a>
+      <a><cite>关于我们设置</cite></a>
+      <a><cite>关于我们列表</cite></a>
     </div>
   </div>
   
@@ -15,7 +15,7 @@
     <div class="layui-row layui-col-space15">
       <div class="layui-col-md12">
         <div class="layui-card">
-          <div class="layui-card-header">新闻信息列表</div>
+          <div class="layui-card-header">关于我们列表</div>
           <div class="layui-card-body">
              <div style="padding-bottom: 10px; ">
 
@@ -75,7 +75,7 @@
             if (obj.event === 'del') {
                  delaboutOurInfo(data.ourId);
             } else if (obj.event === 'edit') {
-                addNewaboutOurInfo(data,'编辑新闻信息','wb/aboutOurInfo/aboutour_info_add','mod');
+                addNewaboutOurInfo(data,'编辑关于我们','wb/aboutOurInfo/aboutour_info_add','mod');
             } 
         })
     var active = {
@@ -99,7 +99,7 @@
       
       //添加
       ,add: function(othis){
-        addNewaboutOurInfo({parentId:0},'添加新闻信息','wb/aboutOurInfo/aboutour_info_add','add');
+        addNewaboutOurInfo({parentId:0},'添加关于我们','wb/aboutOurInfo/aboutour_info_add','add');
       }
     }; 
     function delaboutOurInfo(params){

@@ -15,8 +15,8 @@ layui.define(['laytpl', 'layer', 'element', 'util'], function(exports){
     ,entry: 'index' //默认视图文件名
     ,engine: '.html' //视图文件后缀名
     ,pageTabs: true //是否开启页面选项卡功能。单页版不推荐开启
-    ,backuprequesturl: 'http:\/\/localhost:8091/family/' //全局请求前缀
-    //,backuprequesturl: 'http:\/\/www.banxue.fun:8091/family/' //全局请求前缀
+    //,backuprequesturl: 'http:\/\/localhost:8091/family/' //全局请求前缀
+    ,backuprequesturl: 'http:\/\/www.banxue.fun:8091/family/' //全局请求前缀
     ,reqver:'/v1.0/'
     ,name: '行情管理系统'//菜单上面的那个名称
     ,tableName: 'FamilyAdminSystem' //本地存储表名
