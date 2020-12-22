@@ -46,10 +46,8 @@
   </div>
   <script type="text/html" id="imgManager_oper_col">
     <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>
-              
-     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>      
-
     <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="showimg">看图</a>     
+     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>      
   </script>
   <script>
   layui.use(['admin','upload','tree', 'table'], function(){
@@ -117,7 +115,7 @@
         var lineIds="";
         checkData.forEach(function (value,i) {
             //lineIds.push(value.imgManagerId);
-            lineIds+=value.imgManagerId;
+            lineIds+=value.normalImgManagerId;
             if(i<checkData.length-1){
               lineIds+=',';
             }
