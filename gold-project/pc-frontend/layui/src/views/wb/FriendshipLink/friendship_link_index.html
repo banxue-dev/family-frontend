@@ -1,0 +1,192 @@
+
+
+  <title>友情链接</title>
+
+  <div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+      <a lay-href="">主页</a>
+      <a><cite>业务设置</cite></a>
+      <a><cite>友情链接</cite></a>
+      <a><cite>友情链接列表</cite></a>
+    </div>
+  </div>
+  
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header">友情链接列表</div>
+          <div class="layui-card-body">
+            <div class="test-table-reload-btn layui-form" lay-filter="searchFriendshipLinkForm" style="margin-bottom: 10px;">
+              分组选择：
+              <div class="layui-input-inline">
+                 <script type="text/html" template lay-type='post' lay-url="{{layui.setter.backuprequesturl}}org/v1.0/api/getOrgList" 
+                  lay-done="layui.form.render('select', 'searchFriendshipLinkForm');">
+
+                    <select name="orgCode" id="userAddOrgCode" lay-filter="selectOrg">
+                      {{# layui.each(d.data, function(index, item){ }}
+                            <option value='{{item.orgCode}}'  >{{item.orgName}}</option>
+                          
+                      {{#  }); }}
+
+                      
+                   </select>
+                  </script>
+                </div>
+              <button class="layui-btn layuiadmin-btn-friendshipLinkButton" data-type="reload">搜索</button>
+            </div>
+             <div style="padding-bottom: 10px; ">
+
+              <script type="text/html" template  >
+                        <button class="layui-btn layuiadmin-btn-friendshipLinkButton" data-type="add"><i class="layui-icon">&#xe608;</i> 添加
+                      </button>
+
+                      <button class="layui-btn layuiadmin-btn-friendshipLinkButton  layui-btn-danger" data-type="batchdel"><i
+                              class="layui-icon">&#xe640;</i>删除
+                      </button>
+                    
+                </script>
+            </div>
+            <table class="layui-hide" id="friendshipLink_table" lay-filter="friendshipLink_table"></table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/html" id="friendshipLink_oper_col" >
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>    
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>            
+  </script>        
+
+  <script>
+  layui.use(['admin','tree', 'table'], function(){
+    var $ = layui.$
+    ,table = layui.table
+    ,tree = layui.tree
+    ,admin=layui.admin
+    ,view = layui.view
+    ,table = layui.table
+    ,form = layui.form
+    ,requrl=layui.setter.backuprequesturl+'friendshipLinkInfo'+layui.setter.reqver;
+    //console.log(layui.data(layui.setter.tableName)[layui.setter.request.userAuthName]);
+    table.render({
+      elem: '#friendshipLink_table'
+      ,url: requrl+'api/getFriendshipLinkInfoListByPage'
+      ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+      ,headers:layui.setter.headers
+      ,page:layui.setter.page
+      ,where:layui.setter.authParams
+      ,cols: [[
+         {type: 'checkbox', fixed: 'left', title: ''}
+        ,{field:'linkName',  title: '名称'}
+        ,{field:'linkUrl',  title: '链接'}
+        ,{field:'orgCodeName',  title: '组织机构'}
+        ,{field:'friendshipLinkId',  hide:true}
+        ,{field:'orgCode',  hide:true}
+        ,{templet: '#friendshipLink_oper_col', fixed: 'right', title: '操作', align: 'center'}
+      ]]
+    });
+    
+    table.on('tool(friendshipLink_table)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+                 delfriendshipLink(data.friendshipLinkId);
+            } else if (obj.event === 'edit') {
+                addNewfriendshipLink(data,'编辑友情链接','wb/friendshipLink/friendship_link_add','mod');
+            }
+        })
+    var active = {
+      batchdel: function(){
+        var checkStatus = table.checkStatus('friendshipLink_table')
+        ,checkData = checkStatus.data; //得到选中的数据
+
+        if(checkData.length === 0){
+          return layer.msg('请选择数据');
+        }
+        var lineIds="";
+        checkData.forEach(function (value,i) {
+            //lineIds.push(value.friendshipLinkId);
+            lineIds+=value.friendshipLinkId;
+            if(i<checkData.length-1){
+              lineIds+=',';
+            }
+        })
+        delfriendshipLink(lineIds);
+      }
+      
+      //添加
+      ,add: function(othis){
+        addNewfriendshipLink({parentId:0},'添加友情链接','wb/friendshipLink/friendship_link_add','add');
+      }
+      ,reload: function(){
+        
+        //执行重载
+        table.reload('friendshipLink_table', {
+          page: {
+            curr: 1 //重新从第 1 页开始
+          }
+          ,where: {
+            groupType:$('#searchGroupType').val()
+          }
+        });
+      }
+    }; 
+    function delfriendshipLink(params){
+      layer.confirm('确定删除吗？', function(index) {
+            
+            admin.req({
+            url:requrl+'delFriendshipLink',
+            traditional:true,
+            data:{friendshipLinkInfoIds:params},
+            success:function(res){
+              if(res.code=='000000'){
+
+                //执行 Ajax 后重载
+                table.reload('friendshipLink_table');
+                layer.msg('已删除');
+              }else{
+                layer.msg(res.msg);
+              }
+               layer.closeAll('loading');
+            }
+          });
+        });
+    }
+    function addNewfriendshipLink(params,title,url,treq){
+      admin.popup({
+          title: title
+          ,area: ['70%', '70%']
+          ,id: 'LAY-popup-content-add'
+          ,success: function(layero, index){
+            view(this.id).render(url).done(function(){
+              params.hideOrgCode=params.orgCode;
+              form.val('gold_friendshipLink_add_form', params);
+              //监听提交
+              form.on('submit(layuiadmin-app-form-submit)', function(data){
+                var field = data.field; //获取提交的字段
+                
+                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                admin.req({
+                  url:requrl+treq+'FriendshipLinkInfo',
+                  data:field,
+                  done:function(res){
+                    layui.table.reload('friendshipLink_table'); //重载表格
+                    layer.close(index); //执行关闭 
+                    layer.closeAll('loading');
+                  }
+                })
+              });
+            });
+          }
+        });
+    }
+    window.setTimeout(function(){
+
+      $('.layuiadmin-btn-friendshipLinkButton').on('click', function(){
+        var type = $(this).data('type');
+        active[type] ? active[type].call(this) : '';
+      });
+    },1000);
+
+  });
+  </script>
