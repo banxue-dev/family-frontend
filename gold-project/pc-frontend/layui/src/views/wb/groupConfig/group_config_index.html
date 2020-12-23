@@ -17,14 +17,14 @@
         <div class="layui-card">
           <div class="layui-card-header">分组配置列表</div>
           <div class="layui-card-body">
-            <div class="test-table-reload-btn layui-form" style="margin-bottom: 10px;">
+            <div class="test-table-reload-btn layui-form" lay-filter="searchGroupConfigForm" style="margin-bottom: 10px;">
               分组选择：
               <div class="layui-inline">
-                 <select name="groupType" id="searchGroupType" lay-filter="selectGroupType">
+                 <select name="groupType" id="searchGroupType" >
                       <option value=''  >请选择</option>
                       <option value='0'  >案例</option>
                       <option value='1'  >新闻</option>
-                      <option value='3'  >服务范畴</option>
+                      <option value='3'  >服务</option>
                  </select>
               </div>
               <button class="layui-btn layuiadmin-btn-groupConfigButton" data-type="reload">搜索</button>
@@ -64,6 +64,7 @@
     ,form = layui.form
     ,requrl=layui.setter.backuprequesturl+'groupConfig'+layui.setter.reqver;
     //console.log(layui.data(layui.setter.tableName)[layui.setter.request.userAuthName]);
+    layui.form.render('select','searchGroupConfigForm');
     table.render({
       elem: '#groupConfig_table'
       ,url: requrl+'api/getGroupConfigListByPage'
