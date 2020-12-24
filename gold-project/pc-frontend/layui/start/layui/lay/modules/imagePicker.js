@@ -161,12 +161,12 @@ layui.define(['laypage', 'form'], function (exports) {
                         listHtml.html(lm);
                     }
 
-                    // 判断是否分页
+                    // 判断是否分页,
                     if (page){
                         $('#' + PICKER_BODY).addClass('layui-iconpicker-body-page');
                         pageHtml = '<div class="layui-iconpicker-page" id="'+ PAGE_ID +'">' +
                             '<div class="layui-iconpicker-page-count">' +
-                            '<span id="'+ PAGE_ID +'-current">1</span>/' +
+                            '<span id="'+ PAGE_ID +'-current">'+pageInfo.page+'</span>/' +
                             '<span id="'+ PAGE_ID +'-pages">'+ pageInfo.pageSum +'</span>' +
                             ' (<span id="'+ PAGE_ID +'-length">'+ pageInfo.sumCount +'</span>)' +
                             '</div>' +
@@ -177,10 +177,11 @@ layui.define(['laypage', 'form'], function (exports) {
                             '</div>';
 
                             var listBox=$('#' + ICON_BODY).find('.layui-anim').find('.' + LIST_BOX);
+                            listBox.find(".layui-iconpicker-page").remove();
                             listBox.append(pageHtml);
                     }
 
-                    page=false;
+                   // page=false;
                 });
                 return a;
             },
@@ -218,6 +219,7 @@ layui.define(['laypage', 'form'], function (exports) {
                 var input = '#' + PICKER_BODY + ' .layui-iconpicker-search .layui-input';
                 
                 a.event('click', icon, function (e) {
+                    pageInfo.page=1;
                     a.createList();
                     e.stopPropagation();
                 });

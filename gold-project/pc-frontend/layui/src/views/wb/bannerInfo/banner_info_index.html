@@ -64,9 +64,9 @@
         ,{field:'bannerLink',  title: '图片地址'}
         ,{field:'bannerOutUrl',  title: '跳转链接'}
         ,{field:'bannerDesc',  title: '描述'}
-        ,{field:'bannerGroupName',  title: '分组'}
+        ,{field:'bannerGroupTypeName',  title: '分类'}
         ,{field:'bannerId',  hide:true}
-        ,{field:'bannerGroupId',  hide:true}
+        ,{field:'bannerGroupTypeId',  hide:true}
         ,{templet: '#bannerInfo_oper_col', fixed: 'right', title: '操作', align: 'center'}
       ]]
     });
@@ -131,21 +131,12 @@
           ,id: 'LAY-popup-content-add'
           ,success: function(layero, index){
             view(this.id).render(url).done(function(){
-              params.hideGroupConfig=params.bannerGroupId;
+              params.hideGroupType=params.bannerGroupTypeId;
               params.openStatus=params.openStatus+'';
-              var editIndex=layedit.build('bannerContent',{
-                uploadImage:{
-                  url:layui.setter.backuprequesturl+'/personal/v1.0/uploadHead',
-                  type:'post',
-                  headers:layui.setter.headers,
-                  data:layui.setter.authParams
-                }
-              }); //建立编辑器
               form.val('gold_bannerInfo_add_form', params);
               //监听提交
               form.on('submit(layuiadmin-app-form-submit)', function(data){
                 var field = data.field; //获取提交的字段
-                field.bannerContent=layedit.getContent(editIndex);
 
                 //提交 Ajax 成功后，关闭当前弹层并重载表格
                 admin.req({
