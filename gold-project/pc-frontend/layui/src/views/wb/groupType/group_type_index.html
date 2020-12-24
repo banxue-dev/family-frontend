@@ -1,13 +1,13 @@
 
 
-  <title>分组配置</title>
+  <title>类型配置</title>
 
   <div class="layui-card layadmin-header">
     <div class="layui-breadcrumb" lay-filter="breadcrumb">
       <a lay-href="">主页</a>
       <a><cite>业务设置</cite></a>
-      <a><cite>分组配置</cite></a>
-      <a><cite>分组配置列表</cite></a>
+      <a><cite>分组类型配置</cite></a>
+      <a><cite>分组类型列表</cite></a>
     </div>
   </div>
   
@@ -15,42 +15,29 @@
     <div class="layui-row layui-col-space15">
       <div class="layui-col-md12">
         <div class="layui-card">
-          <div class="layui-card-header">分组配置列表</div>
+          <div class="layui-card-header">分组类型列表</div>
           <div class="layui-card-body">
-            <div class="test-table-reload-btn layui-form" lay-filter="searchGroupConfigForm" style="margin-bottom: 10px;">
-              分组选择：
-              <div class="layui-inline">
-                 <select name="groupType" id="searchGroupType" >
-                      <option value=''  >请选择</option>
-                      <option value='0'  >案例</option>
-                      <option value='1'  >新闻</option>
-                      <option value='3'  >服务</option>
-                 </select>
-              </div>
-              <button class="layui-btn layuiadmin-btn-groupConfigButton" data-type="reload">搜索</button>
-            </div>
              <div style="padding-bottom: 10px; ">
 
               <script type="text/html" template  >
-                        <button class="layui-btn layuiadmin-btn-groupConfigButton" data-type="add"><i class="layui-icon">&#xe608;</i> 添加
+                        <button class="layui-btn layuiadmin-btn-groupTypeButton" data-type="add"><i class="layui-icon">&#xe608;</i> 添加
                       </button>
 
-                      <button class="layui-btn layuiadmin-btn-groupConfigButton  layui-btn-danger" data-type="batchdel"><i
+                      <button class="layui-btn layuiadmin-btn-groupTypeButton  layui-btn-danger" data-type="batchdel"><i
                               class="layui-icon">&#xe640;</i>删除
                       </button>
                     
                 </script>
             </div>
-            <table class="layui-hide" id="groupConfig_table" lay-filter="groupConfig_table"></table>
+            <table class="layui-hide" id="groupType_table" lay-filter="groupType_table"></table>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <script type="text/html" id="groupConfig_oper_col" >
+  <script type="text/html" id="groupType_oper_col" >
     <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>    
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>        
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="showImg">看图</a>        
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>         
   </script>        
 
   <script>
@@ -62,34 +49,33 @@
     ,view = layui.view
     ,table = layui.table
     ,form = layui.form
-    ,requrl=layui.setter.backuprequesturl+'groupConfig'+layui.setter.reqver;
+    ,requrl=layui.setter.backuprequesturl+'groupType'+layui.setter.reqver;
     //console.log(layui.data(layui.setter.tableName)[layui.setter.request.userAuthName]);
-    layui.form.render('select','searchGroupConfigForm');
+    layui.form.render('select','searchGroupTypeForm');
     table.render({
-      elem: '#groupConfig_table'
-      ,url: requrl+'api/getGroupConfigListByPage'
+      elem: '#groupType_table'
+      ,url: requrl+'api/getGroupTypeListByPage'
       ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
       ,headers:layui.setter.headers
       ,page:layui.setter.page
       ,where:layui.setter.authParams
       ,cols: [[
          {type: 'checkbox', fixed: 'left', title: ''}
-        ,{field:'groupName',  title: '名称'}
-        ,{field:'groupTypeName',  title: '类型'}
-        ,{field:'groupDesc',  title: '描述'}
-        ,{field:'groupImg',  title: '图片'}
-        ,{field:'groupId',  hide:true}
-        ,{field:'groupType',  hide:true}
-        ,{templet: '#groupConfig_oper_col', fixed: 'right', title: '操作', align: 'center'}
+        ,{field:'typeName',  title: '名称'}
+        ,{field:'typeCode',  title: '编码'}
+        ,{field:'typeValue',  title: '值'}
+        ,{field:'typeDesc',  title: '描述'}
+        ,{field:'groupTypeId',  hide:true}
+        ,{templet: '#groupType_oper_col', fixed: 'right', title: '操作', align: 'center'}
       ]]
     });
     
-    table.on('tool(groupConfig_table)', function (obj) {
+    table.on('tool(groupType_table)', function (obj) {
             var data = obj.data;
             if (obj.event === 'del') {
-                 delgroupConfig(data.groupConfigId);
+                 delgroupType(data.groupTypeId);
             } else if (obj.event === 'edit') {
-                addNewgroupConfig(data,'编辑分组配置','wb/groupConfig/group_config_add','mod');
+                addNewgroupType(data,'编辑分组类型','wb/groupType/group_type_add','mod');
             } else if (obj.event === 'showImg') {
                 //查看头像
                 if(!data.groupImg){
@@ -109,7 +95,7 @@
         })
     var active = {
       batchdel: function(){
-        var checkStatus = table.checkStatus('groupConfig_table')
+        var checkStatus = table.checkStatus('groupType_table')
         ,checkData = checkStatus.data; //得到选中的数据
 
         if(checkData.length === 0){
@@ -117,23 +103,23 @@
         }
         var lineIds="";
         checkData.forEach(function (value,i) {
-            //lineIds.push(value.groupConfigId);
-            lineIds+=value.groupId;
+            //lineIds.push(value.groupTypeId);
+            lineIds+=value.groupTypeId;
             if(i<checkData.length-1){
               lineIds+=',';
             }
         })
-        delgroupConfig(lineIds);
+        delgroupType(lineIds);
       }
       
       //添加
       ,add: function(othis){
-        addNewgroupConfig({parentId:0},'添加分组配置','wb/groupConfig/group_config_add','add');
+        addNewgroupType({parentId:0},'添加分组类型','wb/groupType/group_type_add','add');
       }
       ,reload: function(){
         
         //执行重载
-        table.reload('groupConfig_table', {
+        table.reload('groupType_table', {
           page: {
             curr: 1 //重新从第 1 页开始
           }
@@ -143,18 +129,18 @@
         });
       }
     }; 
-    function delgroupConfig(params){
+    function delgroupType(params){
       layer.confirm('确定删除吗？', function(index) {
             
             admin.req({
-            url:requrl+'delGroupConfig',
+            url:requrl+'delGroupType',
             traditional:true,
-            data:{groupConfigIds:params},
+            data:{groupTypeIds:params},
             success:function(res){
               if(res.code=='000000'){
 
                 //执行 Ajax 后重载
-                table.reload('groupConfig_table');
+                table.reload('groupType_table');
                 layer.msg('已删除');
               }else{
                 layer.msg(res.msg);
@@ -164,25 +150,24 @@
           });
         });
     }
-    function addNewgroupConfig(params,title,url,treq){
+    function addNewgroupType(params,title,url,treq){
       admin.popup({
           title: title
           ,area: ['70%', '70%']
           ,id: 'LAY-popup-content-add'
           ,success: function(layero, index){
             view(this.id).render(url).done(function(){
-              params.hideGroupType=params.groupType;
-              form.val('gold_groupConfig_add_form', params);
+              form.val('gold_groupType_add_form', params);
               //监听提交
               form.on('submit(layuiadmin-app-form-submit)', function(data){
                 var field = data.field; //获取提交的字段
                 
                 //提交 Ajax 成功后，关闭当前弹层并重载表格
                 admin.req({
-                  url:requrl+treq+'GroupConfig',
+                  url:requrl+treq+'GroupType',
                   data:field,
                   done:function(res){
-                    layui.table.reload('groupConfig_table'); //重载表格
+                    layui.table.reload('groupType_table'); //重载表格
                     layer.close(index); //执行关闭 
                     layer.closeAll('loading');
                   }
@@ -194,7 +179,7 @@
     }
     window.setTimeout(function(){
 
-      $('.layuiadmin-btn-groupConfigButton').on('click', function(){
+      $('.layuiadmin-btn-groupTypeButton').on('click', function(){
         var type = $(this).data('type');
         active[type] ? active[type].call(this) : '';
       });

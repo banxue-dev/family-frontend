@@ -1,25 +1,27 @@
 
-  <div class="layui-form" lay-filter="gold_groupConfig_add_form" id="gold_groupConfig_add_form"style="padding: 20px 30px 0 0;">
-    <input type="hidden" name="groupId">
+  <div class="layui-form" lay-filter="gold_bannerInfo_add_form" id="gold_bannerInfo_add_form"style="padding: 20px 30px 0 0;">
+    <input type="hidden" name="bannerId">
+
     <div class="layui-form-item">
-      <label class="layui-form-label">分组名称</label>
-      <div class="layui-input-inline">
-        <script type="text/html" template>
-          <input type="text" name="groupName" value="" lay-verify="required" placeholder="请输入分组名称" autocomplete="off" class="layui-input">
-        </script>
+      <label class="layui-form-label">图片地址</label>
+      <div class="layui-input-inline " >
+           <input type="text" class="imagePicker" name="bannerLink" id="bannerLink"  lay-filter="imagePicker" style="display:none;">
+          
+        <button  class="layui-btn layui-btn-primary" layadmin-event="avartatPreview" bind-input='bannerLink'>查看</button >
+
       </div>
     </div>
-    <input type="hidden" name="hideGroupType" id="hideGroupType">
+    <input type="hidden" name="hideGroupConfig" id="hideGroupConfig">
     
     <div class="layui-form-item">
-      <label class="layui-form-label">类型</label>
+      <label class="layui-form-label">所属分组</label>
       <div class="layui-input-inline">
-       <script type="text/html" template lay-type='post' lay-url="{{layui.setter.backuprequesturl}}groupType/v1.0/api/getGroupTypeList" 
-        lay-done="layui.$('#useGroupType').val(layui.$('#hideGroupType').val());layui.form.render('select', 'gold_groupConfig_add_form');">
+       <script type="text/html" template lay-type='post' lay-url="{{layui.setter.backuprequesturl}}groupConfig/v1.0/api/getGroupConfigList?groupType=0" 
+        lay-done="layui.$('#userAddOrgCode').val(layui.$('#hideGroupConfig').val());layui.form.render('select', 'gold_bannerInfo_add_form');">
 
-          <select name="groupType" id="useGroupType" lay-filter="selectGroupType">
+          <select name="bannerGroupId" id="userAddOrgCode" lay-filter="selectGroup">
             {{# layui.each(d.data, function(index, item){ }}
-                  <option value='{{item.typeValue}}'  >{{item.typeName}}</option>
+                  <option value='{{item.groupId}}'  >{{item.groupName}}</option>
                 
             {{#  }); }}
 
@@ -29,21 +31,18 @@
       </div>
     </div>
     
-
-    
     <div class="layui-form-item">
-      <label class="layui-form-label">分组图片</label>
-      <div class="layui-input-inline " >
-           <input type="text" class="imagePicker" name="groupImg" id="groupImg"  lay-filter="imagePicker" style="display:none;">
-          
-        <button  class="layui-btn layui-btn-primary" layadmin-event="avartatPreview" bind-input='groupImg'>查看</button >
-
+      <label class="layui-form-label">跳转链接</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input type="text" name="bannerOutUrl" value="" lay-verify="required" placeholder="请输入案例名称" autocomplete="off" class="layui-input">
+        </script>
       </div>
     </div>
     <div class="layui-form-item">
       <label class="layui-form-label">描述</label>
       <div class="layui-input-inline" style="width:80%">
-          <textarea name="groupDesc" id="groupDesc" style="height: 150px;" autocomplete="off" class="layui-textarea"></textarea>
+          <textarea name="bannerContent" id="bannerContent" style="height: 150px;" autocomplete="off" class="layui-textarea"></textarea>
       </div>
     </div>
 
@@ -60,11 +59,12 @@
   ,layer = layui.layer
   ,admin=layui.admin
   ,imagePicker=layui.imagePicker
+  
  imagePicker.render({
       // 选择器，推荐使用input
-      elem: '#groupImg',
+      elem: '#bannerImg',
       // 数据类型：fontClass/unicode，推荐使用fontClass
-      name: 'groupImg',
+      name: 'bannerImg',
       // 是否开启搜索：true/false，默认true
       search: true,
       // 是否开启分页：true/false，默认true
@@ -86,8 +86,8 @@
    * @param iconName 图标名称，自动识别fontClass/unicode
    */
    setTimeout(function(){
-    if($('#groupImg').val()){
-      imagePicker.checkIcon('groupImg');
+    if($('#bannerImg').val()){
+      imagePicker.checkIcon('bannerImg');
     }
    },1000);
 
