@@ -246,6 +246,7 @@
                     var tnamecode = sdata[i].CODE
                         .toLowerCase().replace(/\+|\-|\./gi,'');
                     tjb=goldconfig.priceData[tnamecode+"buy"]*1;
+                    // console.log(tnamecode+'----'+tjb);
                     tja=goldconfig.priceData[tnamecode+"sale"]*1;
                     if(!tjb){
                       tjb=0;
