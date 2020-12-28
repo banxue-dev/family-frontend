@@ -449,6 +449,7 @@
       }
 
     }
+    //av:新值，bv老值
     this.DataExce.doColor=function(elem, av, bv) {
       if (av < bv) {
         $(elem).css({
@@ -466,7 +467,7 @@
         });
       } else {
         $(elem).css({
-          "color" : "black"
+          "color" : goldconfig.personalInfo.defaultTextColor|| "black"
         });
         $(elem).css({
           //"background-color" : ""
