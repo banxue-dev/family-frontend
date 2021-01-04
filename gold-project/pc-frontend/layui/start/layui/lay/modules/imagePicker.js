@@ -27,7 +27,7 @@ layui.define(['laypage', 'form'], function (exports) {
             pageInfo={
                 page:1,
                 pageSum:1,
-                sort:'createTime',
+                sort:'create_time',
                 dire:'desc',
                 limit:opts.limit||12
             },
