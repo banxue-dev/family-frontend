@@ -37,6 +37,7 @@
   </div>
   <script type="text/html" id="personalInfo_oper_col" >
     <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>     
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="indexgold">主页</a>     
     <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="changep">调价</a>     
   </script>
   <script type="text/html" id="personalInfo_oper_col_del" >
@@ -94,6 +95,8 @@
                 addNewpersonalInfo(data,'编辑行情客户','gold/personalInfo/personal_info_add','mod');
             } else if (obj.event === 'changep') {
                 window.open("/gold/customer/changes.html?orgCode="+data.orgCode,"_blank")
+            } else if (obj.event === 'indexgold') {
+                window.open("/gold/customer/index.html?orgCode="+data.orgCode,"_blank")
             } 
         })
     var active = {

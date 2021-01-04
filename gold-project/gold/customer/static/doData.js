@@ -152,24 +152,24 @@
     this.DateTime.showLocale=function(objD) {
       var str, colorhead, colorfoot;
       var yy = objD.getYear();
+      var MM = objD.getMonth() + 1;
+      var dd = objD.getDate();
+      var hh = objD.getHours();
+      var mm = objD.getMinutes();
+      var ss = objD.getSeconds();
+      var ww = objD.getDay();
       if (yy < 1900)
         yy = yy + 1900;
-      var MM = objD.getMonth() + 1;
       if (MM < 10)
         MM = '0' + MM;
-      var dd = objD.getDate();
       if (dd < 10)
         dd = '0' + dd;
-      var hh = objD.getHours();
       if (hh < 10)
         hh = '0' + hh;
-      var mm = objD.getMinutes();
       if (mm < 10)
         mm = '0' + mm;
-      var ss = objD.getSeconds();
       if (ss < 10)
         ss = '0' + ss;
-      var ww = objD.getDay();
       var isOpenText='开盘';
       if (ww > 0 && ww < 6){
         colorhead = "<font color=\"green\">";
@@ -177,7 +177,6 @@
         colorhead = "<font color=\"red\">";
         isOpenText='停盘';
       }
-        //isOpenText='停盘';
       colorfoot = "</font>"
       str = colorhead + yy + "-" + MM + "-" + dd + " " + hh + ":" + mm
           + ":" + ss + "  " + goldconfig.weeks[ww] + colorfoot;
