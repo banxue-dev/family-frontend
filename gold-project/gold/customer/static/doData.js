@@ -1,4 +1,5 @@
-﻿   var goldconfig={};
+﻿   //全局参数
+   var goldconfig={};
     goldconfig.urlprex='http://www.banxue.fun';
     //goldconfig.urlprex='http://localhost';
     goldconfig.backendHost=goldconfig.urlprex+':8091/family',
@@ -11,7 +12,11 @@
         goldconfig.tempOrgCode=getQueryVariable('orgCode') || '123';
       }
       return goldconfig.tempOrgCode;//每个账号不一样
-    }
+    },
+    goldconfig.weeks=['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
+
+
+    //开始其他方法定义
     function getQueryVariable(variable)
     {
        var query = window.location.search.substring(1);
@@ -165,38 +170,20 @@
       if (ss < 10)
         ss = '0' + ss;
       var ww = objD.getDay();
-      if (ww == 0)
-        colorhead = "<font color=\"red\">";
-      if (ww > 0 && ww < 6)
-        colorhead = "<font color=\"red\">";
-      if (ww == 6)
-        colorhead = "<font color=\"red\">";
       var isOpenText='开盘';
-      if (ww == 0){
-        ww = "星期日";
-        isOpenText='停盘';
-      }
-      if (ww == 1)
-        ww = "星期一";
-      if (ww == 2)
-        ww = "星期二";
-      if (ww == 3)
-        ww = "星期三";
-      if (ww == 4)
-        ww = "星期四";
-      if (ww == 5)
-        ww = "星期五";
-      if (ww == 6){
-        ww = "星期六";
+      if (ww > 0 && ww < 6){
+        colorhead = "<font color=\"green\">";
+      }else{
+        colorhead = "<font color=\"red\">";
         isOpenText='停盘';
       }
         //isOpenText='停盘';
       colorfoot = "</font>"
       str = colorhead + yy + "-" + MM + "-" + dd + " " + hh + ":" + mm
-          + ":" + ss + "  " + ww + colorfoot;
+          + ":" + ss + "  " + goldconfig.weeks[ww] + colorfoot;
       if(goldconfig.personalInfo.openStatus==1){
         isOpenText='停盘';
-      }else{
+      }else if(goldconfig.personalInfo.openStatus==0){
         isOpenText='开盘';
       }
       $('#openText').html(isOpenText);
