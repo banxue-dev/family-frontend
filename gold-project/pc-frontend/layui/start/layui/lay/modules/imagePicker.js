@@ -27,6 +27,8 @@ layui.define(['laypage', 'form'], function (exports) {
             pageInfo={
                 page:1,
                 pageSum:1,
+                sort:'createTime',
+                dire:'desc',
                 limit:opts.limit||12
             },
             cellWidth=opts.cellWidth,
