@@ -94,12 +94,10 @@
       str = colorhead + yy + "-" + MM + "-" + dd + " " + hh + ":" + mm
           + ":" + ss + "  " + ww + colorfoot;
       if(goldconfig.priceData){
-        if(goldconfig.priceData.openStatus==2){
-          $('#openText').html(isOpenText);
+        if(goldconfig.priceData.openStatus==0){
+          $('#openText').html('开盘');
         }else if(goldconfig.priceData.openStatus==1){
           $('#openText').html('停盘');
-        }else{
-          $('#openText').html('开盘');
         }
       }
       return (str);
