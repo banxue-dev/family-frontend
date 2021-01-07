@@ -251,14 +251,14 @@
                 }else if(type==2){
                   metalhtml+='<div class="sl-zx-tb3 sl-zx-cell">  '; 
                     metalhtml+=' <div style="height:2rem;line-height:2rem;">';
-                      metalhtml+='<label onclick="changeevent.buyWaterAdd('+tdb.goldUserDiyMetalConfigId+","+tdb.constraintLen+')" style="margin-right: 0.4rem;cursor:pointer">+</label>';
-                      metalhtml+='<input old="'+tdb.buyBackWater+'" onchange="changeevent.valueChanged(this,'+tdb.goldUserDiyMetalConfigId+',1,'+tdb.constraintLen+')"  type="text" id="buyBackWater'+tdb.goldUserDiyMetalConfigId+'" value="'+tdb.buyBackWater+'" style="background-color:'+(goldconfig.personalInfo.cellBackColor||"transparent")+';width: 2.5rem;border: 0px;">';
-                      metalhtml+='<label  onclick="changeevent.buyWaterSal('+tdb.goldUserDiyMetalConfigId+","+tdb.constraintLen+')" style="margin-left: 0.4rem;cursor:pointer">-</label>';
+                      metalhtml+='<label onclick="changeevent.buyWaterAdd('+tdb.goldUserDiyMetalConfigId+","+tdb.constraintLen+')" class="tj-label">+</label>';
+                      metalhtml+='<input old="'+tdb.buyBackWater+'" onchange="changeevent.valueChanged(this,'+tdb.goldUserDiyMetalConfigId+',1,'+tdb.constraintLen+')"  type="text" id="buyBackWater'+tdb.goldUserDiyMetalConfigId+'" value="'+tdb.buyBackWater+'" class="tj-input" style="background-color:'+(goldconfig.personalInfo.cellBackColor||"transparent")+';">';
+                      metalhtml+='<label  onclick="changeevent.buyWaterSal('+tdb.goldUserDiyMetalConfigId+","+tdb.constraintLen+')" class="tj-label" >-</label>';
                     metalhtml+='</div>';
                     metalhtml+=' <div style="height:2rem;line-height:2rem;">';
-                       metalhtml+='<label  onclick="changeevent.saleWaterAdd('+tdb.goldUserDiyMetalConfigId+","+tdb.constraintLen+')" style="margin-right: 0.4rem;cursor:pointer">+</label>';
-                       metalhtml+='<input old="'+tdb.saleWater+'" onchange="changeevent.valueChanged(this,'+tdb.goldUserDiyMetalConfigId+',2,'+tdb.constraintLen+')" type="text" id="saleWater'+tdb.goldUserDiyMetalConfigId+'" value="'+tdb.saleWater+'" style="background-color:'+(goldconfig.personalInfo.cellBackColor||"transparent")+';width: 2.5rem;border: 0px;">';
-                       metalhtml+='<label  onclick="changeevent.saleWaterSal('+tdb.goldUserDiyMetalConfigId+","+tdb.constraintLen+')" style="margin-left: 0.4rem;cursor:pointer">-</label>';
+                       metalhtml+='<label  onclick="changeevent.saleWaterAdd('+tdb.goldUserDiyMetalConfigId+","+tdb.constraintLen+')" class="tj-label">+</label>';
+                       metalhtml+='<input old="'+tdb.saleWater+'" onchange="changeevent.valueChanged(this,'+tdb.goldUserDiyMetalConfigId+',2,'+tdb.constraintLen+')" type="text" id="saleWater'+tdb.goldUserDiyMetalConfigId+'" value="'+tdb.saleWater+'" class="tj-input" style="background-color:'+(goldconfig.personalInfo.cellBackColor||"transparent")+';">';
+                       metalhtml+='<label  onclick="changeevent.saleWaterSal('+tdb.goldUserDiyMetalConfigId+","+tdb.constraintLen+')" class="tj-label">-</label>';
                     metalhtml+='</div>';
                    metalhtml+='</div>';
                 }

@@ -1979,3 +1979,16 @@ a:active{text-decoration:none;}
     border-radius:3px;
 }
 
+
+/**
+调价的样式
+*/
+.tj-label {
+    margin-right: 0.4rem;
+    cursor:pointer;
+}
+.tj-input{
+    width: 2.5rem;
+    border: 0px;
+    text-align: center;
+}
