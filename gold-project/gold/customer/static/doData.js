@@ -252,7 +252,7 @@
                   metalhtml+='<div class="sl-zx-tb3 sl-zx-cell">  '; 
                     metalhtml+=' <div style="height:2rem;line-height:2rem;">';
                       metalhtml+='<label onclick="changeevent.buyWaterAdd('+tdb.goldUserDiyMetalConfigId+","+tdb.constraintLen+')" class="tj-label">+</label>';
-                      metalhtml+='<input old="'+tdb.buyBackWater+'" onchange="changeevent.valueChanged(this,'+tdb.goldUserDiyMetalConfigId+',1,'+tdb.constraintLen+')"  type="text" id="buyBackWater'+tdb.goldUserDiyMetalConfigId+'" value="'+tdb.buyBackWater+'" class="tj-input" style="background-color:'+(goldconfig.personalInfo.cellBackColor||"transparent")+';">';
+                      metalhtml+='<input old="'+tdb.buyBackWater+'" onchange="changeevent.valueChanged(this,'+tdb.goldUserDiyMetalConfigId+',1,'+tdb.constraintLen+')"  type="text" id="buyBackWater'+tdb.goldUserDiyMetalConfigId+'" value="'+tdb.buyBackWater+'" class="tj-input" style="color:'+(goldconfig.personalInfo.defaultTextColor||"black")+';background-color:'+(goldconfig.personalInfo.cellBackColor||"transparent")+';">';
                       metalhtml+='<label  onclick="changeevent.buyWaterSal('+tdb.goldUserDiyMetalConfigId+","+tdb.constraintLen+')" class="tj-label" >-</label>';
                     metalhtml+='</div>';
                     metalhtml+=' <div style="height:2rem;line-height:2rem;">';
