@@ -496,21 +496,21 @@
           "color" : "green"
         });
         $(elem).css({
-          //"background-color" : "green"
+          "background-color" : "green"
         });
       } else if (av > bv) {
         $(elem).css({
           "color" : "red"
         });
         $(elem).css({
-          //"background-color" : "red"
+          "background-color" : "red"
         });
       } else {
         $(elem).css({
           //"color" : goldconfig.personalInfo.defaultTextColor|| "black"
         });
         $(elem).css({
-          //"background-color" : ""
+          "background-color" : ""
         });
       }
     }
