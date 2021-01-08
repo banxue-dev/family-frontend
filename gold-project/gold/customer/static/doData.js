@@ -239,7 +239,7 @@
               if(goldconfig.metalConfig[d].groupId==tda.groupCode){
                 var tdb=goldconfig.metalConfig[d];
                 //tdb.goldUserDiyMetalConfigId
-                metalhtml+='<div class="sl-zx-tb1  sl-zx-tb-ys2">';
+                metalhtml+='<div class="sl-zx-tb1  sl-zx-tb-ys2" style="'+(goldconfig.personalInfo.cellBorder||"")+'">';
                 metalhtml+='  <div class="sl-zx-tb2 sl-zx-cell">'+(tdb.newName || tdb.metalName)+'</div>';
                 metalhtml+='  <div class="sl-zx-tb3 sl-zx-cell bid'+tdb.goldUserDiyMetalConfigId+'">0.00</div>';
                 metalhtml+='  <div class="sl-zx-tb3 sl-zx-cell ask'+tdb.goldUserDiyMetalConfigId+'">0.00</div>';
