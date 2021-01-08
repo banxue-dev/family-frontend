@@ -493,14 +493,14 @@
     this.DataExce.doColor=function(elem, av, bv) {
       if (av < bv) {
         $(elem).css({
-          "color" : "green"
+          "color" : "white"
         });
         $(elem).css({
           "background-color" : "green"
         });
       } else if (av > bv) {
         $(elem).css({
-          "color" : "red"
+          "color" : "white"
         });
         $(elem).css({
           "background-color" : "red"
