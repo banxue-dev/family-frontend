@@ -226,13 +226,67 @@
     }
     //type:1普通页面，2：调价
     this.DataExce.createHtml=function(callback,type){
+      $('#sj-headerHtml').html(goldconfig.personalInfo.tmpHeadHtml);
+      var grouphtml='';
+      $('#mobile_htj').html("");
+      for(var t=0;t<goldconfig.groupConfig.length;t++){
+          var tda=goldconfig.groupConfig[t];
+          grouphtml=goldconfig.personalInfo.tmpStartHtml;
+          grouphtml=grouphtml.replace('{{cellbackcolor}}',goldconfig.personalInfo.cellBackColor||'transparent').replace('{{groupId}}',tda.groupCode).replace('{{groupName}}',tda.groupName);
+        
+          var metalhtml='';
+          var childCnt=0;
+          for(var d=0;d<goldconfig.metalConfig.length;d++){
+              if(goldconfig.metalConfig[d].groupId==tda.groupCode){
+                var tdb=goldconfig.metalConfig[d];
+                //tdb.goldUserDiyMetalConfigId
+                if(type==1){
+                  metalhtml+=goldconfig.personalInfo.tmpCellHtml;
+
+                }else if(type==2){
+                  $('.sj-zx-list-l2:last').html('调价');
+                  metalhtml+=goldconfig.personalInfo.tmpChangeHtml;
+                  metalhtml=metalhtml.replace(/{{buyBackWater}}/g,tdb.buyBackWater);
+                  metalhtml=metalhtml.replace(/{{conLen}}/g,(tdb.constraintLen));
+                  metalhtml=metalhtml.replace(/{{saleWater}}/g,tdb.saleWater);
+                  metalhtml=metalhtml.replace(/{{defTextColor}}/g,(goldconfig.personalInfo.defaultTextColor||"black"));
+                  metalhtml=metalhtml.replace(/{{cellBackColor}}/g,(goldconfig.personalInfo.cellBackColor||"transparent"));
+                }
+                metalhtml=metalhtml.replace('{{cellborder}}',goldconfig.personalInfo.cellBorder||"");
+                metalhtml=metalhtml.replace(/{{configid}}/g,tdb.goldUserDiyMetalConfigId);
+                metalhtml=metalhtml.replace('{{sname}}',(tdb.newName || tdb.metalName));
+
+                childCnt++;
+              }
+          }
+          if(childCnt<2){
+            grouphtml=grouphtml.replace('{{font}}','font-size:2.5vw;');
+          }else{
+
+            grouphtml=grouphtml.replace('{{font}}','');
+          }
+          grouphtml=grouphtml.replace('{{height}}',(childCnt*4));
+          grouphtml+=metalhtml;
+          grouphtml+=goldconfig.personalInfo.tmpEndHtml;
+          $('#mobile_htj').append(grouphtml);
+      }
+      //改变设置的颜色
+      goldconfig.personalInfo.themBackColor && $('.sj-header').addClass('theme-bg'+goldconfig.personalInfo.themBackColor);
+      goldconfig.personalInfo.contentColorType && $('#content-white-bg').css('background-color',goldconfig.personalInfo.contentColorType);
+      //开启加载框
+      dataLoadingStatus(true,$('#mobile_htj').height(),$('#mobile_htj').width());
+      //回调
+      callback();
+    }
+    //type:1普通页面，2：调价
+    this.DataExce.createHtml1=function(callback,type){
       var grouphtml='';
       $('#mobile_htj').html("");
       for(var t=0;t<goldconfig.groupConfig.length;t++){
           var tda=goldconfig.groupConfig[t];
           grouphtml='';
-          grouphtml='<li style="width:100%;background-color:'+(goldconfig.personalInfo.cellBackColor||'transparent')+';" id="group'+tda.groupCode+'"><div class="sl-zx-list-t " style="height: {{height}}rem;{{font}}">';
-          grouphtml+='<span id="customerName">'+tda.groupName+'</span></div>';
+          grouphtml='<li style="width:100%;background-color:'+(goldconfig.personalInfo.cellBackColor||'transparent')+';" id="group'+tda.groupCode+'">';
+          grouphtml+='<div class="sl-zx-list-t " style="height: {{height}}rem;{{font}}"><span id="customerName">'+tda.groupName+'</span></div>';
           var metalhtml='';
           var childCnt=0;
           for(var d=0;d<goldconfig.metalConfig.length;d++){

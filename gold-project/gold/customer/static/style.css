@@ -149,6 +149,12 @@ a:active{text-decoration:none;}
 .sj-zx-list-l2-head {
     width:22.5%;
 }
+.sj-zx-list-l2-head25 {
+    width:25%;
+}
+.sj-zx-list-l2-head33 {
+    width:33.3%;
+}
 .sj-zx-list-l2 {
     height:3rem;
     float:left;
@@ -205,8 +211,20 @@ a:active{text-decoration:none;}
 .sl-zx-cell{
     width:25%;
 }
+.sl-zx-cell33{
+    width:33.3%;
+}
 .sl-zx-tb1 {
     width:90%;
+    height:4rem;
+    line-height:4rem;
+    text-align:right;
+    font-size:1.4rem;
+    float:right;
+    box-sizing: border-box;
+}
+.sl-zx-tb100 {
+    width:100%;
     height:4rem;
     line-height:4rem;
     text-align:right;
@@ -556,4 +574,5 @@ a:active{text-decoration:none;}
 .tj-input{
     width: 2.5rem;
     border: 0px;
+    font-size: 8px;
 }
