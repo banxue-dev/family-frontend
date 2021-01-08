@@ -172,11 +172,13 @@
         ss = '0' + ss;
       var isOpenText='开盘';
       if (ww > 0 && ww < 6){
+        //colorhead = "<font color=\"green\">";
       }else{
+        //colorhead = "<font color=\"red\">";
         isOpenText='停盘';
       }
-      colorfoot = ""
-      str = colorhead + yy + "-" + MM + "-" + dd + " " + hh + ":" + mm
+      colorfoot = "</font>"
+      str = yy + "-" + MM + "-" + dd + " " + hh + ":" + mm
           + ":" + ss + "  " + goldconfig.weeks[ww] + colorfoot;
       if(goldconfig.personalInfo.openStatus==1){
         isOpenText='停盘';
