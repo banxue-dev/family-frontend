@@ -507,7 +507,7 @@
         that.DataExce.doCss(elem,'border-right','1px solid white');
         that.DataExce.doCss(elem,'border-bottom','1px solid white');
       } else {
-        that.DataExce.doCss(elem,'color',($(elem).css('background-color')=='rgb(255, 0, 0)'?'red':'green'));
+        that.DataExce.doCss(elem,'color',(($(elem).css('background-color')=='rgb(255, 0, 0)'||$(elem).css('color')=='rgb(255, 0, 0)')?'red':'green'));
         that.DataExce.doCss(elem,'background-color','');
         that.DataExce.doCss(elem,'border-right','none');
         that.DataExce.doCss(elem,'border-bottom','none');
