@@ -6,7 +6,7 @@
     goldconfig.priceData={},
     goldconfig.personalInfo={},
     goldconfig.tempOrgCode='',
-    goldconfig.times='3000',
+    goldconfig.times='2500',
     goldconfig.orgCode=function(){
       if(!goldconfig.tempOrgCode){
         goldconfig.tempOrgCode=getQueryVariable('orgCode') || '123';
@@ -507,7 +507,7 @@
         });
       } else {
         $(elem).css({
-          "color" : goldconfig.personalInfo.defaultTextColor|| "black"
+          //"color" : goldconfig.personalInfo.defaultTextColor|| "black"
         });
         $(elem).css({
           //"background-color" : ""
