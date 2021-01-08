@@ -84,18 +84,19 @@ a:active{text-decoration:none;}
     flex-direction:row;
 }
 .userCompanyName{
+    
+}
+.theme-name{
     font-size: 28px;
     line-height: 66px;
     color: white;
     font-weight: bold;
 }
-.theme-name{
-
-}
 .theme-name-timeout{
     float: right;
     color: red;
     font-size: 12px;
+    line-height: 12px;s
     font-weight: initial;
 }
 .theme-bg1 {
