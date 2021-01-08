@@ -34,8 +34,10 @@ body::-webkit-scrollbar {
 /*--手机页面--*/
 .sj-header {
      width:100%;
-     border-bottom:1px solid #ddd;
      display:table;
+     height: 245px;
+     z-index: 1;
+     position: absolute;
 }
 .sj-header-box {
     width:94%;
