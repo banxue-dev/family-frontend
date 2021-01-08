@@ -489,22 +489,22 @@
       }
 
     }
+    this.DataExce.doCss=function(elem,cn,cv){
+     $(elem).css(cn,cv);
+    }
     //av:新值，bv老值
     this.DataExce.doColor=function(elem, av, bv) {
       if (av < bv) {
-        $(elem).css({
-          "color" : "white"
-        });
-        $(elem).css({
-          "background-color" : "green"
-        });
+        that.DataExce.doCss(elem,'color','white');
+        that.DataExce.doCss(elem,"background-color",'green');
+        that.DataExce.doCss(elem,'border-right','1px solid white');
+        that.DataExce.doCss(elem,'border-bottom','1px solid white');
+        
       } else if (av > bv) {
-        $(elem).css({
-          "color" : "white"
-        });
-        $(elem).css({
-          "background-color" : "red"
-        });
+        that.DataExce.doCss(elem,'color','white');
+        that.DataExce.doCss(elem,"background-color",'red');
+        that.DataExce.doCss(elem,'border-right','1px solid white');
+        that.DataExce.doCss(elem,'border-bottom','1px solid white');
       } else {
         $(elem).css({
           "color" : $(elem).css('background-color')=='rgb(255, 0, 0)'?'red':'green'
@@ -512,6 +512,10 @@
         $(elem).css({
           "background-color" : ""
         });
+        that.DataExce.doCss(elem,'background-color','');
+        that.DataExce.doCss(elem,'color',($(elem).css('background-color')=='rgb(255, 0, 0)'?'red':'green'));
+        that.DataExce.doCss(elem,'border-right','none');
+        that.DataExce.doCss(elem,'border-bottom','none');
       }
     }
     this.feedback=function () {
