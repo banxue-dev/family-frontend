@@ -507,7 +507,7 @@
         });
       } else {
         $(elem).css({
-          //"color" : goldconfig.personalInfo.defaultTextColor|| "black"
+          "color" : $(elem).css('background-color')=='rgb(255, 0, 0)'?'red':'green'
         });
         $(elem).css({
           "background-color" : ""
