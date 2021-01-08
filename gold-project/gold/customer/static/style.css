@@ -84,7 +84,7 @@ body::-webkit-scrollbar {
     border: 1px solid var(--theme-lb);
 }
 .head-panl {
-    padding: 16px 0 16px;
+    padding: 16px 0 5px;
     position: relative;
     overflow: hidden;
     z-index: 2;
