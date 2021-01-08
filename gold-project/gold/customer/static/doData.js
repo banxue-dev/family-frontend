@@ -494,6 +494,7 @@
     }
     //av:新值，bv老值
     this.DataExce.doColor=function(elem, av, bv) {
+      
       if (av < bv) {
         that.DataExce.doCss(elem,'color','white');
         that.DataExce.doCss(elem,"background-color",'green');
