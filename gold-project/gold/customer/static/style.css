@@ -67,8 +67,8 @@ a:active{text-decoration:none;}
     border-right:1px solid #dcdcdc;
     box-sizing: border-box;}
 .head-img{
-    height: 55px;
-    width: 55px;
+    height: 66px;
+    width: 66px;
     -o-object-fit: cover;
     object-fit: cover;
     margin-right: 16px;
@@ -84,10 +84,10 @@ a:active{text-decoration:none;}
     flex-direction:row;
 }
 .userCompanyName{
-    font-size:24px;
-    line-height: 44px;
-    color:white;
-    width:100%;
+    font-size: 28px;
+    line-height: 66px;
+    color: white;
+    font-weight: bold;
 }
 .theme-bg1 {
     background:linear-gradient(180deg,rgba(191, 145, 103, 0.8),rgba(166, 153, 104, 0.6) 44%,#f5f5f5);
