@@ -42,6 +42,10 @@ a:active{text-decoration:none;}
 }
 .sj-header-box img {
     width:100%;
+    height: 245px;
+    z-index: 1;
+    position: absolute;
+    border:none;
 }
 
 .sj-footer {
