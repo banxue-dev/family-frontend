@@ -18,7 +18,7 @@ layui.define(['laytpl', 'layer', 'element', 'util'], function(exports){
     //,backuprequesturl: 'http:\/\/localhost:8091/family/' //全局请求前缀
     ,backuprequesturl: 'http:\/\/www.banxue.fun:8091/family/' //全局请求前缀
     ,reqver:'/v1.0/'
-    ,name: '行情管理系统'//菜单上面的那个名称
+    ,name: '综合管理系统'//菜单上面的那个名称
     ,tableName: 'FamilyAdminSystem' //本地存储表名
     ,MOD_NAME: 'family' //模块事件名
     ,page:{ //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
