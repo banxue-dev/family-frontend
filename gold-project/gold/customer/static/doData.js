@@ -359,7 +359,7 @@
           var metalhtml='';
           var childCnt=0;
           for(var d=0;d<goldconfig.metalConfig.length;d++){
-              if(goldconfig.metalConfig[d].groupId==tda.groupCode){
+              if(goldconfig.metalConfig[d].pcGroupId==tda.groupCode){
                 var tdb=goldconfig.metalConfig[d];
                 metalhtml+='<div class="sl-zx-tb1  sl-zx-tb-ys1">';
                 var tn=tdb.newName || tdb.metalName;
