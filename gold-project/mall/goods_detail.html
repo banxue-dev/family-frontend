@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,
+                              initial-scale=1,
+                              minimum-scale=1,
+                              maximum-scale=1"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="format-detection" content="email=no" />
+<title>商品详情</title>
+<link rel="stylesheet" href="css/swiper.min.css">
+<link href="css/app.css" rel="stylesheet">
+</head>
+<body class="item">
+
+<section class="home" style="text-align:center;">
+	糖果图书店
+</section>
+
+<section class="images">
+    <div class="swiper-container">
+        <div class="swiper-wrapper" id="bannerImgs">
+            <div class="swiper-slide">
+            	<img src="images/placeholder.jpg" />
+            </div>
+        </div>
+        <!-- Add Pagination -->
+        <div class="swiper-pagination"></div>
+    </div>
+</section>
+
+<section class="header">
+    <h2 class="title" id="goodsName">糖果图书店 </h2>
+    <div class="price ">
+        <div class="current-price">
+            <span class="current-price"><small>￥</small><span id="goodsPrice"></span></span></span>
+        </div>
+        <span class="express" id="goodsExpress"></span>
+    </div>
+    <div class="sales">已售: 200 剩余: 1800</div>
+</section>
+
+<section class="sku" style="display: none;">
+	<dl class="sku-group">
+    	<dt>规格: </dt>
+        <dd>蓝色</dd>
+    </dl>
+</section>
+
+<section class="content">
+	<div class="nav">
+    	<a  style="width:100%;"class="active">商品详情</a>
+    </div>
+	<div class="desc" id="goodsDesc">
+
+    </div>
+</section>
+
+
+<footer class="footer" style="display: none;">
+    <div class="button"><a class="buy">立即购买</a></div>
+</footer>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/swiper.min.js"></script>
+<script src="js/jquery.lazyload.js"></script>
+<script>
+function getQueryVariable(variable)
+{
+       var query = window.location.search.substring(1);
+       var vars = query.split("&");
+       for (var i=0;i<vars.length;i++) {
+               var pair = vars[i].split("=");
+               if(pair[0] == variable){return pair[1];}
+       }
+       return(false);
+}
+var path = "{:U('buy')}?id=";
+//兼容性：字体大小，全局尺寸(rem)
+
+(function(doc, win) {
+	var docEl = doc.documentElement,
+		resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+		recalc = function() {
+			var clientWidth = docEl.clientWidth;
+			if (!clientWidth) return;
+			var docElWidth = 100 * (clientWidth / 640);
+			if (docElWidth > 100) docElWidth = 100;
+			docEl.style.fontSize = docElWidth + 'px';
+		};
+	if (!doc.addEventListener) return;
+	win.addEventListener(resizeEvt, recalc, false);
+	doc.addEventListener('DOMContentLoaded', recalc, false);
+})(document, window);
+
+(function(){
+	//轮播图
+	new Swiper('.swiper-container', {
+		pagination: '.swiper-pagination',
+		paginationClickable: true,
+		autoplay:3000
+	});
+    $.ajax({
+        url:'http://www.banxue.fun:8091/family/goodsInfo/v1.0/api/getGoodsInfoSingleById',
+        type:'post',
+        data:{goodsInfoId:getQueryVariable('goodsId'),orgCode:'1'},
+        success:function(res){
+            if(res.code=='000000'){
+                $('#bannerImgs').html(' <div class="swiper-slide"> <img src="'+res.data.goodsHeadImg+'" /></div>');
+                $('#goodsPrice').html(res.data.goodsPrice);
+                $('#goodsName').html(res.data.goodsName);
+                $('#goodsDesc').html(res.data.goodsDetailDesc);
+                $('#goodsExpress').html(res.data.goodsExpress?'￥'+res.data.goodsExpress:'包邮');
+            }
+        }
+    })
+	
+	$('.nav a').click(function(){
+		$('.nav a').removeClass('active');
+		$(this).addClass('active');
+	})
+	//图片懒加载
+	$("img").lazyload({
+		effect : 'fadeIn',
+		placeholder :'images/placeholder.jpg'
+	});
+	
+})();
+
+
+
+
+
+
+</script>
+</body>
+</html>

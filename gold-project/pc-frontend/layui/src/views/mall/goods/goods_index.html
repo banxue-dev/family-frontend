@@ -1,0 +1,177 @@
+
+
+  <title>商品列表</title>
+
+  <div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+      <a lay-href="">主页</a>
+      <a><cite>系统设置</cite></a>
+      <a><cite>商城设置</cite></a>
+      <a><cite>商品列表</cite></a>
+    </div>
+  </div>
+  
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header">商品列表</div>
+          <div class="layui-card-body">
+             <div style="padding-bottom: 10px; ">
+                <button class="layui-btn layuiadmin-btn-goods" data-type="add"><i class="layui-icon">&#xe608;</i> 添加
+                </button>
+                <button class="layui-btn layuiadmin-btn-goods  layui-btn-danger" data-type="batchdel"><i
+                        class="layui-icon">&#xe640;</i>删除
+                </button>
+            </div>
+            <table class="layui-hide" id="goods_table" lay-filter="goods_table"></table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/html" id="goods_oper_col">
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+  </script>
+  <script>
+  layui.use(['admin', 'table','layedit'], function(){
+    var $ = layui.$
+    , table = layui.table
+    , transfer = layui.transfer
+    ,admin=layui.admin
+    ,view = layui.view
+    ,table = layui.table
+    ,form = layui.form
+    ,setter = layui.setter
+    ,requrl=layui.setter.backuprequesturl+'goodsInfo/v1.0/';
+
+    function showHead(othis){
+      layer.photos({
+      photos: {
+          "title": "查看头像" //相册标题
+          ,"data": [{
+            "src": layui.setter.backuprequesturl+$(othis).attr('src') //原图地址
+          }]
+        }
+        ,shade: 0.01
+        ,closeBtn: 1
+        ,anim: 5
+      });
+    }
+    table.render({
+      elem: '#goods_table'
+      ,url: layui.setter.backuprequesturl+'goodsInfo/v1.0/api/getGoodsInfoListByPage'
+      ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+      ,page:layui.setter.page
+      ,headers:layui.setter.headers
+      ,where:layui.setter.authParams
+      ,cols: [[
+        {type: 'checkbox', fixed: 'left', title: ''}
+        ,{field:'goodsName',  title: '名称'}
+        ,{field:'goodsTag',  title: '标签'}
+        ,{field:'goodsLinePrice',  title: '划线价'}
+        ,{field:'goodsPrice',  title: '售价'}
+        ,{field:'goodsHeadImg',  title: '商品图片'}
+        ,{field:'goodsId',  hide:true}
+        ,{field:'createTime', title: '创建时间'}
+        ,{templet: '#goods_oper_col', fixed: 'right', title: '操作', align: 'center'}
+      ]]
+    });
+    table.on('tool(goods_table)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+                 delGoods(data.goodsId);
+            } else if (obj.event === 'edit') {
+
+                addNewGoods(data,'编辑商品','mall/goods/goods_add','mod');
+            }
+
+        })
+    var active = {
+      batchdel: function(){
+        var checkStatus = table.checkStatus('goods_table')
+        ,checkData = checkStatus.data; //得到选中的数据
+
+        if(checkData.length === 0){
+          return layer.msg('请选择数据');
+        }
+        var lineIds="";
+        checkData.forEach(function (value,i) {
+            //lineIds.push(value.goodsId);
+            lineIds+=value.goodsId;
+            if(i<checkData.length-1){
+              lineIds+=',';
+            }
+        })
+        delGoods(lineIds);
+      }
+      
+      //添加
+      ,add: function(othis){
+        addNewGoods({parentId:0},'添加商品','mall/goods/goods_add','add');
+      }
+    }; 
+    function delGoods(params){
+      layer.confirm('确定删除吗？', function(index) {
+            admin.req({
+            url:requrl+'delGoods',
+            traditional:true,
+            data:{goodsIds:params},
+            success:function(res){
+              if(res.code=='000000'){
+
+                //执行 Ajax 后重载
+                table.reload('goods_table');
+                layer.msg('已删除');
+              }else{
+                layer.msg(res.msg);
+              }
+            }
+          });
+        });
+    }
+    function addNewGoods(params,title,url,treq){
+      admin.popup({
+          title: title
+          ,area: ['70%', '70%']
+          ,id: 'LAY-popup-content-add'
+          ,success: function(layero, index){
+            view(this.id,params).render(url).done(function(){
+              
+              var layedit = layui.layedit;
+              var editIndex=layedit.build('goodsDetailDesc',{
+                uploadImage:{
+                  url:layui.setter.backuprequesturl+'/personal/v1.0/uploadHead',
+                  type:'post',
+                  headers:layui.setter.headers,
+                  data:layui.setter.authParams
+                }
+              }); //建立编辑器
+              form.val('mall_goods_add_form', params);
+              //监听提交
+              form.on('submit(mall_goods_add_form-submit)', function(data){
+                var field = data.field; //获取提交的字段
+                field.goodsDetailDesc=layedit.getContent(editIndex);
+                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                admin.req({
+                  url:requrl+treq+'GoodsInfo',
+                  data:$.extend(field,{goodsId:params.goodsId}),
+                  done:function(res){
+                    layui.table.reload('goods_table'); //重载表格
+                    layer.close(index); //执行关闭 
+                  }
+                })
+              });
+            });
+          }
+        });
+    }
+
+    $('.layui-btn.layuiadmin-btn-goods').on('click', function(){
+      var type = $(this).data('type');
+      active[type] ? active[type].call(this) : '';
+    });
+
+  });
+  </script>

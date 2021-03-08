@@ -1,0 +1,111 @@
+
+  <div class="layui-form" lay-filter="mall_goods_add_form" id="mall_goods_add_form"style="padding: 20px 30px 0 0;">
+    <input type="hidden" name="parentId">
+    <input type="hidden" name="menuId">
+    <div class="layui-form-item">
+      <label class="layui-form-label">商品名称</label>
+      <div class="layui-input-inline">
+          <input type="text" name="goodsName" value="" lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">商品标签</label>
+      <div class="layui-input-inline">
+          <input type="text" name="goodsTag" value="" lay-verify="required" placeholder="请输入标签" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">划线价</label>
+      <div class="layui-input-inline">
+          <input type="text" name="goodsLinePrice" value="" lay-verify="required" placeholder="请输入划线价" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">售价</label>
+      <div class="layui-input-inline">
+          <input type="text" name="goodsPrice" value="" lay-verify="required" placeholder="请输入售价" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">头图</label>
+      <div class="layui-input-inline " >
+           <input type="text" class="imagePicker" name="goodsHeadImg" id="goodsHeadImg"  lay-filter="imagePicker" style="display:none;">
+          
+        <button  class="layui-btn layui-btn-primary" layadmin-event="avartatPreview" bind-input='goodsHeadImg'>查看</button >
+
+      </div>
+    </div>
+
+    <div class="layui-form-item">
+      <label class="layui-form-label">详情</label>
+      <div class="layui-input-inline" style="width:80%">
+        <script type="text/html" template>
+          <textarea name="goodsDetailDesc" id="goodsDetailDesc" style="height: 150px;" autocomplete="off" class="layui-textarea">
+            
+          </textarea>
+        </script>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label"></label>
+      <div class="layui-input-inline">
+        <input type="button" lay-submit lay-filter="mall_goods_add_form-submit" value="确认" class="layui-btn">
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+  layui.define([ 'imagePicker'], function(exports){
+    var $ = layui.$
+  ,layer = layui.layer
+  ,admin=layui.admin
+  ,imagePicker = layui.imagePicker;
+ 
+  //initimagepicker
+   imagePicker.render({
+      // 选择器，推荐使用input
+      elem: '#goodsHeadImg',
+      // 数据类型：fontClass/unicode，推荐使用fontClass
+      name: 'goodsHeadImg',
+      // 是否开启搜索：true/false，默认true
+      search: true,
+      // 是否开启分页：true/false，默认true
+      page: true,
+      // 每页显示数量，默认12
+      limit: 8,
+      // 每个图标格子的宽度：'43px'或'20%'
+      cellWidth: '120px',
+      cellHeight: '60px',
+      // 渲染成功后的回调
+      success: function(d) {
+          console.log('加载成功');
+      }
+  });
+   setTimeout(function(){
+    if($('#goodsHeadImg').val()){
+      imagePicker.checkIcon('goodsHeadImg');
+    }
+   },1000);
+  //查看头像
+  admin.events.avartatPreview = function(othis){
+    var src = $('#'+$(othis).attr('bind-input')).val();
+    if(!src){
+      layui.layer.msg('请先上传图片');
+      return ;
+    }
+    if(src.indexOf('http:')==-1){
+      src=layui.setter.backuprequesturl+src;
+    }
+    layer.photos({
+      photos: {
+        "title": "查看头像" //相册标题
+        ,"data": [{
+          "src": src //原图地址
+        }]
+      }
+      ,shade: 0.01
+      ,closeBtn: 1
+      ,anim: 5
+    });
+  };
+  })
+</script>
