@@ -98,9 +98,6 @@ hr {
 	background: url(../images/logo.png) no-repeat center;
 	background-size: auto 0.45rem;
 }
-.item .images {
-	padding-top: 0.6rem;
-}
 .item section.header {
 	height: auto;
 	padding: 0.1rem;
