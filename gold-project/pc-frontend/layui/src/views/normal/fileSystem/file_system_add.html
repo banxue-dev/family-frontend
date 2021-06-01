@@ -1,0 +1,85 @@
+
+  <div class="layui-form" lay-filter="normal_file_system_add_form" id="normal_file_system_add_form"style="padding: 20px 30px 0 0;">
+    <div class="layui-form-item">
+      <label class="layui-form-label">文件名称</label>
+      <div class="layui-input-inline">
+          <input type="text" name="fileName" id="sfileName" value="" lay-verify="required" placeholder="请输入文件名称" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <input type="hidden" name="normalFileSysId"/>
+    <input type="hidden" name="fromIndex" id="fromIndex"/>
+    <div class="layui-form-item">
+      <label class="layui-form-label">上传文件</label>
+      <div class="layui-input-inline" style="width:80px;">
+        <input name="fileUrl"  id="fileUrl" readonly="readonly" lay-verify="required" placeholder="上传文件" value="" class="layui-input">
+      </div>
+      <div class="layui-input-inline layui-btn-container" style="width: auto;">
+        <button type="button" class="layui-btn layui-btn-primary" id="fileUrl_upload" data-id="fileName" bind-input='fileUrl'>
+          <i class="layui-icon">&#xe67c;</i>选择
+        </button>
+      </div>
+   </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label"></label>
+      <div class="layui-input-inline">
+        <input type="button" id="layuiadmin-app-form-submit-img" lay-submit lay-filter="layuiadmin-app-form-submit-img" value="确认" class="layui-btn">
+      </div>
+    </div>
+  </div>
+<script type="text/javascript">
+    layui.define([ 'upload'], function(exports){
+    var $ = layui.$
+  ,layer = layui.layer
+  ,admin=layui.admin
+  ,upload = layui.upload;
+   //表单赋值
+  //上传头像
+
+  var th=upload.render({
+    url: layui.setter.backuprequesturl+'/upload/v1.0/uploadFile'
+    ,elem: '#fileUrl_upload'
+    ,headers:layui.setter.headers
+    ,accept:'file'
+    ,acceptMime:['doc','txt','docx','xls','xlsx','pdf','docx','ppt','pdf','rar','zip']
+    ,auto:false
+    ,bindAction:'#layuiadmin-app-form-submit-img'
+    ,data:{
+      formatData:'sfileName',
+      extendData:layui.setter.authParams
+    }
+    ,choose: function(obj){
+        //将每次选择的文件追加到文件队列
+        var files = obj.pushFile();
+            //预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)
+        obj.preview(function(index, file, result){
+          if(index.split('-')[1]==0){
+            $('#fileUrl').val(file.name);
+            $('#previewImg').val(result);
+          }else{
+            delete files[index];
+          }
+        });
+    } 
+     ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+        layer.load(); 
+        
+      }
+    ,done: function(res){
+      if(res.code == layui.setter.response.statusCode.ok){
+        layui.table.reload('FileSystem_table'); //重载表格
+        parent.layer.close($('#fromIndex').val()); //执行关闭 
+      } else {
+        layer.msg(res.msg, {icon: 5});
+      }
+      layer.closeAll('loading');
+    }
+    ,error:function(){
+
+        layer.closeAll('loading');
+    }
+  });
+  
+ 
+  })
+</script>
+</script>

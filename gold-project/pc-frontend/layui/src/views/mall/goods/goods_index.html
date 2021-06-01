@@ -116,9 +116,9 @@
     function delGoods(params){
       layer.confirm('确定删除吗？', function(index) {
             admin.req({
-            url:requrl+'delGoods',
+            url:requrl+'delGoodsInfo',
             traditional:true,
-            data:{goodsIds:params},
+            data:{goodsInfoIds:params},
             success:function(res){
               if(res.code=='000000'){
 

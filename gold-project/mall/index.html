@@ -47,7 +47,7 @@
 <script type="text/javascript">
 	var pageEv={
 		//baseUrl:'localhost',
-		baseUrl:'www.banxue.fun'
+		baseUrl:'www.banxue.fun',
 		page:1,
 		limit:10,
 		tabid:'showGoodsListOne',
@@ -71,7 +71,7 @@
 			for(var i=0;i<data.length;i++){
 				html+='<a href="goods_detail.html?goodsId='+data[i].goodsId+'" class="aui-list-item">';
 				html+='		<div class="aui-list-theme-img">';
-				html+='		<img style="width:194px;height:194px;" width="194" height="194" src="'+data[i].goodsHeadImg+'" alt="">';
+				html+='		<img   src="'+data[i].goodsHeadImg+'" alt="">';
 				html+='	</div>';
 				html+='	<div class="aui-list-theme-message">';
 				html+='		<h4><em>'+(data[i].goodsMail||'包邮')+'</em><i></i>'+data[i].goodsName+'</h4>';

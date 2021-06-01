@@ -1,0 +1,170 @@
+
+
+  <title>文件管理列表</title>
+
+  <div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+      <a lay-href="">主页</a>
+      <a><cite>业务配置</cite></a>
+      <a><cite>文件管理设置</cite></a>
+      <a><cite>文件管理列表</cite></a>
+    </div>
+  </div>
+  
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header">文件管理列表</div>
+          <div class="layui-card-body">
+            <div class="test-table-reload-btn" style="margin-bottom: 10px;">
+              搜索名称：
+              <div class="layui-inline">
+                <input class="layui-input" name="fileName" id="searchFileName" autocomplete="off">
+              </div>
+              <button class="layui-btn layuiadmin-btn-FileSystem" data-type="reload">搜索</button>
+            </div>
+             <div style="padding-bottom: 10px; ">
+
+
+                <button class="layui-btn layuiadmin-btn-FileSystem" data-type="add"><i class="layui-icon">&#xe608;</i> 添加
+              </button>
+
+              <button class="layui-btn layuiadmin-btn-FileSystem  layui-btn-danger" data-type="batchdel"><i
+                      class="layui-icon">&#xe640;</i>删除
+              </button>
+
+              <script type="text/html" template  buttonAuth="addPersonalInfo">
+              </script>
+
+            </div>
+            <table class="layui-hide" id="FileSystem_table" lay-filter="FileSystem_table"></table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/html" id="FileSystem_oper_col">
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="download">下载</a>     
+     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>      
+  </script>
+  <script>
+  layui.use(['admin','upload','tree', 'table'], function(){
+    var $ = layui.$
+    ,table = layui.table
+    ,tree = layui.tree
+    ,admin=layui.admin
+    ,view = layui.view
+  ,upload = layui.upload
+    ,table = layui.table
+    ,form = layui.form
+    ,requrl=layui.setter.backuprequesturl+'fileSystem'+layui.setter.reqver;
+    //console.log(layui.data(layui.setter.tableName)[layui.setter.request.userAuthName]);
+    table.render({
+      elem: '#FileSystem_table'
+      ,url: requrl+'getFileSystemListByPage'
+      ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+      ,headers:layui.setter.headers
+      ,page:layui.setter.page
+      ,where:layui.setter.authParams
+      ,cols: [[
+        {type: 'checkbox', fixed: 'left', title: ''}
+        ,{field:'fileName',  title: '文件名称'}
+        ,{field:'fileUrl',  title: '文件地址'}
+        ,{field:'normalFileSysId',  hide:true}
+        ,{field:'createTime', title: '创建时间',sort:true}
+        ,{templet: '#FileSystem_oper_col', fixed: 'right', title: '操作', align: 'center'}
+      ]]
+    });
+
+    
+    
+    table.on('tool(FileSystem_table)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+                 delFileSystem(data.normalFileSysId);
+            } else if (obj.event === 'edit') {
+                addNewFileSystem(data,'编辑文件管理','normal/FileSystem/file_system_add','mod');
+            } else if (obj.event === 'download') {
+                window.open (data.fileUrl);
+            } 
+        })
+    var active = {
+      batchdel: function(){
+        var checkStatus = table.checkStatus('FileSystem_table')
+        ,checkData = checkStatus.data; //得到选中的数据
+
+        if(checkData.length === 0){
+          return layer.msg('请选择数据');
+        }
+        var lineIds="";
+        checkData.forEach(function (value,i) {
+            //lineIds.push(value.FileSystemId);
+            lineIds+=value.normalFileSystemId;
+            if(i<checkData.length-1){
+              lineIds+=',';
+            }
+        })
+        delFileSystem(lineIds);
+      }
+      
+      //添加
+      ,add: function(othis){
+        addNewFileSystem({parentId:0},'添加文件','normal/FileSystem/file_system_add','add');
+      },reload: function(){
+        
+        //执行重载
+        table.reload('FileSystem_table', {
+          page: {
+            curr: 1 //重新从第 1 页开始
+          }
+          ,where: {
+            fileName:$('#searchFileName').val()
+          }
+        });
+      }
+    }; 
+    function delFileSystem(params){
+      layer.confirm('确定删除吗？', function(index) {
+            
+            admin.req({
+            url:requrl+'delFileSystem',
+            traditional:true,
+            data:{fileSystemIds:params},
+            success:function(res){
+              if(res.code=='000000'){
+
+                //执行 Ajax 后重载
+                table.reload('FileSystem_table');
+                layer.msg('已删除');
+              }else{
+                layer.msg(res.msg);
+              }
+               layer.closeAll('loading');
+            }
+          });
+        });
+    }
+    function addNewFileSystem(params,title,url,treq){
+      admin.popup({
+          title: title
+          ,area: ['550px', '550px']
+          ,id: 'LAY-popup-content-add'
+          ,success: function(layero, index){
+            view(this.id).render(url).done(function(){
+              params.hideOrgCode=params.orgCode;
+              params.fromIndex=index;
+              form.val('normal_file_system_add_form', params);
+            });
+          }
+        });
+    }
+
+    $('.layui-btn.layuiadmin-btn-FileSystem').on('click', function(){
+      var type = $(this).data('type');
+      active[type] ? active[type].call(this) : '';
+    });
+
+  });
+  </script>

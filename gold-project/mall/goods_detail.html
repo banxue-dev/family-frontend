@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 <meta name="format-detection" content="telephone=no" />
 <meta name="format-detection" content="email=no" />
-<title>商品详情</title>
+<title id="showGoodsName">商品详情</title>
 <link rel="stylesheet" href="css/swiper.min.css">
     <link href="css/style.css" rel="stylesheet" type="text/css" />
 <link href="css/app.css" rel="stylesheet">
@@ -126,24 +126,37 @@ var path = "";
 })(document, window);
 
 (function(){
-	//轮播图
-	new Swiper('.swiper-container', {
-		pagination: '.swiper-pagination',
-		paginationClickable: true,
-		autoplay:3000
-	});
+	
     $.ajax({
         url:'http://'+detEntity.baseUrl+':8091/family/goodsInfo/v1.0/api/getGoodsInfoSingleById',
         type:'post',
         data:{goodsInfoId:getQueryVariable('goodsId'),orgCode:'1'},
         success:function(res){
             if(res.code=='000000'){
-                $('#bannerImgs').html(' <div class="swiper-slide"> <img style="width:396px;height:396px;" src="'+res.data.goodsHeadImg+'" /></div>');
+                if(res.data.goodsDetailImgs){
+                    var imgds=res.data.goodsDetailImgs.split(',');
+                    console.log(imgds.length);
+                    var bnhtmls="";
+                    for(var i=0;i<imgds.length;i++){
+                        bnhtmls+='<div class="swiper-slide"> ';
+                        bnhtmls+='<img style="width:396px;height:396px;" src="'+imgds[i]+'"/></div>';
+                    }
+                    $('#bannerImgs').html(bnhtmls);
+                }else{
+                    $('#bannerImgs').html(' <div class="swiper-slide"> <img style="width:396px;height:396px;" src="'+res.data.goodsHeadImg+'" /></div>');
+                }
                 $('#goodsPrice').html(res.data.goodsPrice);
+                $('#showGoodsName').html(res.data.goodsName);
                 $('#goodsName').html(res.data.goodsName);
                 $('#goodsDesc').html(res.data.goodsDetailDesc);
-                $('#showBuyImg').attr('src',res.data.goodsBuyImg);
+                //$('#showBuyImg').attr('src',res.data.goodsBuyImg);
                 $('#goodsExpress').html(res.data.goodsExpress=='0'?'包邮':'￥'+res.data.goodsExpress);
+                //轮播图
+                new Swiper('.swiper-container', {
+                    pagination: '.swiper-pagination',
+                    paginationClickable: true,
+                    autoplay:3000
+                });
             }
         }
     })
