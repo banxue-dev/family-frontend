@@ -71,7 +71,7 @@
         doDate.tick();
         $.ajax({
           url:goldconfig.backendHost+'/personalInfo/v1.0/api/getPersonalInfoSingleByOrgCode',
-          data:{orgCode:goldconfig.orgCode()},
+          data:{orgCode:goldconfig.orgCode(),groupType:1},
           type:'post',
           success:function(res){
             if(res.code=='000000'){
