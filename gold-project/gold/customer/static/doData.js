@@ -294,7 +294,7 @@
           grouphtml+='<div class="sl-zx-tb1  sl-zx-tb-ys1">';
           for(let d=0;d<pcHtmlJson.head.length;d++){
 
-              grouphtml+='  <div class="'+pcHtmlJson.head[d].class+'">'+pcHtmlJson.head[d].name+'</div>';
+              grouphtml+='  <div class="'+pcHtmlJson.head[d].class+'" style="'+pcHtmlJson.head[d].style+'">'+pcHtmlJson.head[d].name+'</div>';
           }
           grouphtml+='</div>';
           var metalhtml='';
@@ -305,11 +305,11 @@
                 metalhtml+='<div class="sl-zx-tb1  sl-zx-tb-ys1">';
                 var tn=tdb.newName || tdb.metalName;//tn.length>=5?'style="font-size:0.25rem;"':''
                 metalhtml+='  <div class="'+pcHtmlJson.cell[0].class+'" '+pcHtmlJson.cell[0].style+'>'+(tn)+'</div>';
-                metalhtml+='  <div class="'+pcHtmlJson.cell[1].class+' bid'+tdb.goldUserDiyMetalConfigId+'">0.00</div>';
-                metalhtml+='  <div class="'+pcHtmlJson.cell[2].class+' ask'+tdb.goldUserDiyMetalConfigId+'">0.00</div>';
-                metalhtml+='  <div class="'+pcHtmlJson.cell[3].class+'">';
-                metalhtml+='    <div class="'+pcHtmlJson.cell[3].child.class+' max'+tdb.goldUserDiyMetalConfigId+'" >0.00</div>';';';
-                metalhtml+='    <div class="'+pcHtmlJson.cell[3].child.class+' min'+tdb.goldUserDiyMetalConfigId+'" >0.00</div>';
+                metalhtml+='  <div style="'+pcHtmlJson.cell[1].style+'" class="'+pcHtmlJson.cell[1].class+' bid'+tdb.goldUserDiyMetalConfigId+'">0.00</div>';
+                metalhtml+='  <div style="'+pcHtmlJson.cell[2].style+'" class="'+pcHtmlJson.cell[2].class+' ask'+tdb.goldUserDiyMetalConfigId+'">0.00</div>';
+                metalhtml+='  <div style="'+pcHtmlJson.cell[3].style+'" class="'+pcHtmlJson.cell[3].class+'">';
+                metalhtml+='    <div style="'+pcHtmlJson.cell[3].style+'" class="'+pcHtmlJson.cell[3].child.class+' max'+tdb.goldUserDiyMetalConfigId+'" >0.00</div>';';';
+                metalhtml+='    <div style="'+pcHtmlJson.cell[3].style+'" class="'+pcHtmlJson.cell[3].child.class+' min'+tdb.goldUserDiyMetalConfigId+'" >0.00</div>';
                 metalhtml+='  </div>';
                 metalhtml+='</div>';
                 childCnt++;
