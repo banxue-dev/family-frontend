@@ -198,7 +198,12 @@ body::-webkit-scrollbar {
     display:table;
     border-radius: 5px;
 }
-.sl-zx-list li:last-child {
+.sl-zx-list-wxht-li{
+    border-radius:0px;
+    border-bottom:2px solid #bedae8;
+    margin-top:0px;
+}
+.sl-zx-list-wxht li:last-child {
     border-bottom: 0px;
 }
 .sl-zx-list-t {
