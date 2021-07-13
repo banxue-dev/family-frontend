@@ -1,7 +1,7 @@
 ﻿   //全局参数
    var goldconfig={};
     goldconfig.urlprex='http://www.banxue.fun';
-    // goldconfig.urlprex='http://localhost';
+    //goldconfig.urlprex='http://localhost';
     goldconfig.backendHost=goldconfig.urlprex+':8091/family',
     goldconfig.priceData={},
     goldconfig.personalInfo={},
@@ -279,11 +279,71 @@
       callback();
     }
     //type:1普通页面，2：调价
+    this.DataExce.createHtml1=function(callback,type){
+      var grouphtml='';
+      $('#mobile_htj').html("");
+      for(var t=0;t<goldconfig.groupConfig.length;t++){
+          var tda=goldconfig.groupConfig[t];
+          grouphtml='';
+          grouphtml='<li style="width:100%;background-color:'+(goldconfig.personalInfo.cellBackColor||'transparent')+';" id="group'+tda.groupCode+'">';
+          grouphtml+='<div class="sl-zx-list-t " style="height: {{height}}rem;{{font}}"><span id="customerName">'+tda.groupName+'</span></div>';
+          var metalhtml='';
+          var childCnt=0;
+          for(var d=0;d<goldconfig.metalConfig.length;d++){
+              if(goldconfig.metalConfig[d].groupId==tda.groupCode){
+                var tdb=goldconfig.metalConfig[d];
+                //tdb.goldUserDiyMetalConfigId
+                metalhtml+='<div class="sl-zx-tb1  sl-zx-tb-ys2" style="'+(goldconfig.personalInfo.cellBorder||"")+'">';
+                metalhtml+='  <div class="sl-zx-tb2 sl-zx-cell">'+(tdb.newName || tdb.metalName)+'</div>';
+                metalhtml+='  <div class="sl-zx-tb3 sl-zx-cell bid'+tdb.goldUserDiyMetalConfigId+'">0.00</div>';
+                metalhtml+='  <div class="sl-zx-tb3 sl-zx-cell ask'+tdb.goldUserDiyMetalConfigId+'">0.00</div>';
+                if(type==1){
+                  metalhtml+='  <div class="sl-zx-tb3 sl-zx-cell">';
+                  metalhtml+='    <div class="sl-zx-tb4 max'+tdb.goldUserDiyMetalConfigId+'">0.00</div>';
+                  metalhtml+='    <div class="sl-zx-tb4 min'+tdb.goldUserDiyMetalConfigId+'">0.00</div>';
+                  metalhtml+='  </div>';
+                }else if(type==2){
+                  metalhtml+='<div class="sl-zx-tb3 sl-zx-cell">  '; 
+                    metalhtml+=' <div style="height:2rem;line-height:2rem;">';
+                      metalhtml+='<label onclick="changeevent.buyWaterAdd('+tdb.goldUserDiyMetalConfigId+","+tdb.constraintLen+')" class="tj-label">+</label>';
+                      metalhtml+='<input old="'+tdb.buyBackWater+'" onchange="changeevent.valueChanged(this,'+tdb.goldUserDiyMetalConfigId+',1,'+tdb.constraintLen+')"  type="text" id="buyBackWater'+tdb.goldUserDiyMetalConfigId+'" value="'+tdb.buyBackWater+'" class="tj-input" style="color:'+(goldconfig.personalInfo.defaultTextColor||"black")+';background-color:'+(goldconfig.personalInfo.cellBackColor||"transparent")+';">';
+                      metalhtml+='<label  onclick="changeevent.buyWaterSal('+tdb.goldUserDiyMetalConfigId+","+tdb.constraintLen+')" class="tj-label" >-</label>';
+                    metalhtml+='</div>';
+                    metalhtml+=' <div style="height:2rem;line-height:2rem;">';
+                       metalhtml+='<label  onclick="changeevent.saleWaterAdd('+tdb.goldUserDiyMetalConfigId+","+tdb.constraintLen+')" class="tj-label">+</label>';
+                       metalhtml+='<input old="'+tdb.saleWater+'" onchange="changeevent.valueChanged(this,'+tdb.goldUserDiyMetalConfigId+',2,'+tdb.constraintLen+')" type="text" id="saleWater'+tdb.goldUserDiyMetalConfigId+'" value="'+tdb.saleWater+'" class="tj-input" style="color:'+(goldconfig.personalInfo.defaultTextColor||"black")+';background-color:'+(goldconfig.personalInfo.cellBackColor||"transparent")+';">';
+                       metalhtml+='<label  onclick="changeevent.saleWaterSal('+tdb.goldUserDiyMetalConfigId+","+tdb.constraintLen+')" class="tj-label">-</label>';
+                    metalhtml+='</div>';
+                   metalhtml+='</div>';
+                }
+                metalhtml+='</div>';
+                childCnt++;
+              }
+          }
+          if(childCnt<2){
+            grouphtml=grouphtml.replace('{{font}}','font-size:2.5vw;');
+          }else{
+
+            grouphtml=grouphtml.replace('{{font}}','');
+          }
+          grouphtml=grouphtml.replace('{{height}}',(childCnt*4));
+          grouphtml+=metalhtml;
+          grouphtml+='</li>';
+          $('#mobile_htj').append(grouphtml);
+      }
+      //改变设置的颜色
+      goldconfig.personalInfo.themBackColor && $('.sj-header').addClass('theme-bg'+goldconfig.personalInfo.themBackColor);
+      goldconfig.personalInfo.contentColorType && $('#content-white-bg').css('background-color',goldconfig.personalInfo.contentColorType);
+      //开启加载框
+      dataLoadingStatus(true,$('#mobile_htj').height(),$('#mobile_htj').width());
+      //回调
+      callback();
+    }
+    //type:1普通页面，2：调价
     this.DataExce.createPCHtml=function(callback,type){
       var grouphtml='';
       $('#pc-content').html("");
-      var pcHtmlJson=JSON.parse(goldconfig.personalInfo.pcHtmlJson);
-      // var pcHtmlJson={head:[{name:'品类',class:'sl-zx-tb2',style:''},{name:'回购',class:'sl_pc_header ',style:''},{name:'销售',class:'sl_pc_header ',style:''},{name:'高低',class:'sl_pc_header ',style:''}],cell:[{class:'sl-zx-tb2',style:''},{class:'sl-zx-tb3',style:''},{class:'sl-zx-tb3',style:''},{class:'sl-zx-tb3',style:'',child:{class:'sl-zx-tb4',style:''}}]}
+      var pcHtmlJson={head:['品类','回购','销售','高/低'],cellheight:'1.5',cellfont:'1.5'}
       for(var t=0;t<goldconfig.groupConfig.length;t++){
           var tda=goldconfig.groupConfig[t];
           grouphtml='';
@@ -292,10 +352,10 @@
           grouphtml+='  <span id="customerName">'+tda.groupName+'</span>';
           grouphtml+=' </div>';
           grouphtml+='<div class="sl-zx-tb1  sl-zx-tb-ys1">';
-          for(let d=0;d<pcHtmlJson.head.length;d++){
-
-              grouphtml+='  <div class="'+pcHtmlJson.head[d].class+'">'+pcHtmlJson.head[d].name+'</div>';
-          }
+          grouphtml+='  <div class="sl-zx-tb2">品类</div>';
+          grouphtml+='  <div class="sl_pc_header ">回购</div>';';';
+          grouphtml+='  <div class="sl_pc_header " >销售</div>';
+          grouphtml+='  <div class="sl_pc_header ">高/低</div>';
           grouphtml+='</div>';
           var metalhtml='';
           var childCnt=0;
@@ -303,13 +363,13 @@
               if(goldconfig.metalConfig[d].pcGroupId==tda.groupCode){
                 var tdb=goldconfig.metalConfig[d];
                 metalhtml+='<div class="sl-zx-tb1  sl-zx-tb-ys1">';
-                var tn=tdb.newName || tdb.metalName;//tn.length>=5?'style="font-size:0.25rem;"':''
-                metalhtml+='  <div class="'+pcHtmlJson.cell[0].class+'" '+pcHtmlJson.cell[0].style+'>'+(tn)+'</div>';
-                metalhtml+='  <div class="'+pcHtmlJson.cell[1].class+' bid'+tdb.goldUserDiyMetalConfigId+'">0.00</div>';
-                metalhtml+='  <div class="'+pcHtmlJson.cell[2].class+' ask'+tdb.goldUserDiyMetalConfigId+'">0.00</div>';
-                metalhtml+='  <div class="'+pcHtmlJson.cell[3].class+'">';
-                metalhtml+='    <div class="'+pcHtmlJson.cell[3].child.class+' max'+tdb.goldUserDiyMetalConfigId+'" >0.00</div>';';';
-                metalhtml+='    <div class="'+pcHtmlJson.cell[3].child.class+' min'+tdb.goldUserDiyMetalConfigId+'" >0.00</div>';
+                var tn=tdb.newName || tdb.metalName;
+                metalhtml+='  <div class="sl-zx-tb2"'+(tn.length>=5?'style="font-size:0.25rem;"':'')+'>'+(tn)+'</div>';
+                metalhtml+='  <div class="sl-zx-tb3 bid'+tdb.goldUserDiyMetalConfigId+'">0.00</div>';
+                metalhtml+='  <div class="sl-zx-tb3 ask'+tdb.goldUserDiyMetalConfigId+'">0.00</div>';
+                metalhtml+='  <div class="sl-zx-tb3">';
+                metalhtml+='    <div class="sl-zx-tb4 max'+tdb.goldUserDiyMetalConfigId+'" >0.00</div>';';';
+                metalhtml+='    <div class="sl-zx-tb4 min'+tdb.goldUserDiyMetalConfigId+'" >0.00</div>';
                 metalhtml+='  </div>';
                 metalhtml+='</div>';
                 childCnt++;
