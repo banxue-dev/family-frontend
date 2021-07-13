@@ -101,6 +101,7 @@
                 goldconfig.metalConfig=res.data.metalConfig;
                 goldconfig.personalInfo=per;
                 goldconfig.openStatus=per.openStatus;
+                $('title').html(goldconfig.personalInfo.customerName+'实时行情');
                 //创建html
                 doData.createHtml(function(){
                   //这些数据获取成功后，才能继续
