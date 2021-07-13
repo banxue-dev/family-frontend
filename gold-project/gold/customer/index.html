@@ -2,7 +2,7 @@
 <html style="font-size: 60px;">
  <head> 
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
-  <title>实时行情</title> 
+  <title id="title_name">实时行情</title> 
   <meta name="keywords" content="实时行情" /> 
   <meta name="description" content="实时行情" /> 
   <meta HTTP-EQUIV="pragma" CONTENT="no-cache">
@@ -101,7 +101,7 @@
                 goldconfig.metalConfig=res.data.metalConfig;
                 goldconfig.personalInfo=per;
                 goldconfig.openStatus=per.openStatus;
-                $('title').html(goldconfig.personalInfo.customerName+'实时行情');
+                $('#title_name').html(goldconfig.personalInfo.customerName+'实时行情');
                 //创建html
                 doData.createHtml(function(){
                   //这些数据获取成功后，才能继续

@@ -195,6 +195,7 @@ body::-webkit-scrollbar {
     border-radius:0px;
     border-bottom:2px solid #bedae8;
     margin-top:0px;
+    display:table;
 }
 .sl-zx-list-wxht-li:last-child {
     border-bottom: 0px;
