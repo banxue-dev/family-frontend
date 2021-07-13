@@ -202,6 +202,7 @@ function(e) {
         o = e.elemPicker.find("." + b),
         r = i[0],
         t = r.style.backgroundColor;
+        // o.find("input").css('background-color',t);
         if (t) {
             var n = k(P(t)),
             l = i.attr("lay-type");
@@ -245,11 +246,12 @@ function(e) {
                 s: n,
                 b: l
             });
+            // console.log(f.r +"-"+f.g +"-"+f.b );
             if (j.addClass(a).removeClass(s), r[0].style.background = "rgb(" + f.r + ", " + f.g + ", " + f.b + ")", "torgb" === t && e.elemPicker.find("." + b).find("input").val("rgb(" + f.r + ", " + f.g + ", " + f.b + ")"), "rgba" === t) {
                 var d = 0;
                 d = 280 * c,
                 w.css("left", d),
-                e.elemPicker.find("." + b).find("input").val("rgba(" + f.r + ", " + f.g + ", " + f.b + ", " + c + ")"),
+                e.elemPicker.find("." + b).find("input").val("rgba(" + f.r + ", " + f.g + ", " + f.b + ", " + c + ")").css('background-color',"rgba(" + f.r + ", " + f.g + ", " + f.b + ", " + c + ")"),
                 r[0].style.background = "rgba(" + f.r + ", " + f.g + ", " + f.b + ", " + c + ")",
                 C[0].style.background = "linear-gradient(to right, rgba(" + f.r + ", " + f.g + ", " + f.b + ", 0), rgb(" + f.r + ", " + f.g + ", " + f.b + "))"
             }

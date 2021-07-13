@@ -154,6 +154,9 @@
               params.hideOrgCode=params.orgCode;
               params.openStatus=params.openStatus+'';
               form.val('gold_personalInfo_add_form', params);
+              $('#contentColorType').css('background-color',params.contentColorType);
+              $('#cellBackColor').css('background-color',params.cellBackColor);
+              $('#defaultTextColor').css('background-color',params.defaultTextColor);
               //监听提交
               form.on('submit(layuiadmin-app-form-submit)', function(data){
                 var field = data.field; //获取提交的字段

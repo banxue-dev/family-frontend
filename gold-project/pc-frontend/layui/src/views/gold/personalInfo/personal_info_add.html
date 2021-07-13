@@ -63,14 +63,13 @@
 
     <div class="layui-form-item">
       <label class="layui-form-label">地址地图</label>
-      <div class="layui-input-inline " >
-           <input type="text" class="imagePicker" name="customerAddrImg" id="customerAddrImg"  lay-filter="imagePicker" style="display:none;">
-          
-        <button  class="layui-btn layui-btn-primary" layadmin-event="avartatPreview" bind-input='customerAddrImg'>查看</button >
-
+      <div class="layui-input-inline ">
+           <input type="text" class="layui-input" disabled="" name="customerAddrImg" id="customerAddrImg"  >
       </div>
+      <button  class="layui-btn layui-btn-primary findBack" bind-name="findMapImg" >查找</button >
+      <button  class="layui-btn layui-btn-primary" layadmin-event="avartatPreview" bind-input='customerAddrImg'>预览</button>
     </div>
-    <div class="layui-form-item">
+    <!-- <div class="layui-form-item">
       <label class="layui-form-label">LOGO</label>
       <div class="layui-input-inline " >
            <input type="text" class="imagePicker" name="customerLogo" id="customerLogo"  lay-filter="imagePicker" style="display:none;">
@@ -78,6 +77,15 @@
         <button  class="layui-btn layui-btn-primary" layadmin-event="avartatPreview" bind-input='customerLogo'>查看</button >
 
       </div>
+    </div> -->
+    <div class="layui-form-item">
+      <label class="layui-form-label">LOGO</label>
+      <div class="layui-input-inline " >
+          <input type="text" class="layui-input" disabled="" name="customerLogo" id="customerLogo"  >
+  
+      </div>
+      <button  class="layui-btn layui-btn-primary findBack" bind-name="findLogoImg" >查找</button >
+      <button  class="layui-btn layui-btn-primary" layadmin-event="avartatPreview" bind-input='customerLogo'>预览</button>
     </div>
     <div class="layui-form-item">
       <label class="layui-form-label">邮编</label>
@@ -149,6 +157,7 @@
       </div>
     </div>
   </div>
+  <script type="text/javascript" src="js/util/FindBack.js"></script>
 <script type="text/javascript">
   layui.define([ 'imagePicker','colorpicker'], function(exports){
     var $ = layui.$
@@ -161,31 +170,31 @@
     elem: '#cell_color_pick',
     color:'#590f5c'
     ,done: function(color){
-      $('#cellBackColor').val(color);
+      $('#cellBackColor').val(color).css('background-color',color);
     },change: function(color){
-      $('#cellBackColor').val(color);
+      $('#cellBackColor').val(color).css('background-color',color);
     }
   }); //表单赋值
   colorpicker.render({
     elem: '#default_text_color',
     color:'#590f5c'
     ,done: function(color){
-      $('#defaultTextColor').val(color);
+      $('#defaultTextColor').val(color).css('background-color',color);
     },change: function(color){
-      $('#defaultTextColor').val(color);
+      $('#defaultTextColor').val(color).css('background-color',color);
     }
   });
   colorpicker.render({
     elem: '#content_color_pick',
     color:'#590f5c'
     ,done: function(color){
-      $('#contentColorType').val(color);
+      $('#contentColorType').val(color).css('background-color',color);
     },change: function(color){
-      $('#contentColorType').val(color);
+      $('#contentColorType').val(color).css('background-color',color);
     }
   });
   //initimagepicker
-   imagePicker.render({
+  /* imagePicker.render({
       // 选择器，推荐使用input
       elem: '#customerLogo',
       // 数据类型：fontClass/unicode，推荐使用fontClass
@@ -203,13 +212,13 @@
       success: function(d) {
           console.log('加载成功');
       }
-  });
-   setTimeout(function(){
+  });*/
+   /*setTimeout(function(){
     if($('#customerLogo').val()){
       imagePicker.checkIcon('customerLogo');
     }
-   },1000);
-    imagePicker.render({
+   },1000);*/
+   /* imagePicker.render({
       // 选择器，推荐使用input
       elem: '#customerAddrImg',
       // 数据类型：fontClass/unicode，推荐使用fontClass
@@ -227,18 +236,89 @@
       success: function(d) {
           console.log('加载成功');
       }
-  });
+  });*/
+    var warequrl=layui.setter.backuprequesturl+'imgManager'+layui.setter.reqver;
+      /*构建查找带回*/
+      var addData={
+          dateGroup:1,
+          timeGroup:1,
+          findMapImg:{search:[{name:'fileName',text:'图片名称',type:'0'}],cols:[
+                    {type: 'checkbox', fixed: 'left', title: ''}
+                    , {field: 'id', title: 'id', align: 'center', hide: true}
+                    , {field: 'fileName', title: '图片名称', align: 'center',width:'90%'}
+                ],url:warequrl+'/getImgManagerListByPage',datal:1,elem:'#customerAddrImg',calltype:0},
+          findLogoImg:{search:[{name:'fileName',text:'图片名称',type:'0'}],cols:[
+                    {type: 'checkbox', fixed: 'left', title: ''}
+                    , {field: 'id', title: 'id', align: 'center', hide: true}
+                    , {field: 'fileName', title: '图片名称', align: 'center',width:'90%'}
+                ],url:warequrl+'/getImgManagerListByPage?sort=create_time&dir=desc',datal:1,elem:'#customerLogo',calltype:0}
+      }
+
+    var showSearchHtml='';
+    showSearchHtml+='<div class="layui-inline">';
+    showSearchHtml+='    <label class="layui-form-label">{{text}}</label>';
+    showSearchHtml+='    <div class="layui-input-block">';
+    showSearchHtml+='         <input type="text" name="{{name}}" placeholder="请输入{{text}}" autocomplete="off" class="layui-input">';
+    showSearchHtml+='    </div>';
+    showSearchHtml+='</div>';
+    var getSeartHtml=function(searchD){
+      if(!searchD){
+        return '';
+      }
+      var reshtml='';
+      for(var i=0;i<searchD.length;i++){
+        if(searchD[i].type==0){
+          reshtml+=showSearchHtml.replace(/{{text}}/g,searchD[i].text).replace(/{{name}}/g,searchD[i].name);
+        }else if(searchD[i].type==1){
+          
+        }
+      }
+      return reshtml;
+    }
+      // 显示框框
+    var showFindBack=function(name){
+      var param=addData[name];
+      FindBack.initTable({
+        url:param.url,
+        datal:param.datal||-1 ,// -1表示不限制
+         elem:'findBack',
+        layui:layui,
+        searchHtml :getSeartHtml(param.search),
+        where:function(field){
+          return field;
+              },
+        cols:[param.cols],
+             callback:function(data){
+               if(param.calltype==0){
+                 showType0Html(data[0],param.elem,name);
+               }
+              
+             }
+      }); 
+    }
+
+    var showType0Html=function(data,elem){
+      $(elem).val(data.link);
+    }
+
+    $('.findBack').on('click',function(){
+      if($(this).attr('bind-name')=='findMapImg'){
+        showFindBack('findMapImg');
+      }else{
+        showFindBack('findLogoImg');
+      }
+    })
 
   /**
    * 选中图标 （常用于更新时默认选中图标）
    * @param filter lay-filter
    * @param iconName 图标名称，自动识别fontClass/unicode
    */
-   setTimeout(function(){
+  /* setTimeout(function(){
     if($('#customerAddrImg').val()){
       imagePicker.checkIcon('customerAddrImg');
     }
-   },1000);
+   },1000);*/
   //查看头像
   admin.events.avartatPreview = function(othis){
     var src = $('#'+$(othis).attr('bind-input')).val();
