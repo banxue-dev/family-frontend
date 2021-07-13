@@ -304,7 +304,7 @@
                 var tdb=goldconfig.metalConfig[d];
                 metalhtml+='<div class="sl-zx-tb1  sl-zx-tb-ys1" style="'+pcHtmlJson.cellHead.style+'" >';
                 var tn=tdb.newName || tdb.metalName;//tn.length>=5?'style="font-size:0.25rem;"':''
-                metalhtml+='  <div class="'+pcHtmlJson.cell[0].class+'" '+pcHtmlJson.cell[0].style+'>'+(tn)+'</div>';
+                metalhtml+='  <div style="'+pcHtmlJson.cell[0].style+'" class="'+pcHtmlJson.cell[0].class+'" >'+(tn)+'</div>';
                 metalhtml+='  <div style="'+pcHtmlJson.cell[1].style+'" class="'+pcHtmlJson.cell[1].class+' bid'+tdb.goldUserDiyMetalConfigId+'">0.00</div>';
                 metalhtml+='  <div style="'+pcHtmlJson.cell[2].style+'" class="'+pcHtmlJson.cell[2].class+' ask'+tdb.goldUserDiyMetalConfigId+'">0.00</div>';
                 metalhtml+='  <div style="'+pcHtmlJson.cell[3].style+'" class="'+pcHtmlJson.cell[3].class+'">';
