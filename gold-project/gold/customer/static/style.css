@@ -196,7 +196,7 @@ body::-webkit-scrollbar {
     border-bottom:2px solid #bedae8;
     margin-top:0px;
 }
-.sl-zx-list-wxht:last-child {
+.sl-zx-list-wxht-li:last-child {
     border-bottom: 0px;
 }
 
