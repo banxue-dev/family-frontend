@@ -255,6 +255,7 @@ function(e) {
                 r[0].style.background = "rgba(" + f.r + ", " + f.g + ", " + f.b + ", " + c + ")",
                 C[0].style.background = "linear-gradient(to right, rgba(" + f.r + ", " + f.g + ", " + f.b + ", 0), rgb(" + f.r + ", " + f.g + ", " + f.b + "))"
             }
+                // console.log(e.elemPicker.find("." + b).html());
             o.change && o.change(e.elemPicker.find("." + b).find("input").val())
         },
         M = i(['<div class="layui-auxiliar-moving" id="LAY-colorpicker-moving"></div'].join("")),
