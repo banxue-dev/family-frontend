@@ -198,6 +198,9 @@ body::-webkit-scrollbar {
     display:table;
     border-radius: 5px;
 }
+.sl-zx-list li:last-child {
+    border-bottom: 0px;
+}
 .sl-zx-list-t {
     width:10%;
     height:16rem;
