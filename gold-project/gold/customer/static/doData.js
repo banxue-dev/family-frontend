@@ -308,8 +308,8 @@
                 metalhtml+='  <div style="'+pcHtmlJson.cell[1].style+'" class="'+pcHtmlJson.cell[1].class+' bid'+tdb.goldUserDiyMetalConfigId+'">0.00</div>';
                 metalhtml+='  <div style="'+pcHtmlJson.cell[2].style+'" class="'+pcHtmlJson.cell[2].class+' ask'+tdb.goldUserDiyMetalConfigId+'">0.00</div>';
                 metalhtml+='  <div style="'+pcHtmlJson.cell[3].style+'" class="'+pcHtmlJson.cell[3].class+'">';
-                metalhtml+='    <div style="'+pcHtmlJson.cell[3].style+'" class="'+pcHtmlJson.cell[3].child.class+' max'+tdb.goldUserDiyMetalConfigId+'" >0.00</div>';';';
-                metalhtml+='    <div style="'+pcHtmlJson.cell[3].style+'" class="'+pcHtmlJson.cell[3].child.class+' min'+tdb.goldUserDiyMetalConfigId+'" >0.00</div>';
+                metalhtml+='    <div style="'+pcHtmlJson.cell[3].child.style+'" class="'+pcHtmlJson.cell[3].child.class+' max'+tdb.goldUserDiyMetalConfigId+'" >0.00</div>';';';
+                metalhtml+='    <div style="'+pcHtmlJson.cell[3].child.style+'" class="'+pcHtmlJson.cell[3].child.class+' min'+tdb.goldUserDiyMetalConfigId+'" >0.00</div>';
                 metalhtml+='  </div>';
                 metalhtml+='</div>';
                 childCnt++;
