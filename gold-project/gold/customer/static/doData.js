@@ -278,7 +278,7 @@
       //回调
       callback();
     }
-    //type:1普通页面，2：调价
+    //type:创建pc端的页面
     this.DataExce.createPCHtml=function(callback,type){
       var grouphtml='';
       $('#pc-content').html("");
@@ -287,11 +287,17 @@
       for(var t=0;t<goldconfig.groupConfig.length;t++){
           var tda=goldconfig.groupConfig[t];
           grouphtml='';
+          pcHtmlJson.haveg=pcHtmlJson.haveg||true;
+          
           grouphtml='<div  style="width: {{groupdwidth}}%; float: left;">';
-          grouphtml+=' <div class="sl-zx-list-t bg" style="height: 1.5rem; width: 100%; font-size: 0.5rem;">';
-          grouphtml+='  <span id="customerName">'+tda.groupName+'</span>';
-          grouphtml+=' </div>';
-          grouphtml+='<div class="sl-zx-tb1  sl-zx-tb-ys1">';
+          if(pcHtmlJson.haveg){
+
+            grouphtml+=' <div class="sl-zx-list-t bg" style="height: 1.5rem; width: 100%; font-size: 0.5rem;">';
+            grouphtml+='  <span id="customerName">'+tda.groupName+'</span>';
+            grouphtml+=' </div>';
+          }
+
+          grouphtml+='<div class="sl-zx-tb1  sl-zx-tb-ys1" style="'+pcHtmlJson.headp.style+'">';
           for(let d=0;d<pcHtmlJson.head.length;d++){
 
               grouphtml+='  <div class="'+pcHtmlJson.head[d].class+'" style="'+pcHtmlJson.head[d].style+'">'+pcHtmlJson.head[d].name+'</div>';
